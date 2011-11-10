@@ -1,2 +1,6 @@
 .settings
 .project
+target
+*~
+runner/bundles
+runner/equinox
