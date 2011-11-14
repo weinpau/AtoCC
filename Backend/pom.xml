@@ -12,5 +12,6 @@
   <modules>
   	<module>PluginRegistry</module>
   	<module>Plugins</module>
+  	<module>Starter</module>
   </modules>
 </project>

@@ -1,20 +1,20 @@
-package de.hszigr.atocc.pluginregistry.impl;
+package de.hszigr.atocc.util.impl;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import de.hszigr.atocc.pluginregistry.PluginRegistry;
-
 public class Activator implements BundleActivator {
 
+    @Override
     public void start(BundleContext context) throws Exception {
-        System.out.println("START PluginRegistry");
-        
-        context.registerService(PluginRegistry.class.getName(), new PluginRegistryImpl(), null);
+        // TODO Auto-generated method stub
+
     }
 
+    @Override
     public void stop(BundleContext context) throws Exception {
-        
+        // TODO Auto-generated method stub
+
     }
 
 }

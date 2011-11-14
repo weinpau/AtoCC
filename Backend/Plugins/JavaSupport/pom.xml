@@ -9,4 +9,8 @@
   <artifactId>de.hszigr.atocc.language.java</artifactId>
   <name>JavaSupport</name>
   <packaging>bundle</packaging>
+  
+  <properties>
+  	<osgi.namespace>de.hszigr.atocc.language.java</osgi.namespace>
+  </properties>
 </project>
