@@ -8,16 +8,18 @@ import de.hszigr.atocc.util.ServiceUtils;
 
 public class Activator implements BundleActivator {
 
+    private PluginRegistry registry;
+    
     public void start(BundleContext context) throws Exception {
         System.out.println("START JavaSupport");
         
-        PluginRegistry pluginRegistry = ServiceUtils.getService(context, PluginRegistry.class);
-        pluginRegistry.register("/java", TestResource.class);
-        ServiceUtils.ungetService(context, PluginRegistry.class);
+        registry = ServiceUtils.getService(context, PluginRegistry.class);
+        registry.register("/java", TestResource.class);
     }
 
     public void stop(BundleContext context) throws Exception {
- 
+        registry.unregister(TestResource.class);
+        ServiceUtils.ungetService(context, PluginRegistry.class);
     }
 
 }

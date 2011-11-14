@@ -24,5 +24,14 @@ public class PluginRegistryImpl implements PluginRegistry {
         
         component.getDefaultHost().attach(urlPattern, c);
     }
+    
+    @Override
+    public void unregister(Class<? extends ServerResource> c) {
+        if(component == null) {
+            throw new NullPointerException("Component not set");
+        }
+        
+        component.getDefaultHost().detach(c);
+    }
 
 }
