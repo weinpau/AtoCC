@@ -12,4 +12,12 @@
   <modules>
   	<module>JavaSupport</module>
   </modules>
+  <dependencies>
+  	<dependency>
+  		<groupId>de.hszigr.atocc</groupId>
+  		<artifactId>de.hszigr.atocc.pluginregistry</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  		<type>bundle</type>
+  	</dependency>
+  </dependencies>
 </project>

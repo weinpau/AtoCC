@@ -10,6 +10,12 @@ public final class ServiceUtils {
 
         return tryToGetService(bc, serviceReference);
     }
+    
+    public static <T> void ungetService(final BundleContext bc, final Class<T> c) {
+        final ServiceReference serviceReference = tryToGetServiceReference(bc, c.getName());
+
+        bc.ungetService(serviceReference);
+    }
 
     private static ServiceReference tryToGetServiceReference(final BundleContext bc,
         final String className) {
