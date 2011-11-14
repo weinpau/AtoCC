@@ -1,6 +1,12 @@
 .settings
 .project
+.checkstyle
+.directory
+.classpath
+*.jar
 target
 *~
-runner/bundles
-runner/equinox
+runner/*
+deploy-pom.xml
+*/runner/*
+**/META-INF/*

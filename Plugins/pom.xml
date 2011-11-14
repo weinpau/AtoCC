@@ -8,7 +8,6 @@
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>de.hszigr.atocc</groupId>
   <artifactId>Plugins</artifactId>
 
   <name>Plugins</name>

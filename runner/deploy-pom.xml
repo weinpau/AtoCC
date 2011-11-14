@@ -16,7 +16,21 @@
     <dependency>
       <groupId>org.restlet.jse</groupId>
       <artifactId>org.restlet</artifactId>
-      <version>2.0.10</version>
+      <version>2.1-20111111.220048-8094</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>de.hszigr.atocc</groupId>
+      <artifactId>PluginRegistry</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>bundle</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>de.hszigr.atocc</groupId>
+      <artifactId>Utilities</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <type>bundle</type>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -30,7 +44,12 @@
       <groupId>de.hszigr.atocc</groupId>
       <artifactId>PluginRegistry</artifactId>
       <version>1.0-SNAPSHOT</version>
-      <type>bundle</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>de.hszigr.atocc</groupId>
+      <artifactId>Utilities</artifactId>
+      <version>1.0-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
