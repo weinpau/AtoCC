@@ -6,18 +6,30 @@ import org.osgi.framework.BundleContext;
 import de.hszigr.atocc.pluginregistry.PluginRegistry;
 import de.hszigr.atocc.util.ServiceUtils;
 
-public class Activator implements BundleActivator {
+/**
+ * Activator class for the JavaSupport plugin.
+ *
+ * @author Stefan Bradl
+ *
+ */
+public final class Activator implements BundleActivator {
 
     private PluginRegistry registry;
-    
-    public void start(BundleContext context) throws Exception {
+
+    /**
+     * Register the provided web services.
+     */
+    public void start(final BundleContext context) throws Exception {
         System.out.println("START JavaSupport");
         
         registry = ServiceUtils.getService(context, PluginRegistry.class);
         registry.register("/java", TestResource.class);
     }
 
-    public void stop(BundleContext context) throws Exception {
+    /**
+     * Unregister the provided web services.
+     */
+    public void stop(final BundleContext context) throws Exception {
         registry.unregister(TestResource.class);
         ServiceUtils.ungetService(context, PluginRegistry.class);
     }

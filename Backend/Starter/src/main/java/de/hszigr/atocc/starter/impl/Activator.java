@@ -8,7 +8,7 @@ import org.restlet.data.Protocol;
 import de.hszigr.atocc.pluginregistry.PluginRegistry;
 import de.hszigr.atocc.util.ServiceUtils;
 
-public class Activator implements BundleActivator {
+public final class Activator implements BundleActivator {
 
     public void start(BundleContext context) throws Exception {
         System.out.println("START AtoCC");

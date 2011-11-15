@@ -5,7 +5,7 @@ import org.osgi.framework.BundleContext;
 
 import de.hszigr.atocc.pluginregistry.PluginRegistry;
 
-public class Activator implements BundleActivator {
+public final class Activator implements BundleActivator {
 
     public void start(BundleContext context) throws Exception {
         System.out.println("START PluginRegistry");

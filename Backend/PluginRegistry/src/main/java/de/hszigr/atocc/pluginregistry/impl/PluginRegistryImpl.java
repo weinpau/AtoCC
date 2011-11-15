@@ -5,7 +5,7 @@ import org.restlet.resource.ServerResource;
 
 import de.hszigr.atocc.pluginregistry.PluginRegistry;
 
-public class PluginRegistryImpl implements PluginRegistry {
+public final class PluginRegistryImpl implements PluginRegistry {
 
     private Component component;
     
