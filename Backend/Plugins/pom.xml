@@ -11,6 +11,7 @@
   <name>Plugins</name>
   <modules>
   	<module>JavaSupport</module>
+  	<module>Nea2Dea</module>
   </modules>
   <dependencies>
   	<dependency>

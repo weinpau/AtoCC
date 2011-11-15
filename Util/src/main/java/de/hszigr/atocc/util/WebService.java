@@ -1,11 +1,9 @@
 package de.hszigr.atocc.util;
 
-import java.io.IOException;
-
 import javax.xml.ws.WebServiceException;
 
 import org.restlet.data.MediaType;
-import org.restlet.representation.StringRepresentation;
+import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
 import org.w3c.dom.Document;
@@ -19,8 +17,8 @@ public final class WebService {
     public static Document get(final String uri) {
 
         try {
-            return XmlUtils.stringToXml(new ClientResource(uri).get().getText());
-        } catch (final ResourceException | IOException e) {
+            return new ClientResource(uri).get(Document.class);
+        } catch (final ResourceException e) {
             throw new WebServiceException(e);
         }
 
@@ -30,14 +28,13 @@ public final class WebService {
 
         try {
             final ClientResource resource = new ClientResource(uri);
-            final String result = resource.put(new StringRepresentation(XmlUtils.xmlToString(doc)),
-                MediaType.APPLICATION_ALL_XML).getText();
 
-            return XmlUtils.stringToXml(result);
-        } catch (final ResourceException | IOException e) {
+            final DomRepresentation payload = new DomRepresentation(MediaType.APPLICATION_XML, doc);
+
+            return resource.put(payload, Document.class);
+        } catch (final ResourceException e) {
             throw new WebServiceException(e);
         }
 
     }
-
 }

@@ -4,7 +4,7 @@
     "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
 <module name="Checker">
 	<module name="StrictDuplicateCode">
-		<property name="min" value="4" />
+		<property name="min" value="7" />
 	</module>
 
 	<module name="NewlineAtEndOfFile" />

@@ -7,11 +7,11 @@
     <relativePath>..</relativePath>
   </parent>
   
-  <artifactId>JavaSupport</artifactId>
-  <name>JavaSupport</name>
+  <artifactId>Nea2Dea</artifactId>
   <packaging>bundle</packaging>
+  <name>Nea2Dea</name>
   
   <properties>
-  	<osgi.namespace>de.hszigr.atocc.language.java</osgi.namespace>
+  	<osgi.namespace>de.hszigr.atocc.nea2dea</osgi.namespace>
   </properties>
 </project>
