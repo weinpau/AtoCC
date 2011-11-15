@@ -4,7 +4,7 @@ public class WebServiceInvocationException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
     
-    public WebServiceInvocationException(Exception cause) {
+    public WebServiceInvocationException(final Exception cause) {
         super(cause);
     }
 

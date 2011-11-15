@@ -16,8 +16,12 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class XmlUtils {
+public final class XmlUtils {
 
+    private XmlUtils() {
+        
+    }
+    
     public static String xmlToString(final Document doc) {
 
         try {
@@ -28,25 +32,25 @@ public class XmlUtils {
             transformer.transform(new DOMSource(doc), new StreamResult(sw));
             
             return sw.toString();
-        } catch (TransformerException e) {
+        } catch (final TransformerException e) {
             e.printStackTrace();
         }
 
         return "";
     }
 
-    public static Document stringToXml(String text) {
-        InputSource source = new InputSource(new StringReader(text));
+    public static Document stringToXml(final String text) {
+        final InputSource source = new InputSource(new StringReader(text));
         
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(source);
-        } catch (SAXException e) {
+        } catch (final SAXException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (ParserConfigurationException e) {
+        } catch (final ParserConfigurationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

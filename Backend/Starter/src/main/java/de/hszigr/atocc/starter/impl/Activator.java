@@ -1,36 +1,39 @@
 package de.hszigr.atocc.starter.impl;
 
+import de.hszigr.atocc.pluginregistry.PluginRegistry;
+import de.hszigr.atocc.util.ServiceUtils;
+
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.restlet.Component;
 import org.restlet.data.Protocol;
 
-import de.hszigr.atocc.pluginregistry.PluginRegistry;
-import de.hszigr.atocc.util.ServiceUtils;
-
 public final class Activator implements BundleActivator {
 
-    public void start(BundleContext context) throws Exception {
+    private static final int PORT = 8080;
+
+    public void start(final BundleContext context) throws Exception {
         System.out.println("START AtoCC");
-        
-        Component component = initializeComponent();
+
+        final Component component = initializeComponent();
         initializePluginRegistry(context, component);
     }
 
-    private void initializePluginRegistry(BundleContext context, Component component) {
-        PluginRegistry pluginRegistry = ServiceUtils.getService(context, PluginRegistry.class);
+    private void initializePluginRegistry(final BundleContext context, final Component component) {
+        final PluginRegistry pluginRegistry = ServiceUtils
+            .getService(context, PluginRegistry.class);
         pluginRegistry.setComponent(component);
         pluginRegistry.register("/test", TestResource.class);
         ServiceUtils.ungetService(context, PluginRegistry.class);
     }
 
-    public void stop(BundleContext context) throws Exception {
-        
+    public void stop(final BundleContext context) throws Exception {
+
     }
 
     private Component initializeComponent() throws Exception {
-        Component component = new Component();
-        component.getServers().add(Protocol.HTTP, 8080);
+        final Component component = new Component();
+        component.getServers().add(Protocol.HTTP, PORT);
         component.start();
         return component;
     }

@@ -5,12 +5,16 @@ import org.osgi.framework.ServiceReference;
 
 public final class ServiceUtils {
 
+    private ServiceUtils() {
+
+    }
+    
     public static <T> T getService(final BundleContext bc, final Class<T> c) {
         final ServiceReference serviceReference = tryToGetServiceReference(bc, c.getName());
 
         return tryToGetService(bc, serviceReference);
     }
-    
+
     public static <T> void ungetService(final BundleContext bc, final Class<T> c) {
         final ServiceReference serviceReference = tryToGetServiceReference(bc, c.getName());
 
@@ -29,13 +33,15 @@ public final class ServiceUtils {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> T tryToGetService(final BundleContext bc, final ServiceReference serviceReference) {
-        T service = (T) bc.getService(serviceReference);
-        
-        if(service == null) {
+    private static <T> T tryToGetService(final BundleContext bc,
+        final ServiceReference serviceReference) {
+        final T service = (T) bc.getService(serviceReference);
+
+        if (service == null) {
             throw new NullPointerException("Service not found");
         }
-        
+
         return service;
     }
+
 }

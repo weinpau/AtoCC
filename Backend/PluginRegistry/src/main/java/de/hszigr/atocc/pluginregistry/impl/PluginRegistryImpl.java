@@ -1,36 +1,38 @@
 package de.hszigr.atocc.pluginregistry.impl;
 
+import de.hszigr.atocc.pluginregistry.PluginRegistry;
+
 import org.restlet.Component;
 import org.restlet.resource.ServerResource;
 
-import de.hszigr.atocc.pluginregistry.PluginRegistry;
-
 public final class PluginRegistryImpl implements PluginRegistry {
 
+    private static final String COMPONENT_NOT_SET = "Component not set";
+
     private Component component;
-    
+
     @Override
-    public void setComponent(Component component) {
-        this.component = component;
+    public void setComponent(final Component aComponent) {
+        this.component = aComponent;
     }
-    
+
     @Override
-    public void register(String urlPattern, Class<? extends ServerResource> c) {
+    public void register(final String urlPattern, final Class<? extends ServerResource> c) {
         System.out.println("REGISTER " + urlPattern);
-        
-        if(component == null) {
-            throw new NullPointerException("Component not set");
+
+        if (component == null) {
+            throw new NullPointerException(COMPONENT_NOT_SET);
         }
-        
+
         component.getDefaultHost().attach(urlPattern, c);
     }
-    
+
     @Override
-    public void unregister(Class<? extends ServerResource> c) {
-        if(component == null) {
-            throw new NullPointerException("Component not set");
+    public void unregister(final Class<? extends ServerResource> c) {
+        if (component == null) {
+            throw new NullPointerException(COMPONENT_NOT_SET);
         }
-        
+
         component.getDefaultHost().detach(c);
     }
 

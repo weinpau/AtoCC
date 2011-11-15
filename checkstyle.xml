@@ -7,7 +7,6 @@
 		<property name="min" value="4" />
 	</module>
 
-	<module name="JavadocPackage" />
 	<module name="NewlineAtEndOfFile" />
 	<module name="Translation" />
 	<module name="FileTabCharacter"/>
@@ -98,8 +97,6 @@
 		<module name="ImportOrder" />
 
 		<!-- Javadoc -->
-		<module name="JavadocType" />
-		<module name="JavadocMethod" />
 		<module name="JavadocStyle" />
 
 		<!-- Metrics -->
@@ -108,7 +105,7 @@
 		</module>
 
 		<module name="ClassFanOutComplexity">
-			<property name="max" value="10" />
+			<property name="max" value="15" />
 		</module>
 
 		<module name="CyclomaticComplexity">
@@ -157,7 +154,7 @@
 			<property name="max" value="10" />
 		</module>
 		<module name="LineLength">
-			<property name="max" value="80" />
+			<property name="max" value="100" />
 		</module>
 		<module name="AnonInnerLength">
 			<property name="max" value="30" />
