@@ -11,6 +11,8 @@ import org.w3c.dom.Node;
 
 public final class XmlUtils {
 
+    private static final String ERROR = "error";
+
     private XmlUtils() {
 
     }
@@ -33,9 +35,9 @@ public final class XmlUtils {
 
         final Document resultDocument = createEmptyDocument();
 
-        final Element resultElement = createResultElement(resultDocument, "error");
+        final Element resultElement = createResultElement(resultDocument, ERROR);
 
-        final Element errorElement = resultDocument.createElement("error");
+        final Element errorElement = resultDocument.createElement(ERROR);
         resultElement.appendChild(errorElement);
 
         final Element errorMessageElement = createErrorMessageElement(resultDocument, errorMessage);
@@ -66,7 +68,8 @@ public final class XmlUtils {
         return resultElement;
     }
 
-    private static Element createErrorMessageElement(final Document doc, final String errorMessage) {
+    private static Element createErrorMessageElement(final Document doc, 
+        final String errorMessage) {
         final Element errorMessageElement = doc.createElement("message");
         errorMessageElement.setTextContent(errorMessage);
 
