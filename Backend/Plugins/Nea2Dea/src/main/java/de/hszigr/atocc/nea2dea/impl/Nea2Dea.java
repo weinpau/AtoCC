@@ -1,32 +1,37 @@
 package de.hszigr.atocc.nea2dea.impl;
 
-import java.io.IOException;
-
-import org.restlet.ext.xml.DomRepresentation;
-import org.restlet.ext.xml.XmlRepresentation;
 import org.restlet.resource.Put;
 import org.restlet.resource.ServerResource;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import de.hszigr.atocc.util.XmlUtils;
 
 public class Nea2Dea extends ServerResource {
 
-    @Put("xml:xml")
-    public XmlRepresentation transform(final DomRepresentation input) {        
-        
+    @Put
+    public Document transform(Document nea) {
         try {
-            Document nea = input.getDocument();
-            final Document dea = transform(nea);
+            // TODO: validateAgainstSchema(nea);
+            checkAutomatonType(nea);
+            
+            final Document dea = XmlUtils.createEmptyDocument();
+            final Element automatonElement = dea.createElement("AUTOMATON");
+            dea.appendChild(automatonElement);
             
             return XmlUtils.createResult(dea);
-        } catch (IOException e) {
+        } catch (final Exception e) {
             return XmlUtils.createResultWithError("TRANSFORM_FAILED", e.getMessage());
         }
-        
+
     }
-    
-    private Document transform(final Document nea) {
-        return nea;
+
+    private void checkAutomatonType(Document nea) throws Exception {
+        final Element automatonElement = nea.getDocumentElement();
+        final Element typeElement = (Element) automatonElement.getElementsByTagName("TYPE").item(0);
+        
+        if(!"NEA".equals(typeElement.getAttribute("value"))) {
+            throw new Exception("INVALID_AUTOMATON_TYPE");
+        }
     }
 }

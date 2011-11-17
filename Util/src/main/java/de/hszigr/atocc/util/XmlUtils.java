@@ -1,13 +1,15 @@
 package de.hszigr.atocc.util;
 
+import java.io.File;
+import java.io.IOException;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.restlet.data.MediaType;
-import org.restlet.ext.xml.DomRepresentation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 public final class XmlUtils {
 
@@ -16,8 +18,16 @@ public final class XmlUtils {
     private XmlUtils() {
 
     }
+    
+    public static Document documentFromFile(final String filename) {
+        try {
+            return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(filename));
+        } catch (SAXException | IOException | ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-    public static DomRepresentation createResult(final Document doc) {
+    public static Document createResult(final Document doc) {
 
         final Document resultDocument = createEmptyDocument();
         final Element resultElement = createResultElement(resultDocument, "success");
@@ -27,10 +37,10 @@ public final class XmlUtils {
         final Node adoptedNode = resultDocument.adoptNode(domRootNode);
         resultElement.appendChild(adoptedNode);
 
-        return new DomRepresentation(MediaType.APPLICATION_XML, resultDocument);
+        return resultDocument;
     }
 
-    public static DomRepresentation createResultWithError(final String errorMessage,
+    public static Document createResultWithError(final String errorMessage,
         final String reason) {
 
         final Document resultDocument = createEmptyDocument();
@@ -46,10 +56,10 @@ public final class XmlUtils {
         final Element errorReasonElement = createErrorReasonElement(resultDocument, reason);
         errorElement.appendChild(errorReasonElement);
 
-        return new DomRepresentation(MediaType.APPLICATION_XML, resultDocument);
+        return resultDocument;
     }
 
-    private static Document createEmptyDocument() {
+    public static Document createEmptyDocument() {
         Document result = null;
 
         try {
@@ -64,6 +74,7 @@ public final class XmlUtils {
     private static Element createResultElement(final Document doc, final String status) {
         final Element resultElement = doc.createElement("result");
         resultElement.setAttribute("status", status);
+        doc.appendChild(resultElement);
 
         return resultElement;
     }

@@ -16,9 +16,22 @@
   <dependencies>
   	<dependency>
   		<groupId>de.hszigr.atocc</groupId>
-  		<artifactId>de.hszigr.atocc.pluginregistry</artifactId>
+  		<artifactId>PluginRegistry</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   		<type>bundle</type>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.hszigr.atocc</groupId>
+  		<artifactId>Util</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  		<type>bundle</type>
+  	</dependency>
+  	<dependency>
+  		<groupId>de.hszigr.atocc</groupId>
+  		<artifactId>Starter</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  		<type>bundle</type>
+  		<scope>runtime</scope>
   	</dependency>
   </dependencies>
 </project>

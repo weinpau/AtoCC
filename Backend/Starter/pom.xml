@@ -6,7 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
-  <artifactId>de.hszigr.atocc.starter</artifactId>
+  <artifactId>Starter</artifactId>
   <packaging>bundle</packaging>
   <name>Starter</name>
   
@@ -17,7 +17,7 @@
   <dependencies>
   	<dependency>
   		<groupId>de.hszigr.atocc</groupId>
-  		<artifactId>de.hszigr.atocc.pluginregistry</artifactId>
+  		<artifactId>PluginRegistry</artifactId>
   		<version>0.0.1-SNAPSHOT</version>
   		<type>bundle</type>
   	</dependency>

@@ -21,14 +21,14 @@ public final class Activator implements BundleActivator {
 
     private void initializePluginRegistry(final BundleContext context, final Component component) {
         final PluginRegistry pluginRegistry = ServiceUtils
-            .getService(context, PluginRegistry.class);
+                .getService(context, PluginRegistry.class);
         pluginRegistry.setComponent(component);
         pluginRegistry.register("/test", TestResource.class);
-        ServiceUtils.ungetService(context, PluginRegistry.class);
+
     }
 
     public void stop(final BundleContext context) throws Exception {
-
+        ServiceUtils.ungetService(context, PluginRegistry.class);
     }
 
     private Component initializeComponent() throws Exception {

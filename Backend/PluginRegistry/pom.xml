@@ -6,7 +6,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
-  <artifactId>de.hszigr.atocc.pluginregistry</artifactId>
+  <artifactId>PluginRegistry</artifactId>
   <name>PluginRegistry</name>
   <packaging>bundle</packaging>
   
