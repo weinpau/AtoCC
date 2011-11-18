@@ -18,11 +18,12 @@ public final class XmlUtils {
     private XmlUtils() {
 
     }
-    
+
     public static Document documentFromFile(final String filename) {
         try {
-            return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(filename));
-        } catch (SAXException | IOException | ParserConfigurationException e) {
+            return DocumentBuilderFactory.newInstance().newDocumentBuilder()
+                    .parse(new File(filename));
+        } catch (final SAXException | IOException | ParserConfigurationException e) {
             throw new RuntimeException(e);
         }
     }
@@ -40,8 +41,7 @@ public final class XmlUtils {
         return resultDocument;
     }
 
-    public static Document createResultWithError(final String errorMessage,
-        final String reason) {
+    public static Document createResultWithError(final String errorMessage, final String reason) {
 
         final Document resultDocument = createEmptyDocument();
 
@@ -79,8 +79,7 @@ public final class XmlUtils {
         return resultElement;
     }
 
-    private static Element createErrorMessageElement(final Document doc, 
-        final String errorMessage) {
+    private static Element createErrorMessageElement(final Document doc, final String errorMessage) {
         final Element errorMessageElement = doc.createElement("message");
         errorMessageElement.setTextContent(errorMessage);
 
@@ -90,8 +89,8 @@ public final class XmlUtils {
     private static Element createErrorReasonElement(final Document doc, final String reason) {
         final Element errorReasonElement = doc.createElement("reason");
         errorReasonElement.setTextContent(reason);
-        
+
         return errorReasonElement;
     }
-    
+
 }

@@ -18,20 +18,24 @@ import org.xml.sax.SAXException;
 
 public final class Converter {
 
+    private Converter() {
+
+    }
+    
     public static String xmlToString(final Document doc) throws TransformerException {
         final StringWriter sw = new StringWriter();
-        
+
         final Transformer tr = TransformerFactory.newInstance().newTransformer();
         tr.transform(new DOMSource(doc), new StreamResult(sw));
-        
+
         return sw.toString();
     }
-    
-    public static Document stringToXml(final String data) throws SAXException, IOException, ParserConfigurationException {
-        return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(data)));
+
+    public static Document stringToXml(final String data) throws SAXException, IOException,
+            ParserConfigurationException {
+        return DocumentBuilderFactory.newInstance().newDocumentBuilder()
+                .parse(new InputSource(new StringReader(data)));
     }
+
     
-    private Converter() {
-        
-    }
 }

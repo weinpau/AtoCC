@@ -1,12 +1,12 @@
 package de.hszigr.atocc.util.test;
 
+import de.hszigr.atocc.util.WebService;
+
 import org.junit.After;
 import org.junit.Before;
 import org.restlet.Component;
 import org.restlet.data.Protocol;
 import org.w3c.dom.Document;
-
-import de.hszigr.atocc.util.WebService;
 
 public abstract class AbstractServiceTest {
 
@@ -27,7 +27,7 @@ public abstract class AbstractServiceTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public final void tearDown() throws Exception {
         component.stop();
     }
     
@@ -41,7 +41,7 @@ public abstract class AbstractServiceTest {
     
     protected abstract void registerServices(final Component component);
     
-    private final String getBaseUrl() {
+    private String getBaseUrl() {
         return String.format("%s://%s:%d", PROTOCOL.getName().toLowerCase(), HOST, PORT);
     }
 }

@@ -41,6 +41,13 @@ public class Nea2DeaTest extends AbstractServiceTest {
         
         Assert.assertEquals("error", resultElement.getAttribute("status"));
     }
+    
+    @Test
+    public void test() throws TransformerException {
+        final Document result = put("/nea2dea", testDocument);
+        System.out.println(Converter.xmlToString(result));
+    }
+    
 
     @Override
     protected void registerServices(final Component component) {
