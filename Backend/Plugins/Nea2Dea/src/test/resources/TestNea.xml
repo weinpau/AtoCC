@@ -2,66 +2,25 @@
 <AUTOMATON>
     <TYPE value="NEA"/>
     <ALPHABET>
-        <ITEM value="a"/>
-        <ITEM value="b"/>
+        <ITEM value="0"/>
+        <ITEM value="1"/>
     </ALPHABET>
     <STATE name="q_0" finalstate="false">
+        <TRANSITION target="q_0">
+            <LABEL read="0"/>
+        </TRANSITION>
         <TRANSITION target="q_1">
-            <LABEL read="a"/>
+            <LABEL read="0"/>
         </TRANSITION>
-        <TRANSITION target="q_3">
-            <LABEL read="b"/>
-        </TRANSITION>
-        <TRANSITION target="q_4">
-            <LABEL read="a"/>
+        <TRANSITION target="q_0">
+            <LABEL read="1"/>
         </TRANSITION>
     </STATE>
     <STATE name="q_1" finalstate="false">
-        <TRANSITION target="q_1">
-            <LABEL read="a"/>
-        </TRANSITION>
         <TRANSITION target="q_2">
-            <LABEL read="b"/>
+            <LABEL read="0"/>
         </TRANSITION>
     </STATE>
     <STATE name="q_2" finalstate="true"/>
-    <STATE name="q_3" finalstate="true"/>
-    <STATE name="q_4" finalstate="true">
-        <TRANSITION target="q_4">
-            <LABEL read="b"/>
-        </TRANSITION>
-    </STATE>
-    <INITIALSTATE value="q_0"/>
-    <LAYOUT>
-        <STATELAYOUT name="q_0">
-            <LEFT value="100"/>
-            <TOP value="100"/>
-            <TRANSITIONLAYOUT target="q_1" drawvertical="false"/>
-            <TRANSITIONLAYOUT target="q_3" drawvertical="false"/>
-            <TRANSITIONLAYOUT target="q_4" drawvertical="false"/>
-        </STATELAYOUT>
-        <STATELAYOUT name="q_1">
-            <LEFT value="200"/>
-            <TOP value="100"/>
-            <TRANSITIONLAYOUT target="q_1" drawvertical="false">
-                <TOP value="-120"/>
-            </TRANSITIONLAYOUT>
-            <TRANSITIONLAYOUT target="q_2" drawvertical="false"/>
-        </STATELAYOUT>
-        <STATELAYOUT name="q_2">
-            <LEFT value="320"/>
-            <TOP value="100"/>
-        </STATELAYOUT>
-        <STATELAYOUT name="q_3">
-            <LEFT value="100"/>
-            <TOP value="200"/>
-        </STATELAYOUT>
-        <STATELAYOUT name="q_4">
-            <LEFT value="224"/>
-            <TOP value="200"/>
-            <TRANSITIONLAYOUT target="q_4" drawvertical="false">
-                <TOP value="-120"/>
-            </TRANSITIONLAYOUT>
-        </STATELAYOUT>
-    </LAYOUT>
+    <INITIALSTATE value="q_0" />
 </AUTOMATON>
