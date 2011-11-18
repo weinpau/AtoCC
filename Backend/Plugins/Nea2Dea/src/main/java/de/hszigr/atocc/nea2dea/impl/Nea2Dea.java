@@ -40,26 +40,35 @@ public class Nea2Dea extends ServerResource {
             checkAutomatonType();
 
             initializeDeaDocument();
-
-            neaStatePowerSet = AutomataUtils.getStatePowerSetFrom(nea);
-            neaInitialState = AutomataUtils.getNameOfInitialStateFrom(nea);
-            alphabet = AutomataUtils.getAlphabetFrom(nea);
-
-            generateNewStatesFrom(neaStatePowerSet);
-            generateNewFinalStates();
-            generateNewInitialState();
-            
-            createAutomatonElement();
-            createTypeElement();
-            createAlphabetElement();
-            createNewTransitions();
-            createInitialStateElement();
+            extractDataFromNea(nea);
+            generateDeaData();
+            createDeaDocument();
 
             return XmlUtils.createResult(dea);
         } catch (final Exception e) {
             return XmlUtils.createResultWithError("TRANSFORM_FAILED", e.getMessage());
         }
 
+    }
+
+    private void generateDeaData() {
+        generateNewStatesFrom(neaStatePowerSet);
+        generateNewFinalStates();
+        generateNewInitialState();
+    }
+
+    private void extractDataFromNea(Document nea) {
+        neaStatePowerSet = AutomataUtils.getStatePowerSetFrom(nea);
+        neaInitialState = AutomataUtils.getNameOfInitialStateFrom(nea);
+        alphabet = AutomataUtils.getAlphabetFrom(nea);
+    }
+
+    private void createDeaDocument() {
+        createAutomatonElement();
+        createTypeElement();
+        createAlphabetElement();
+        createNewTransitions();
+        createInitialStateElement();
     }
 
     private void checkAutomatonType() throws Exception {
@@ -117,7 +126,6 @@ public class Nea2Dea extends ServerResource {
     private Element createStateElement(String name) {
         final Element stateElement = dea.createElement("STATE");
         stateElement.setAttribute("name", name);
-        // deaAutomatonElement.appendChild(stateElement);
 
         return stateElement;
     }
@@ -176,44 +184,19 @@ public class Nea2Dea extends ServerResource {
         final Set<String> remainingStates = new HashSet<String>();
 
         String currentState = deaInitialState;
-        Set<String> qs = null;
+        Set<String> originalStates = null;
         boolean finished = false;
 
         while (!finished) {
-            qs = deaStateNameMap.get(currentState);
+            originalStates = deaStateNameMap.get(currentState);
             for (String character : alphabet) {
-                System.out.println(String.format("d'(%s,%s) = d'(%s,%s)", currentState, character,
-                        qs, character));
 
-                final Set<String> originalStates = new HashSet<>();
-
-                for (String q : qs) {
-                    final Set<String> targets = AutomataUtils.getTargetsOf(nea, q, character);
-                    originalStates.addAll(targets);
-                }
-
-                String newState = "";
-
-                for (Entry<String, Set<String>> entry : deaStateNameMap.entrySet()) {
-                    if (entry.getValue().equals(originalStates)) {
-                        if (!originalStates.isEmpty()) {
-                            newState = entry.getKey();
-                            break;
-                        }
-
-                    }
-                }
+                final Set<String> allOriginalStates = getTargets(originalStates, character);
+                final String newState = getNewStateFor(allOriginalStates);
                 
-                // create transition element
-                final Element transitionElement = dea.createElement("TRANSITION");
-                transitionElement.setAttribute("target", newState);
-                deaStateElementMap.get(currentState).appendChild(transitionElement);
-                
-                final Element labelElement = dea.createElement("LABEL");
-                labelElement.setAttribute("read", character);
-                transitionElement.appendChild(labelElement);
+                final Element transitionElement = createTransitionElement(currentState, newState);
+                createLabelElement(character, transitionElement);
 
-                System.out.println(String.format("%s = %s", originalStates, newState));
                 remainingStates.add(newState);
             }
 
@@ -238,5 +221,44 @@ public class Nea2Dea extends ServerResource {
             final Element stateElement = deaStateElementMap.get(state);
             deaAutomatonElement.appendChild(stateElement);
         }
+    }
+
+    private String getNewStateFor(final Set<String> allOriginalStates) {
+        String newState = "";
+
+        for (Entry<String, Set<String>> entry : deaStateNameMap.entrySet()) {
+            if (entry.getValue().equals(allOriginalStates)) {
+                if (!allOriginalStates.isEmpty()) {
+                    newState = entry.getKey();
+                    
+                    break;
+                }
+            }
+        }
+        return newState;
+    }
+
+    private void createLabelElement(String character, final Element transitionElement) {
+        final Element labelElement = dea.createElement("LABEL");
+        labelElement.setAttribute("read", character);
+        transitionElement.appendChild(labelElement);
+    }
+
+    private Element createTransitionElement(String currentState, String newState) {
+        final Element transitionElement = dea.createElement("TRANSITION");
+        transitionElement.setAttribute("target", newState);
+        deaStateElementMap.get(currentState).appendChild(transitionElement);
+        return transitionElement;
+    }
+
+    private Set<String> getTargets(Set<String> originalStates, String character) {
+        final Set<String> allOriginalStates = new HashSet<>();
+
+        for (String originalState : originalStates) {
+            final Set<String> targets = AutomataUtils.getTargetsOf(nea, originalState, character);
+            allOriginalStates.addAll(targets);
+        }
+        
+        return allOriginalStates;
     }
 }
