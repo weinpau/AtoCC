@@ -16,7 +16,7 @@ public final class Activator extends AbstractBundleActivator {
     protected void onStart(final BundleContext context) {
         System.out.println("START JavaSupport");
         
-        register("/java", TestResource.class);
+//        register("/java", TestResource.class);
     }
 
 }
