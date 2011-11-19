@@ -37,7 +37,7 @@ object NeaToDea {
       case _ => {
 
         try {
-          val cr = new ClientResource("http://localhost:8080/nea2dea")
+          val cr = new ClientResource("http://localhost:8081/nea2dea")
           
           val data = Source.fromInputStream(fileHolder.fileStream).mkString
           

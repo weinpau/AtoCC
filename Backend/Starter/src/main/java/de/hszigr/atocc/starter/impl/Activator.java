@@ -10,7 +10,7 @@ import org.restlet.data.Protocol;
 
 public final class Activator implements BundleActivator {
 
-    private static final int PORT = 8080;
+    private static final int PORT = 8081;
 
     public void start(final BundleContext context) throws Exception {
         System.out.println("START AtoCC");
