@@ -6,7 +6,9 @@ import de.hszigr.atocc.util.ServiceUtils;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.restlet.Component;
+import org.restlet.Server;
 import org.restlet.data.Protocol;
+import org.restlet.service.TaskService;
 
 public final class Activator implements BundleActivator {
 
@@ -33,7 +35,9 @@ public final class Activator implements BundleActivator {
 
     private Component initializeComponent() throws Exception {
         final Component component = new Component();
-        component.getServers().add(Protocol.HTTP, PORT);
+        final Server server = component.getServers().add(Protocol.HTTP, PORT);
+        server.getContext().getParameters().add("maxThreads", "255");
+
         component.start();
         return component;
     }
