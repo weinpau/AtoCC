@@ -12,7 +12,7 @@ resolvers += "RESTlet" at "http://maven.restlet.org"
 
 seq(webSettings :_*)
 
-port in container.Configuration := 80
+port in container.Configuration := 8080
 
 libraryDependencies ++= {
   val liftVersion = "2.4-M4"

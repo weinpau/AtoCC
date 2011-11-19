@@ -46,7 +46,7 @@ public class Nea2Dea extends ServerResource {
 
             return XmlUtils.createResult(dea);
         } catch (final Exception e) {
-            return XmlUtils.createResultWithError("TRANSFORM_FAILED", e.getMessage());
+            return XmlUtils.createResultWithError("TRANSFORM_FAILED", e);
         }
 
     }
@@ -94,12 +94,12 @@ public class Nea2Dea extends ServerResource {
         typeElement.setAttribute("value", "DEA");
         deaAutomatonElement.appendChild(typeElement);
     }
-    
+
     private void createAlphabetElement() {
         final Element alphabetElement = dea.createElement("ALPHABET");
         deaAutomatonElement.appendChild(alphabetElement);
-        
-        for(String alphabetItem : alphabet) {
+
+        for (String alphabetItem : alphabet) {
             final Element itemElement = dea.createElement("ITEM");
             itemElement.setAttribute("value", alphabetItem);
             alphabetElement.appendChild(itemElement);
@@ -189,11 +189,12 @@ public class Nea2Dea extends ServerResource {
 
         while (!finished) {
             originalStates = deaStateNameMap.get(currentState);
+
             for (String character : alphabet) {
 
                 final Set<String> allOriginalStates = getTargets(originalStates, character);
                 final String newState = getNewStateFor(allOriginalStates);
-                
+
                 final Element transitionElement = createTransitionElement(currentState, newState);
                 createLabelElement(character, transitionElement);
 
@@ -205,19 +206,20 @@ public class Nea2Dea extends ServerResource {
             // get next unprocessed state
             boolean foundNext = false;
             for (String s : remainingStates) {
+
                 if (!processedStates.contains(s)) {
                     currentState = s;
                     foundNext = true;
                     break;
                 }
             }
-            
-            if(!foundNext) {
+
+            if (!foundNext) {
                 finished = true;
             }
         }
-        
-        for(String state : remainingStates) {
+
+        for (String state : remainingStates) {
             final Element stateElement = deaStateElementMap.get(state);
             deaAutomatonElement.appendChild(stateElement);
         }
@@ -228,13 +230,12 @@ public class Nea2Dea extends ServerResource {
 
         for (Entry<String, Set<String>> entry : deaStateNameMap.entrySet()) {
             if (entry.getValue().equals(allOriginalStates)) {
-                if (!allOriginalStates.isEmpty()) {
-                    newState = entry.getKey();
-                    
-                    break;
-                }
+                newState = entry.getKey();
+
+                break;
             }
         }
+
         return newState;
     }
 
@@ -258,7 +259,7 @@ public class Nea2Dea extends ServerResource {
             final Set<String> targets = AutomataUtils.getTargetsOf(nea, originalState, character);
             allOriginalStates.addAll(targets);
         }
-        
+
         return allOriginalStates;
     }
 }

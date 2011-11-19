@@ -1,6 +1,8 @@
 package de.hszigr.atocc.util;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -39,7 +41,7 @@ public final class XmlUtils {
         return resultDocument;
     }
 
-    public static Document createResultWithError(final String errorMessage, final String reason) {
+    public static Document createResultWithError(final String errorMessage, final Exception reason) {
 
         final Document resultDocument = createEmptyDocument();
 
@@ -84,9 +86,15 @@ public final class XmlUtils {
         return errorMessageElement;
     }
 
-    private static Element createErrorReasonElement(final Document doc, final String reason) {
+    private static Element createErrorReasonElement(final Document doc, final Exception reason) {
+        
+        StringWriter sw = new StringWriter();
+        reason.printStackTrace(new PrintWriter(sw));
+        String stacktrace = sw.toString();
+        
         final Element errorReasonElement = doc.createElement("reason");
-        errorReasonElement.setTextContent(reason);
+        errorReasonElement.setTextContent(String.format("%s: %s\n%s",
+                reason.getClass().getSimpleName(), reason.getLocalizedMessage(), stacktrace));
 
         return errorReasonElement;
     }
