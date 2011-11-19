@@ -5,16 +5,19 @@ import de.hszigr.atocc.util.ServiceUtils;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.log.LogService;
 import org.restlet.Component;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
-import org.restlet.service.TaskService;
 
 public final class Activator implements BundleActivator {
 
     private static final int PORT = 8081;
+    private LogService logger;
 
     public void start(final BundleContext context) throws Exception {
+        logger = ServiceUtils.getService(context, LogService.class);
+        logger.log(LogService.LOG_INFO, "STARTING ATOCC");
         System.out.println("START AtoCC");
 
         final Component component = initializeComponent();

@@ -11,6 +11,7 @@
 	<modules>
 		<module>Backend</module>
 		<module>Util</module>
+		<module>Logging</module>
 	</modules>
 
 	<properties>
@@ -92,6 +93,20 @@
 			<artifactId>mockito-all</artifactId>
 			<version>1.8.5</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>log</artifactId>
+			<version>1.0.100-v20070226</version>
+			<type>bundle</type>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.osgi</groupId>
+			<artifactId>org.eclipse.osgi.services</artifactId>
+			<version>3.2.100.v20100503</version>
+			<type>bundle</type>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 
