@@ -1,7 +1,6 @@
 package de.hszigr.atocc.util;
 
 import java.io.File;
-import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -9,7 +8,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 
 public final class XmlUtils {
 
@@ -23,7 +21,7 @@ public final class XmlUtils {
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder()
                     .parse(new File(filename));
-        } catch (final SAXException | IOException | ParserConfigurationException e) {
+        } catch (final Exception e) {
             throw new RuntimeException(e);
         }
     }

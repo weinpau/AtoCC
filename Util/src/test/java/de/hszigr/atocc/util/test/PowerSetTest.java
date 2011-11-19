@@ -20,7 +20,7 @@ public class PowerSetTest {
 
     @Before
     public final void setUp() {
-        states = new HashSet<>();
+        states = new HashSet<String>();
         states.add(Q1);
         states.add(Q2);
         states.add(Q3);
@@ -51,7 +51,7 @@ public class PowerSetTest {
     }
 
     private Set<String> createSetFrom(final String[] strings) {
-        final Set<String> set = new HashSet<>();
+        final Set<String> set = new HashSet<String>();
 
         for (String s : strings) {
             set.add(s);

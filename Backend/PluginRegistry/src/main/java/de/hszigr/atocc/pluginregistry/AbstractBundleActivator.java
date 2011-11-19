@@ -13,7 +13,7 @@ public abstract class AbstractBundleActivator implements BundleActivator {
 
     private PluginRegistry registry;
 
-    private Collection<Class<? extends ServerResource>> resources = new ArrayList<>();
+    private Collection<Class<? extends ServerResource>> resources = new ArrayList<Class<? extends ServerResource>>();
 
     @Override
     public final void start(final BundleContext context) throws Exception {

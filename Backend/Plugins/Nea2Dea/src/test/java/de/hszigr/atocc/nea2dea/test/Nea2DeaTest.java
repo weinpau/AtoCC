@@ -10,7 +10,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import de.hszigr.atocc.nea2dea.impl.Nea2Dea;
-import de.hszigr.atocc.util.Converter;
 import de.hszigr.atocc.util.XmlUtils;
 import de.hszigr.atocc.util.test.AbstractServiceTest;
 

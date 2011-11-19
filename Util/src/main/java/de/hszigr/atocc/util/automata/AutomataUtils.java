@@ -29,7 +29,7 @@ public final class AutomataUtils {
     }
 
     public static Set<String> getStateNamesFrom(final NodeList states) {
-        final Set<String> stateNames = new HashSet<>();
+        final Set<String> stateNames = new HashSet<String>();
 
         for (int i = 0; i < states.getLength(); ++i) {
             final Element state = (Element) states.item(i);
@@ -71,7 +71,7 @@ public final class AutomataUtils {
     }
 
     public static Set<String> getAlphabetFrom(final Document nea) {
-        final Set<String> alphabet = new HashSet<>();
+        final Set<String> alphabet = new HashSet<String>();
 
         final Element alphabetElement = (Element) nea.getDocumentElement()
                 .getElementsByTagName("ALPHABET").item(0);
@@ -91,7 +91,7 @@ public final class AutomataUtils {
         final XPath xpath = XPathFactory.newInstance().newXPath();
 
         try {
-            final Set<String> targets = new HashSet<>();
+            final Set<String> targets = new HashSet<String>();
 
             final NodeList targetNodes = (NodeList) xpath.evaluate(String.format(
                     "//STATE[@name='%s']/TRANSITION/LABEL[@read='%s']/../@target", stateName,

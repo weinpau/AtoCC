@@ -107,8 +107,8 @@ public class Nea2Dea extends ServerResource {
     }
 
     private void generateNewStatesFrom(Set<Set<String>> statePowerSet) {
-        deaStateNameMap = new HashMap<>();
-        deaStateElementMap = new HashMap<>();
+        deaStateNameMap = new HashMap<String, Set<String>>();
+        deaStateElementMap = new HashMap<String, Element>();
 
         int i = 0;
         for (Set<String> element : statePowerSet) {
@@ -131,7 +131,7 @@ public class Nea2Dea extends ServerResource {
     }
 
     private void generateNewFinalStates() {
-        deaFinalStates = new HashSet<>();
+        deaFinalStates = new HashSet<String>();
         final Set<String> neaFinalStates = AutomataUtils.getNamesOfFinalStatesFrom(nea);
 
         for (Entry<String, Set<String>> deaState : deaStateNameMap.entrySet()) {
@@ -161,7 +161,7 @@ public class Nea2Dea extends ServerResource {
     }
 
     private void generateNewInitialState() {
-        final Set<String> setToSeach = new HashSet<>();
+        final Set<String> setToSeach = new HashSet<String>();
         setToSeach.add(neaInitialState);
 
         for (Entry<String, Set<String>> deaState : deaStateNameMap.entrySet()) {
@@ -252,7 +252,7 @@ public class Nea2Dea extends ServerResource {
     }
 
     private Set<String> getTargets(Set<String> originalStates, String character) {
-        final Set<String> allOriginalStates = new HashSet<>();
+        final Set<String> allOriginalStates = new HashSet<String>();
 
         for (String originalState : originalStates) {
             final Set<String> targets = AutomataUtils.getTargetsOf(nea, originalState, character);
