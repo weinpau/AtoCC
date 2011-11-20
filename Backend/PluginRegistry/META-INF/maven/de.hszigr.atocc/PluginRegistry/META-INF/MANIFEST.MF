@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Export-Package: de.hszigr.atocc.pluginregistry;version="1.0.0.SNAPSHOT
+ "
+Private-Package: de.hszigr.atocc.pluginregistry.internal
+Ignore-Package: de.hszigr.atocc.pluginregistry.internal
+Bundle-ClassPath: .,target/pax-eclipse
+Built-By: sbradl
+Tool: Bnd-0.0.255
+Bundle-Name: de.hszigr.atocc.PluginRegistry [de.hszigr.atocc.pluginreg
+ istry]
+Created-By: Apache Maven Bundle Plugin
+Build-Jdk: 1.7.0_01
+Bundle-Version: 1.0.0.SNAPSHOT
+Bnd-LastModified: 1321826500361
+Bundle-ManifestVersion: 2
+Bundle-Activator: de.hszigr.atocc.pluginregistry.internal.ExampleActiv
+ ator
+Bundle-Description: Generated using Pax-Construct
+Import-Package: de.hszigr.atocc.pluginregistry;version="1.0.0.SNAPSHOT
+ ",org.osgi.framework
+Bundle-SymbolicName: de.hszigr.atocc.PluginRegistry
+

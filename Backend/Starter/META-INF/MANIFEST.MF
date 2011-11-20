@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Export-Package: de.hszigr.atocc.starter;version="1.0.0.SNAPSHOT"
+Private-Package: de.hszigr.atocc.starter.internal
+Ignore-Package: de.hszigr.atocc.starter.internal
+Built-By: sbradl
+Tool: Bnd-0.0.255
+Bundle-Name: de.hszigr.atocc.Starter [de.hszigr.atocc.starter]
+Created-By: Apache Maven Bundle Plugin
+Build-Jdk: 1.7.0_01
+Bundle-Version: 1.0.0.SNAPSHOT
+Bnd-LastModified: 1321826500183
+Bundle-ManifestVersion: 2
+Bundle-Activator: de.hszigr.atocc.starter.internal.ExampleActivator
+Bundle-Description: Generated using Pax-Construct
+Import-Package: de.hszigr.atocc.starter;version="1.0.0.SNAPSHOT",org.o
+ sgi.framework
+Bundle-SymbolicName: de.hszigr.atocc.Starter
+

@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Export-Package: de.hszigr.atocc.autoedit.nea2dea;version="1.0.0.SNAPSH
+ OT"
+Private-Package: de.hszigr.atocc.autoedit.nea2dea.internal
+Ignore-Package: de.hszigr.atocc.autoedit.nea2dea.internal
+Bundle-ClassPath: .,target/pax-eclipse
+Built-By: sbradl
+Tool: Bnd-0.0.255
+Bundle-Name: de.hszigr.atocc.Nea2Dea [de.hszigr.atocc.autoedit.nea2dea
+ ]
+Created-By: Apache Maven Bundle Plugin
+Build-Jdk: 1.7.0_01
+Bundle-Version: 1.0.0.SNAPSHOT
+Bnd-LastModified: 1321826499825
+Bundle-ManifestVersion: 2
+Bundle-Activator: de.hszigr.atocc.autoedit.nea2dea.internal.ExampleAct
+ ivator
+Bundle-Description: Generated using Pax-Construct
+Import-Package: de.hszigr.atocc.autoedit.nea2dea;version="1.0.0.SNAPSH
+ OT",org.osgi.framework
+Bundle-SymbolicName: de.hszigr.atocc.Nea2Dea
+
