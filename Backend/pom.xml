@@ -18,6 +18,7 @@
   <modules>
     <module>AutoEdit</module>
     <module>Starter</module>
+    <module>PluginRegistry</module>
   </modules>
 
 </project>
