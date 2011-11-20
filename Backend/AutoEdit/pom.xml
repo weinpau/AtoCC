@@ -15,4 +15,8 @@
 
   <packaging>pom</packaging>
 
+  <modules>
+    <module>Nea2Dea</module>
+  </modules>
+
 </project>
