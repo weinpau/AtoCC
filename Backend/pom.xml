@@ -17,6 +17,7 @@
 
   <modules>
     <module>AutoEdit</module>
+    <module>Starter</module>
   </modules>
 
 </project>
