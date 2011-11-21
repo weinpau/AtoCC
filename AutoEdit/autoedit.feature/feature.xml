@@ -16,6 +16,10 @@
       [Enter License Description here.]
    </license>
 
+   <requires>
+      <import feature="core.feature" version="1.0.0.qualifier"/>
+   </requires>
+
    <plugin
          id="nea2dea.bundle"
          download-size="0"

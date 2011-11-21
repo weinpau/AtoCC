@@ -3,6 +3,8 @@ package de.hszg.atocc.autoedit.nea2dea.internal;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import de.hszg.atocc.core.util.ServiceUtils;
+
 public class Activator implements BundleActivator {
 
 	/*
@@ -10,7 +12,7 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		System.out.println("Hello Nea2Dea!!");
+		System.out.println("Hello Nea2Dea with Data: " + ServiceUtils.getData());
 	}
 	
 	/*

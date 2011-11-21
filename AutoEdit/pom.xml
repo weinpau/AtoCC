@@ -16,5 +16,13 @@
     <module>nea2dea.bundle</module>
     <module>autoedit.feature</module>
   </modules>
+  
+  <dependencies>
+    <dependency>
+      <groupId>de.hszg.atocc</groupId>
+      <artifactId>thirdparty</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
 
 </project>

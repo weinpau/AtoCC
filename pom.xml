@@ -13,23 +13,16 @@
   <packaging>pom</packaging>
 
   <properties>
-    <tycho.version>0.13.0</tycho-version>
+    <tycho.version>0.13.0</tycho.version>
     <restlet.version>2.0.10</restlet.version>
   </properties>
 
   <modules>
+    <module>thirdparty</module>
     <module>Core</module>
     <module>AutoEdit</module>
     <module>atocc.feature</module>
   </modules>
-
-  <dependencies>
-    <dependency>  
-      <groupId>org.restlet.jse</groupId>  
-      <artifactId>org.restlet</artifactId>  
-      <version>${restlet.version}</version>  
-    </dependency>
-  </dependencies>
 
   <repositories>
    <repository>

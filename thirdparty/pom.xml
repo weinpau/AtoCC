@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.hszg.atocc</groupId>
+	<artifactId>thirdparty</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>bundle</packaging>
+
+	<properties>
+		<tycho.version>0.13.0</tycho.version>
+		<restlet.version>2.0.10</restlet.version>
+		<manifest-location>META-INF</manifest-location>
+		<bundlePlugin.version>2.3.5</bundlePlugin.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>maven-restlet</id>
+			<name>Public online Restlet repository</name>
+			<url>http://maven.restlet.org</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.restlet.jse</groupId>
+			<artifactId>org.restlet</artifactId>
+			<version>${restlet.version}</version>
+		</dependency>
+	</dependencies>
+
+      <build>
+	  <plugins>
+	    <plugin>
+	      <artifactId>maven-jar-plugin</artifactId>
+	      <version>2.3.2</version>
+	      <configuration>
+		<archive>
+		  <manifestFile>${manifest-location}/MANIFEST.MF</manifestFile>
+		</archive>
+	      </configuration>
+	    </plugin>
+	    
+	    <plugin>
+	      <groupId>org.apache.felix</groupId>
+	      <artifactId>maven-bundle-plugin</artifactId>
+	      <version>${bundlePlugin.version}</version>
+	      <extensions>true</extensions>
+	      <configuration>
+		<manifestLocation>${manifest-location}</manifestLocation>
+		<instructions>
+		  <Embed-Dependency>
+		    org.restlet
+		  </Embed-Dependency>
+		  <_exportcontents>
+		    org.restlet.*;version="2.0.10"
+		  </_exportcontents>
+		  <Bundle-ClassPath>{maven-dependencies}</Bundle-ClassPath>
+		  <Embed-Transitive>true</Embed-Transitive>
+		  <Embed-Directory>jars</Embed-Directory>
+		  <_failok>true</_failok>
+		  <_nouses>true</_nouses>
+		</instructions>
+	      </configuration>
+	      <executions>
+		<execution>
+		  <id>bundle-manifest</id>
+		  <phase>process-classes</phase>
+		  <goals>
+		    <goal>manifest</goal>
+		  </goals>
+		</execution>
+	      </executions>
+	    </plugin>
+	    
+	  </plugins>
+      </build>
+	
+</project>
