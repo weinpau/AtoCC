@@ -13,11 +13,20 @@
   </properties>
 
   <repositories>
+    
+    <repository>
+	<id>org.sonatype.forge</id>
+	<name>Sonatype Forge</name>
+	<url>http://repository.sonatype.org/content/groups/forge</url>
+    </repository>
+    
    <repository>  
       <id>maven-restlet</id>  
       <name>Public online Restlet repository</name>  
       <url>http://maven.restlet.org</url>  
-    </repository>  
+    </repository> 
+    
+    
   </repositories>
 
  <dependencies>
@@ -31,6 +40,12 @@
     <groupId>org.restlet.jse</groupId>
     <artifactId>org.restlet.ext.xml</artifactId>
     <version>${restlet.version}</version>
+  </dependency>
+  
+  <dependency>
+    <groupId>org.eclipse</groupId>
+    <artifactId>org.eclipse.osgi</artifactId>
+    <version>[3.7.0,)</version>
   </dependency>
  </dependencies>
 </project>
