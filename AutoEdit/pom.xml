@@ -9,14 +9,12 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>Core</artifactId>
+  <artifactId>AutoEdit</artifactId>
   <packaging>pom</packaging>
   
   <modules>
-    <module>util.bundle</module>
-    <module>pluginregistry.bundle</module>
-    <module>starter.bundle</module>
-    <module>core.feature</module>
+    <module>nea2dea.bundle</module>
+    <module>autoedit.feature</module>
   </modules>
 
 </project>

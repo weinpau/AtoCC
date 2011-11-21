@@ -9,14 +9,7 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>Core</artifactId>
-  <packaging>pom</packaging>
-  
-  <modules>
-    <module>util.bundle</module>
-    <module>pluginregistry.bundle</module>
-    <module>starter.bundle</module>
-    <module>core.feature</module>
-  </modules>
+  <artifactId>atocc.feature</artifactId>
+  <packaging>eclipse-feature</packaging>
 
 </project>
