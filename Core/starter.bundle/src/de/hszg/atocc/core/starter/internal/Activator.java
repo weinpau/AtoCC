@@ -28,7 +28,6 @@ public final class Activator implements BundleActivator {
         final PluginRegistry pluginRegistry = ServiceUtils
                 .getService(context, PluginRegistry.class);
         pluginRegistry.setComponent(component);
-        pluginRegistry.register("/test", TestResource.class);
 
     }
 
