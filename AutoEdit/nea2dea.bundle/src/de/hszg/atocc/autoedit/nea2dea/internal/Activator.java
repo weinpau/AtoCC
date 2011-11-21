@@ -4,6 +4,7 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 import de.hszg.atocc.core.util.ServiceUtils;
+import de.hszg.atocc.core.util.WebService;
 
 public class Activator implements BundleActivator {
 
@@ -12,7 +13,7 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		System.out.println("Hello Nea2Dea with Data: " + ServiceUtils.getData());
+		System.out.println("Hello Nea2Dea with Data: " + WebService.get("www.google.de"));
 	}
 	
 	/*
