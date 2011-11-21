@@ -1,10 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Nea2Dea Bundle
-Bundle-SymbolicName: nea2dea.bundle
+Bundle-SymbolicName: atocc.autoedit.nea2dea.bundle
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hszg.atocc.autoedit.nea2dea.internal.Activator
-Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.osgi.framework;version="1.3.0"
-Require-Bundle: util.bundle;bundle-version="1.0.0"
+Require-Bundle: atocc.core.util.bundle;bundle-version="1.0.0"
