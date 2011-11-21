@@ -28,6 +28,39 @@
     
     
   </repositories>
+  
+  <distributionManagement>
+    <site>
+      <id>website</id>
+      <url>http://sbradl.github.com/AtoCC</url>
+      </site>
+   </distributionManagement>
+   
+   <issueManagement>
+     <system>Github</system>
+     <url>https://github.com/sbradl/AtoCC/issues</url>
+   </issueManagement>
+
+	<developers>
+		<developer>
+			<id>sbradl</id>
+			<name>Stefan Bradl</name>
+			<email>stefan_bradl@web.de</email>
+			<roles>
+				<role>Entwickler</role>
+			</roles>
+			<organization>HS Zittau/Görlitz</organization>
+			<organizationUrl>http://f-ei.hs-zigr.de</organizationUrl>
+		</developer>
+	</developers>
+
+	<contributors></contributors>
+
+	<scm>
+		<url>https://github.com/sbradl/AtoCC</url>
+		<connection>scm:git:git://github.com/sbradl/AtoCC.git</connection>
+		<developerConnection>scm:git:https://sbradl@github.com/sbradl/AtoCC.git</developerConnection>
+	</scm>
 
  <dependencies>
   <dependency>

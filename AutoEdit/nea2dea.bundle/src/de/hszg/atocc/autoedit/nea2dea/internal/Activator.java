@@ -3,8 +3,6 @@ package de.hszg.atocc.autoedit.nea2dea.internal;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import de.hszg.atocc.core.util.WebService;
-
 public class Activator implements BundleActivator {
 
 	/*
