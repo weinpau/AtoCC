@@ -1,5 +1,5 @@
 *~
 thirdparty
-.settings
 bin
 **/*.class
+**/.settings
