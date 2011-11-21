@@ -17,11 +17,11 @@
    </license>
 
    <requires>
-      <import feature="core.feature" version="1.0.0.qualifier"/>
+      <import feature="atocc.core.feature" version="1.0.0.qualifier"/>
    </requires>
 
    <plugin
-         id="nea2dea.bundle"
+         id="atocc.autoedit.nea2dea.bundle"
          download-size="0"
          install-size="0"
          version="0.0.0"
