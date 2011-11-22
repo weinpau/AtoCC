@@ -14,7 +14,6 @@ public final class Activator implements BundleActivator {
     }
 
     public void stop(final BundleContext context) throws Exception {
-        
     }
 
 }

@@ -37,10 +37,12 @@ public final class Nea2Dea extends ServerResource {
 
     @Put
     public Document transform(final Document aNea) {
+        
         this.nea = aNea;
 
         try {
-            // TODO: validateAgainstSchema(nea);
+//            TODO: XmlUtils.validate(aNea, "AUTOMATA");
+            
             checkAutomatonType();
 
             initializeDeaDocument();

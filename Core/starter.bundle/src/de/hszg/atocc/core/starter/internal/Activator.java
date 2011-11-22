@@ -17,8 +17,7 @@ public final class Activator implements BundleActivator {
 
     public void start(final BundleContext context) throws Exception {
         logger = ServiceUtils.getService(context, LogService.class);
-        logger.log(LogService.LOG_INFO, "STARTING ATOCC");
-        System.out.println("START AtoCC");
+        logger.log(LogService.LOG_INFO, "STARTING AtoCC");
 
         final Component component = initializeComponent();
         initializePluginRegistry(context, component);

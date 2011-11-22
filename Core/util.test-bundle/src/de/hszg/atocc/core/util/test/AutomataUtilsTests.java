@@ -149,17 +149,42 @@ public final class AutomataUtilsTests {
     }
 
     @Test
-    public void testGetStatePowerSetFrom() {
+    public void testGetStatePowerSetFrom2() {
+        Assert.fail("Not yet implemented");
+    }
+    
+    @Test
+    public void testGetStatePowerSetFrom3() {
         Assert.fail("Not yet implemented");
     }
 
     @Test
-    public void testGetAlphabetFrom() {
+    public void testGetAlphabetFrom1() {
+        Assert.fail("Not yet implemented");
+    }
+    
+    @Test
+    public void testGetAlphabetFrom2() {
+        Assert.fail("Not yet implemented");
+    }
+    
+    @Test
+    public void testGetAlphabetFrom3() {
         Assert.fail("Not yet implemented");
     }
 
     @Test
-    public void testGetTargetsOf() {
+    public void testGetTargetsOf1() {
+        Assert.fail("Not yet implemented");
+    }
+    
+    @Test
+    public void testGetTargetsOf2() {
+        Assert.fail("Not yet implemented");
+    }
+    
+    @Test
+    public void testGetTargetsOf3() {
         Assert.fail("Not yet implemented");
     }
 
