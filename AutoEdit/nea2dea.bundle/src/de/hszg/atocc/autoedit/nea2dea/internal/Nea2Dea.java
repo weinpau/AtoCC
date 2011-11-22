@@ -32,8 +32,8 @@ public class Nea2Dea extends ServerResource {
     private String deaInitialState;
 
     @Put
-    public Document transform(Document nea) {
-        this.nea = nea;
+    public Document transform(Document aNea) {
+        this.nea = aNea;
 
         try {
             // TODO: validateAgainstSchema(nea);
@@ -57,10 +57,10 @@ public class Nea2Dea extends ServerResource {
         generateNewInitialState();
     }
 
-    private void extractDataFromNea(Document nea) {
-        neaStatePowerSet = AutomataUtils.getStatePowerSetFrom(nea);
-        neaInitialState = AutomataUtils.getNameOfInitialStateFrom(nea);
-        alphabet = AutomataUtils.getAlphabetFrom(nea);
+    private void extractDataFromNea(Document aNea) {
+        neaStatePowerSet = AutomataUtils.getStatePowerSetFrom(aNea);
+        neaInitialState = AutomataUtils.getNameOfInitialStateFrom(aNea);
+        alphabet = AutomataUtils.getAlphabetFrom(aNea);
     }
 
     private void createDeaDocument() {

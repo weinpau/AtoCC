@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AUTOMATON>
+    <TYPE value="NEA"/>
+    <ALPHABET>
+        <ITEM value="a"/>
+        <ITEM value="b"/>
+        <ITEM value="c"/>
+    </ALPHABET>
+    <STATE name="q0" finalstate="false">
+        <TRANSITION target="q1">
+            <LABEL read="a"/>
+        </TRANSITION>
+    </STATE>
+    <STATE name="q1" finalstate="false">
+        <TRANSITION target="q2">
+            <LABEL read="a"/>
+        </TRANSITION>
+    </STATE>
+    <STATE name="q2" finalstate="true">
+        <TRANSITION target="q0">
+            <LABEL read="b"/>
+        </TRANSITION>
+    </STATE>
+    <INITIALSTATE value="q0"/>
+    <LAYOUT>
+        <STATELAYOUT name="q0">
+            <LEFT value="142"/>
+            <TOP value="145"/>
+            <TRANSITIONLAYOUT target="q1" drawvertical="false"/>
+        </STATELAYOUT>
+        <STATELAYOUT name="q1">
+            <LEFT value="305"/>
+            <TOP value="51"/>
+            <TRANSITIONLAYOUT target="q2" drawvertical="false"/>
+        </STATELAYOUT>
+        <STATELAYOUT name="q2">
+            <LEFT value="470"/>
+            <TOP value="145"/>
+            <TRANSITIONLAYOUT target="q0" drawvertical="false"/>
+        </STATELAYOUT>
+        <NOTEPAD>
+            {\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Verdana;}}
+\viewkind4\uc1\pard\lang1031\f0\fs22 
+\par }
+
+        </NOTEPAD>
+    </LAYOUT>
+</AUTOMATON>

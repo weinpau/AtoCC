@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AUTOMATON>
+    <TYPE value="NEA"/>
+    <ALPHABET>
+        <ITEM value="a"/>
+        <ITEM value="b"/>
+        <ITEM value="c"/>
+    </ALPHABET>
+    <STATE name="q_0" finalstate="false">
+        <TRANSITION target="q_1">
+            <LABEL read="a"/>
+        </TRANSITION>
+    </STATE>
+    <STATE name="q_1" finalstate="true"/>
+    <INITIALSTATE value="q_0"/>
+    <LAYOUT>
+        <STATELAYOUT name="q_0">
+            <LEFT value="112"/>
+            <TOP value="125"/>
+            <TRANSITIONLAYOUT target="q_1" drawvertical="false"/>
+        </STATELAYOUT>
+        <STATELAYOUT name="q_1">
+            <LEFT value="259"/>
+            <TOP value="125"/>
+        </STATELAYOUT>
+        <NOTEPAD>
+            {\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Verdana;}}
+\viewkind4\uc1\pard\lang1031\f0\fs22 
+\par }
+
+        </NOTEPAD>
+    </LAYOUT>
+</AUTOMATON>

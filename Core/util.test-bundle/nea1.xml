@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<AUTOMATON>
+    <TYPE value="NEA"/>
+    <ALPHABET>
+        <ITEM value="a"/>
+        <ITEM value="b"/>
+    </ALPHABET>
+    <STATE name="Z1" finalstate="false">
+        <TRANSITION target="Z4">
+            <LABEL read="a"/>
+        </TRANSITION>
+        <TRANSITION target="Z2">
+            <LABEL read="EPSILON"/>
+        </TRANSITION>
+    </STATE>
+    <STATE name="Z2" finalstate="false">
+        <TRANSITION target="Z5">
+            <LABEL read="a"/>
+        </TRANSITION>
+        <TRANSITION target="Z3">
+            <LABEL read="b"/>
+        </TRANSITION>
+    </STATE>
+    <STATE name="Z3" finalstate="true"/>
+    <STATE name="Z4" finalstate="false">
+        <TRANSITION target="Z2">
+            <LABEL read="EPSILON"/>
+        </TRANSITION>
+        <TRANSITION target="Z5">
+            <LABEL read="b"/>
+        </TRANSITION>
+    </STATE>
+    <STATE name="Z5" finalstate="false">
+        <TRANSITION target="Z6">
+            <LABEL read="EPSILON"/>
+        </TRANSITION>
+    </STATE>
+    <STATE name="Z6" finalstate="false"/>
+    <INITIALSTATE value="Z1"/>
+    <LAYOUT>
+        <STATELAYOUT name="Z1">
+            <LEFT value="100"/>
+            <TOP value="46"/>
+            <TRANSITIONLAYOUT target="Z4" drawvertical="false"/>
+            <TRANSITIONLAYOUT target="Z2" drawvertical="false"/>
+        </STATELAYOUT>
+        <STATELAYOUT name="Z2">
+            <LEFT value="200"/>
+            <TOP value="46"/>
+            <TRANSITIONLAYOUT target="Z5" drawvertical="false"/>
+            <TRANSITIONLAYOUT target="Z3" drawvertical="false"/>
+        </STATELAYOUT>
+        <STATELAYOUT name="Z3">
+            <LEFT value="300"/>
+            <TOP value="46"/>
+        </STATELAYOUT>
+        <STATELAYOUT name="Z4">
+            <LEFT value="100"/>
+            <TOP value="152"/>
+            <TRANSITIONLAYOUT target="Z2" drawvertical="false"/>
+            <TRANSITIONLAYOUT target="Z5" drawvertical="false"/>
+        </STATELAYOUT>
+        <STATELAYOUT name="Z5">
+            <LEFT value="200"/>
+            <TOP value="152"/>
+            <TRANSITIONLAYOUT target="Z6" drawvertical="false"/>
+        </STATELAYOUT>
+        <STATELAYOUT name="Z6">
+            <LEFT value="300"/>
+            <TOP value="152"/>
+        </STATELAYOUT>
+        <NOTEPAD>
+            {\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Verdana;}}
+\viewkind4\uc1\pard\lang1031\f0\fs22 
+\par }
+
+        </NOTEPAD>
+    </LAYOUT>
+</AUTOMATON>
