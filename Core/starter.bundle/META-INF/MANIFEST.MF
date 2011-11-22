@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: AtoCC Starter Bundle
-Bundle-SymbolicName: atocc.core.starter.bundle
+Bundle-SymbolicName: atocc.core.starter.bundle;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hszg.atocc.core.starter.internal.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

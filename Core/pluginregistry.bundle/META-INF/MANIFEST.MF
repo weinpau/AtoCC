@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PluginRegistry Bundle
-Bundle-SymbolicName: atocc.core.pluginregistry.bundle
+Bundle-SymbolicName: atocc.core.pluginregistry.bundle;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hszg.atocc.core.pluginregistry.internal.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
