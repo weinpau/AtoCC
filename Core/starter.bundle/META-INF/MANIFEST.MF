@@ -5,7 +5,8 @@ Bundle-SymbolicName: atocc.core.starter.bundle
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hszg.atocc.core.starter.internal.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.hszg.atocc.core.util,
+Import-Package: de.hszg.atocc.core.pluginregistry,
+ de.hszg.atocc.core.util,
  org.osgi.framework;version="1.3.0",
  org.osgi.service.log;version="1.3.0",
  org.restlet,
@@ -13,4 +14,3 @@ Import-Package: de.hszg.atocc.core.util,
  org.restlet.resource,
  org.restlet.util
 Bundle-ActivationPolicy: lazy
-Require-Bundle: atocc.core.pluginregistry.bundle;bundle-version="1.0.0"

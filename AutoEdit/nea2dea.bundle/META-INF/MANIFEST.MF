@@ -9,5 +9,6 @@ Import-Package: de.hszg.atocc.core.pluginregistry,
  org.osgi.framework;version="1.3.0",
  org.restlet.resource
 Require-Bundle: atocc.core.util.bundle;bundle-version="1.0.0",
- atocc.core.starter.bundle;bundle-version="1.0.0"
+ atocc.core.starter.bundle;bundle-version="1.0.0",
+ atocc.core.pluginregistry.bundle;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
