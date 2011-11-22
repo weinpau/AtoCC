@@ -31,10 +31,17 @@ public final class Converter {
         return sw.toString();
     }
 
-    public static Document stringToXml(final String data) throws SAXException, IOException,
-            ParserConfigurationException {
-        return DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                .parse(new InputSource(new StringReader(data)));
+    public static Document stringToXml(final String data) throws ConverterException {
+        try {
+            return DocumentBuilderFactory.newInstance().newDocumentBuilder()
+                    .parse(new InputSource(new StringReader(data)));
+        } catch (final SAXException e) {
+            throw new ConverterException(e);
+        } catch (final IOException e) {
+            throw new ConverterException(e);
+        } catch (final ParserConfigurationException e) {
+            throw new ConverterException(e);
+        }
     }
 
     

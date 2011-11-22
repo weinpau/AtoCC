@@ -13,7 +13,8 @@ public abstract class AbstractBundleActivator implements BundleActivator {
 
     private PluginRegistry registry;
 
-    private Collection<Class<? extends ServerResource>> resources = new ArrayList<Class<? extends ServerResource>>();
+    private Collection<Class<? extends ServerResource>> resources =
+            new ArrayList<Class<? extends ServerResource>>();
 
     @Override
     public final void start(final BundleContext context) throws Exception {
@@ -31,8 +32,7 @@ public abstract class AbstractBundleActivator implements BundleActivator {
 
     }
 
-    protected final void register(final String urlPattern, 
-        final Class<? extends ServerResource> c) {
+    protected final void register(final String urlPattern, final Class<? extends ServerResource> c) {
         resources.add(c);
         registry.register(urlPattern, c);
     }

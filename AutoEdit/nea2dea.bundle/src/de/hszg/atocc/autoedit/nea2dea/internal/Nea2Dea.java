@@ -1,5 +1,8 @@
 package de.hszg.atocc.autoedit.nea2dea.internal;
 
+import de.hszg.atocc.core.util.XmlUtils;
+import de.hszg.atocc.core.util.automata.AutomataUtils;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,11 +14,12 @@ import org.restlet.resource.ServerResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import de.hszg.atocc.core.util.XmlUtils;
-import de.hszg.atocc.core.util.automata.AutomataUtils;
+public final class Nea2Dea extends ServerResource {
 
-public class Nea2Dea extends ServerResource {
-
+    private static final String VALUE = "value";
+    private static final String TYPE = "TYPE";
+    private static final String FINALSTATE = "finalstate";
+    
     private Document nea;
     private Set<Set<String>> neaStatePowerSet;
     private String neaInitialState;
@@ -32,7 +36,7 @@ public class Nea2Dea extends ServerResource {
     private String deaInitialState;
 
     @Put
-    public Document transform(Document aNea) {
+    public Document transform(final Document aNea) {
         this.nea = aNea;
 
         try {
@@ -45,7 +49,7 @@ public class Nea2Dea extends ServerResource {
             createDeaDocument();
 
             return XmlUtils.createResult(dea);
-        } catch (final Exception e) {
+        } catch (final RuntimeException e) {
             return XmlUtils.createResultWithError("TRANSFORM_FAILED", e);
         }
 
@@ -57,7 +61,7 @@ public class Nea2Dea extends ServerResource {
         generateNewInitialState();
     }
 
-    private void extractDataFromNea(Document aNea) {
+    private void extractDataFromNea(final Document aNea) {
         neaStatePowerSet = AutomataUtils.getStatePowerSetFrom(aNea);
         neaInitialState = AutomataUtils.getNameOfInitialStateFrom(aNea);
         alphabet = AutomataUtils.getAlphabetFrom(aNea);
@@ -71,12 +75,12 @@ public class Nea2Dea extends ServerResource {
         createInitialStateElement();
     }
 
-    private void checkAutomatonType() throws Exception {
+    private void checkAutomatonType() {
         final Element automatonElement = nea.getDocumentElement();
-        final Element typeElement = (Element) automatonElement.getElementsByTagName("TYPE").item(0);
+        final Element typeElement = (Element) automatonElement.getElementsByTagName(TYPE).item(0);
 
-        if (!"NEA".equals(typeElement.getAttribute("value"))) {
-            throw new Exception("INVALID_AUTOMATON_TYPE");
+        if (!"NEA".equals(typeElement.getAttribute(VALUE))) {
+            throw new RuntimeException("INVALID_AUTOMATON_TYPE");
         }
     }
 
@@ -90,8 +94,8 @@ public class Nea2Dea extends ServerResource {
     }
 
     private void createTypeElement() {
-        final Element typeElement = dea.createElement("TYPE");
-        typeElement.setAttribute("value", "DEA");
+        final Element typeElement = dea.createElement(TYPE);
+        typeElement.setAttribute(VALUE, "DEA");
         deaAutomatonElement.appendChild(typeElement);
     }
 
@@ -101,12 +105,12 @@ public class Nea2Dea extends ServerResource {
 
         for (String alphabetItem : alphabet) {
             final Element itemElement = dea.createElement("ITEM");
-            itemElement.setAttribute("value", alphabetItem);
+            itemElement.setAttribute(VALUE, alphabetItem);
             alphabetElement.appendChild(itemElement);
         }
     }
 
-    private void generateNewStatesFrom(Set<Set<String>> statePowerSet) {
+    private void generateNewStatesFrom(final Set<Set<String>> statePowerSet) {
         deaStateNameMap = new HashMap<String, Set<String>>();
         deaStateElementMap = new HashMap<String, Element>();
 
@@ -119,11 +123,11 @@ public class Nea2Dea extends ServerResource {
         }
     }
 
-    private String generateNewStateName(int i) {
+    private String generateNewStateName(final int i) {
         return String.format("z_%d", i);
     }
 
-    private Element createStateElement(String name) {
+    private Element createStateElement(final String name) {
         final Element stateElement = dea.createElement("STATE");
         stateElement.setAttribute("name", name);
 
@@ -140,9 +144,9 @@ public class Nea2Dea extends ServerResource {
 
         for (Entry<String, Element> deaState : deaStateElementMap.entrySet()) {
             if (isFinalState(deaState.getKey())) {
-                deaState.getValue().setAttribute("finalstate", "true");
+                deaState.getValue().setAttribute(FINALSTATE, "true");
             } else {
-                deaState.getValue().setAttribute("finalstate", "false");
+                deaState.getValue().setAttribute(FINALSTATE, "false");
             }
         }
     }
@@ -152,7 +156,7 @@ public class Nea2Dea extends ServerResource {
     }
 
     private void addToFinalStatesIfNeeded(final Set<String> neaFinalStates,
-            Entry<String, Set<String>> newState) {
+            final Entry<String, Set<String>> newState) {
         for (String neaFinalState : neaFinalStates) {
             if (newState.getValue().contains(neaFinalState)) {
                 deaFinalStates.add(newState.getKey());
@@ -175,7 +179,7 @@ public class Nea2Dea extends ServerResource {
 
     private void createInitialStateElement() {
         final Element initialStateElement = dea.createElement("INITIALSTATE");
-        initialStateElement.setAttribute("value", deaInitialState);
+        initialStateElement.setAttribute(VALUE, deaInitialState);
         deaAutomatonElement.appendChild(initialStateElement);
     }
 
@@ -239,20 +243,20 @@ public class Nea2Dea extends ServerResource {
         return newState;
     }
 
-    private void createLabelElement(String character, final Element transitionElement) {
+    private void createLabelElement(final String character, final Element transitionElement) {
         final Element labelElement = dea.createElement("LABEL");
         labelElement.setAttribute("read", character);
         transitionElement.appendChild(labelElement);
     }
 
-    private Element createTransitionElement(String currentState, String newState) {
+    private Element createTransitionElement(final String currentState, final String newState) {
         final Element transitionElement = dea.createElement("TRANSITION");
         transitionElement.setAttribute("target", newState);
         deaStateElementMap.get(currentState).appendChild(transitionElement);
         return transitionElement;
     }
 
-    private Set<String> getTargets(Set<String> originalStates, String character) {
+    private Set<String> getTargets(final Set<String> originalStates, final String character) {
         final Set<String> allOriginalStates = new HashSet<String>();
 
         for (String originalState : originalStates) {

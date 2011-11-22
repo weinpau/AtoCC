@@ -1,6 +1,7 @@
 package de.hszg.atocc.core.util.test;
 
 import de.hszg.atocc.core.util.XmlUtils;
+import de.hszg.atocc.core.util.XmlUtilsException;
 import de.hszg.atocc.core.util.automata.AutomataUtils;
 
 import java.util.HashSet;
@@ -15,6 +16,17 @@ import org.w3c.dom.NodeList;
 
 public final class AutomataUtilsTests {
 
+    private static final String Z1 = "Z1";
+    private static final String Z3 = "Z3";
+
+    private static final String STATE = "STATE";
+    
+    private static final String Q0 = "q0";
+    private static final String Q2 = "q2";
+    
+    private static final String Q_0 = "q_0";
+    private static final String Q_1 = "q_1";
+    
     private static final int NUMBER_OF_STATES_IN_NEA1 = 6;
     private static final int NUMBER_OF_STATES_IN_NEA2 = 3;
     private static final int NUMBER_OF_STATES_IN_NEA3 = 2;
@@ -36,7 +48,7 @@ public final class AutomataUtilsTests {
     private static String initialStateOfNea3;
 
     @BeforeClass
-    public static void initialize() {
+    public static void initialize() throws XmlUtilsException {
         initializeNea1();
         initializeNea2();
         initializeNea3();
@@ -75,21 +87,21 @@ public final class AutomataUtilsTests {
 
     @Test
     public void testGetStateNamesFromNodeList1() {
-        final NodeList states = nea1.getElementsByTagName("STATE");
+        final NodeList states = nea1.getElementsByTagName(STATE);
 
         Assert.assertEquals(stateNamesOfNea1, AutomataUtils.getStateNamesFrom(states));
     }
 
     @Test
     public void testGetStateNamesFromNodeList2() {
-        final NodeList states = nea2.getElementsByTagName("STATE");
+        final NodeList states = nea2.getElementsByTagName(STATE);
 
         Assert.assertEquals(stateNamesOfNea2, AutomataUtils.getStateNamesFrom(states));
     }
 
     @Test
     public void testGetStateNamesFromNodeList3() {
-        final NodeList states = nea3.getElementsByTagName("STATE");
+        final NodeList states = nea3.getElementsByTagName(STATE);
 
         Assert.assertEquals(stateNamesOfNea3, AutomataUtils.getStateNamesFrom(states));
     }
@@ -151,60 +163,60 @@ public final class AutomataUtilsTests {
         Assert.fail("Not yet implemented");
     }
 
-    private static void initializeNea1() {
+    private static void initializeNea1() throws XmlUtilsException {
         nea1 = XmlUtils.documentFromFile("nea1.xml");
 
         initializeStateNamesOfNea1();
 
         finalStatesOfNea1 = new HashSet<String>();
-        finalStatesOfNea1.add("Z3");
+        finalStatesOfNea1.add(Z3);
 
-        initialStateOfNea1 = "Z1";
+        initialStateOfNea1 = Z1;
     }
 
     private static void initializeStateNamesOfNea1() {
         stateNamesOfNea1 = new HashSet<String>();
-        stateNamesOfNea1.add("Z1");
+        stateNamesOfNea1.add(Z1);
         stateNamesOfNea1.add("Z2");
-        stateNamesOfNea1.add("Z3");
+        stateNamesOfNea1.add(Z3);
         stateNamesOfNea1.add("Z4");
         stateNamesOfNea1.add("Z5");
         stateNamesOfNea1.add("Z6");
     }
 
-    private static void initializeNea2() {
+    private static void initializeNea2() throws XmlUtilsException {
         nea2 = XmlUtils.documentFromFile("nea2.xml");
 
         initializeStateNamesOfNea2();
 
         finalStatesOfNea2 = new HashSet<String>();
-        finalStatesOfNea2.add("q2");
+        finalStatesOfNea2.add(Q2);
 
-        initialStateOfNea2 = "q0";
+        initialStateOfNea2 = Q0;
     }
 
     private static void initializeStateNamesOfNea2() {
         stateNamesOfNea2 = new HashSet<String>();
-        stateNamesOfNea2.add("q0");
+        stateNamesOfNea2.add(Q0);
         stateNamesOfNea2.add("q1");
-        stateNamesOfNea2.add("q2");
+        stateNamesOfNea2.add(Q2);
     }
 
-    private static void initializeNea3() {
+    private static void initializeNea3() throws XmlUtilsException {
         nea3 = XmlUtils.documentFromFile("nea3.xml");
 
         initializeStateNamesOfNea3();
 
         finalStatesOfNea3 = new HashSet<String>();
-        finalStatesOfNea3.add("q_1");
+        finalStatesOfNea3.add(Q_1);
 
-        initialStateOfNea3 = "q_0";
+        initialStateOfNea3 = Q_0;
     }
 
     private static void initializeStateNamesOfNea3() {
         stateNamesOfNea3 = new HashSet<String>();
-        stateNamesOfNea3.add("q_0");
-        stateNamesOfNea3.add("q_1");
+        stateNamesOfNea3.add(Q_0);
+        stateNamesOfNea3.add(Q_1);
     }
 
 }

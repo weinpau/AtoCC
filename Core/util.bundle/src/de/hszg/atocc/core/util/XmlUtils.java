@@ -1,6 +1,7 @@
 package de.hszg.atocc.core.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -10,6 +11,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 public final class XmlUtils {
 
@@ -19,12 +21,17 @@ public final class XmlUtils {
 
     }
 
-    public static Document documentFromFile(final String filename) {
+    public static Document documentFromFile(final String filename) throws XmlUtilsException {
+
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder()
                     .parse(new File(filename));
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
+        } catch (final SAXException e) {
+            throw new XmlUtilsException(e);
+        } catch (final IOException e) {
+            throw new XmlUtilsException(e);
+        } catch (final ParserConfigurationException e) {
+            throw new XmlUtilsException(e);
         }
     }
 
@@ -87,14 +94,14 @@ public final class XmlUtils {
     }
 
     private static Element createErrorReasonElement(final Document doc, final Exception reason) {
-        
-        StringWriter sw = new StringWriter();
+
+        final StringWriter sw = new StringWriter();
         reason.printStackTrace(new PrintWriter(sw));
-        String stacktrace = sw.toString();
-        
+        final String stacktrace = sw.toString();
+
         final Element errorReasonElement = doc.createElement("reason");
-        errorReasonElement.setTextContent(String.format("%s: %s\n%s",
-                reason.getClass().getSimpleName(), reason.getLocalizedMessage(), stacktrace));
+        errorReasonElement.setTextContent(String.format("%s: %s\n%s", reason.getClass()
+                .getSimpleName(), reason.getLocalizedMessage(), stacktrace));
 
         return errorReasonElement;
     }

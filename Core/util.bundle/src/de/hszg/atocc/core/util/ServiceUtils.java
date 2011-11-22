@@ -8,24 +8,24 @@ public final class ServiceUtils {
     private ServiceUtils() {
 
     }
-    
+
     @SuppressWarnings("rawtypes")
-	public static <T> T getService(final BundleContext bc, final Class<T> c) {
+    public static <T> T getService(final BundleContext bc, final Class<T> c) {
         final ServiceReference serviceReference = tryToGetServiceReference(bc, c.getName());
 
         return tryToGetService(bc, serviceReference);
     }
 
     @SuppressWarnings("rawtypes")
-	public static <T> void ungetService(final BundleContext bc, final Class<T> c) {
+    public static <T> void ungetService(final BundleContext bc, final Class<T> c) {
         final ServiceReference serviceReference = tryToGetServiceReference(bc, c.getName());
 
         bc.ungetService(serviceReference);
     }
 
     @SuppressWarnings("rawtypes")
-	private static ServiceReference tryToGetServiceReference(final BundleContext bc,
-        final String className) {
+    private static ServiceReference tryToGetServiceReference(final BundleContext bc,
+            final String className) {
         final ServiceReference serviceReference = bc.getServiceReference(className);
 
         if (serviceReference == null) {
@@ -37,7 +37,7 @@ public final class ServiceUtils {
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private static <T> T tryToGetService(final BundleContext bc,
-        final ServiceReference serviceReference) {
+            final ServiceReference serviceReference) {
         final T service = (T) bc.getService(serviceReference);
 
         if (service == null) {
