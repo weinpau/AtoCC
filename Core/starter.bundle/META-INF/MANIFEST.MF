@@ -13,4 +13,3 @@ Import-Package: de.hszg.atocc.core.pluginregistry,
  org.restlet.data,
  org.restlet.resource,
  org.restlet.util
-Bundle-ActivationPolicy: lazy

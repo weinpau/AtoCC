@@ -11,4 +11,3 @@ Import-Package: de.hszg.atocc.core.pluginregistry,
 Require-Bundle: atocc.core.util.bundle;bundle-version="1.0.0",
  atocc.core.starter.bundle;bundle-version="1.0.0",
  atocc.core.pluginregistry.bundle;bundle-version="1.0.0"
-Bundle-ActivationPolicy: lazy
