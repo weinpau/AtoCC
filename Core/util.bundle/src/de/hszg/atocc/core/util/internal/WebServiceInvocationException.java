@@ -1,4 +1,4 @@
-package de.hszg.atocc.core.util;
+package de.hszg.atocc.core.util.internal;
 
 public class WebServiceInvocationException extends RuntimeException {
 

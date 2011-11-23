@@ -1,8 +1,8 @@
 package de.hszg.atocc.core.util.test;
 
-import de.hszg.atocc.core.util.XmlUtils;
+import de.hszg.atocc.core.util.AutomatonService;
+import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlUtilsException;
-import de.hszg.atocc.core.util.automata.AutomataUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -46,6 +46,9 @@ public final class AutomataUtilsTests {
     private static String initialStateOfNea1;
     private static String initialStateOfNea2;
     private static String initialStateOfNea3;
+    
+    private static AutomatonService automatonService;
+    private static XmlUtilService xmlService;
 
     @BeforeClass
     public static void initialize() throws XmlUtilsException {
@@ -57,30 +60,30 @@ public final class AutomataUtilsTests {
     @Test
     public void testGetStatesFrom() {
         Assert.assertEquals(NUMBER_OF_STATES_IN_NEA1, 
-                AutomataUtils.getStatesFrom(nea1).getLength());
+                automatonService.getStatesFrom(nea1).getLength());
         Assert.assertEquals(NUMBER_OF_STATES_IN_NEA2, 
-                AutomataUtils.getStatesFrom(nea2).getLength());
+                automatonService.getStatesFrom(nea2).getLength());
         Assert.assertEquals(NUMBER_OF_STATES_IN_NEA3, 
-                AutomataUtils.getStatesFrom(nea3).getLength());
+                automatonService.getStatesFrom(nea3).getLength());
     }
 
     @Test
     public void testGetStateNamesFromDocument1() {
-        final Set<String> actualNames = AutomataUtils.getStateNamesFrom(nea1);
+        final Set<String> actualNames = automatonService.getStateNamesFrom(nea1);
 
         Assert.assertEquals(stateNamesOfNea1, actualNames);
     }
 
     @Test
     public void testGetStateNamesFromDocument2() {
-        final Set<String> actualNames = AutomataUtils.getStateNamesFrom(nea2);
+        final Set<String> actualNames = automatonService.getStateNamesFrom(nea2);
 
         Assert.assertEquals(stateNamesOfNea2, actualNames);
     }
 
     @Test
     public void testGetStateNamesFromDocument3() {
-        final Set<String> actualNames = AutomataUtils.getStateNamesFrom(nea3);
+        final Set<String> actualNames = automatonService.getStateNamesFrom(nea3);
 
         Assert.assertEquals(stateNamesOfNea3, actualNames);
     }
@@ -89,61 +92,61 @@ public final class AutomataUtilsTests {
     public void testGetStateNamesFromNodeList1() {
         final NodeList states = nea1.getElementsByTagName(STATE);
 
-        Assert.assertEquals(stateNamesOfNea1, AutomataUtils.getStateNamesFrom(states));
+        Assert.assertEquals(stateNamesOfNea1, automatonService.getStateNamesFrom(states));
     }
 
     @Test
     public void testGetStateNamesFromNodeList2() {
         final NodeList states = nea2.getElementsByTagName(STATE);
 
-        Assert.assertEquals(stateNamesOfNea2, AutomataUtils.getStateNamesFrom(states));
+        Assert.assertEquals(stateNamesOfNea2, automatonService.getStateNamesFrom(states));
     }
 
     @Test
     public void testGetStateNamesFromNodeList3() {
         final NodeList states = nea3.getElementsByTagName(STATE);
 
-        Assert.assertEquals(stateNamesOfNea3, AutomataUtils.getStateNamesFrom(states));
+        Assert.assertEquals(stateNamesOfNea3, automatonService.getStateNamesFrom(states));
     }
 
     @Test
     public void testGetNamesOfFinalStatesFrom1() {
-        final Set<String> actualFinalStates = AutomataUtils.getNamesOfFinalStatesFrom(nea1);
+        final Set<String> actualFinalStates = automatonService.getNamesOfFinalStatesFrom(nea1);
 
         Assert.assertEquals(finalStatesOfNea1, actualFinalStates);
     }
 
     @Test
     public void testGetNamesOfFinalStatesFrom2() {
-        final Set<String> actualFinalStates = AutomataUtils.getNamesOfFinalStatesFrom(nea2);
+        final Set<String> actualFinalStates = automatonService.getNamesOfFinalStatesFrom(nea2);
 
         Assert.assertEquals(finalStatesOfNea2, actualFinalStates);
     }
 
     @Test
     public void testGetNamesOfFinalStatesFrom3() {
-        final Set<String> actualFinalStates = AutomataUtils.getNamesOfFinalStatesFrom(nea3);
+        final Set<String> actualFinalStates = automatonService.getNamesOfFinalStatesFrom(nea3);
 
         Assert.assertEquals(finalStatesOfNea3, actualFinalStates);
     }
 
     @Test
     public void testGetNameOfInitialStateFrom1() {
-        final String actualInitialState = AutomataUtils.getNameOfInitialStateFrom(nea1);
+        final String actualInitialState = automatonService.getNameOfInitialStateFrom(nea1);
 
         Assert.assertEquals(initialStateOfNea1, actualInitialState);
     }
 
     @Test
     public void testGetNameOfInitialStateFrom2() {
-        final String actualInitialState = AutomataUtils.getNameOfInitialStateFrom(nea2);
+        final String actualInitialState = automatonService.getNameOfInitialStateFrom(nea2);
 
         Assert.assertEquals(initialStateOfNea2, actualInitialState);
     }
 
     @Test
     public void testGetNameOfInitialStateFrom3() {
-        final String actualInitialState = AutomataUtils.getNameOfInitialStateFrom(nea3);
+        final String actualInitialState = automatonService.getNameOfInitialStateFrom(nea3);
 
         Assert.assertEquals(initialStateOfNea3, actualInitialState);
     }
@@ -189,7 +192,7 @@ public final class AutomataUtilsTests {
     }
 
     private static void initializeNea1() throws XmlUtilsException {
-        nea1 = XmlUtils.documentFromFile("nea1.xml");
+        nea1 = xmlService.documentFromFile("nea1.xml");
 
         initializeStateNamesOfNea1();
 
@@ -210,7 +213,7 @@ public final class AutomataUtilsTests {
     }
 
     private static void initializeNea2() throws XmlUtilsException {
-        nea2 = XmlUtils.documentFromFile("nea2.xml");
+        nea2 = xmlService.documentFromFile("nea2.xml");
 
         initializeStateNamesOfNea2();
 
@@ -228,7 +231,7 @@ public final class AutomataUtilsTests {
     }
 
     private static void initializeNea3() throws XmlUtilsException {
-        nea3 = XmlUtils.documentFromFile("nea3.xml");
+        nea3 = xmlService.documentFromFile("nea3.xml");
 
         initializeStateNamesOfNea3();
 

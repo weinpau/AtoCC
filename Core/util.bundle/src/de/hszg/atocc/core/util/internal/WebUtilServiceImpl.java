@@ -1,4 +1,6 @@
-package de.hszg.atocc.core.util;
+package de.hszg.atocc.core.util.internal;
+
+import de.hszg.atocc.core.util.WebUtilService;
 
 import javax.xml.ws.WebServiceException;
 
@@ -6,13 +8,9 @@ import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
 import org.w3c.dom.Document;
 
-public final class WebService {
+public final class WebUtilServiceImpl implements WebUtilService {
 
-    private WebService() {
-
-    }
-
-    public static Document get(final String uri) {
+    public Document get(final String uri) {
 
         try {
             return new ClientResource(uri).get(Document.class);
@@ -22,7 +20,7 @@ public final class WebService {
 
     }
 
-    public static Document put(final String uri, final Document doc) {
+    public Document put(final String uri, final Document doc) {
 
         try {
             final ClientResource resource = new ClientResource(uri);

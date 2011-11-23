@@ -1,4 +1,6 @@
-package de.hszg.atocc.core.util;
+package de.hszg.atocc.core.util.internal;
+
+import de.hszg.atocc.core.util.ConverterService;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -16,13 +18,9 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public final class Converter {
-
-    private Converter() {
-
-    }
+public final class ConverterServiceImpl implements ConverterService {
     
-    public static String xmlToString(final Document doc) throws TransformerException {
+    public String xmlToString(final Document doc) throws TransformerException {
         final StringWriter sw = new StringWriter();
 
         final Transformer tr = TransformerFactory.newInstance().newTransformer();
@@ -31,7 +29,7 @@ public final class Converter {
         return sw.toString();
     }
 
-    public static Document stringToXml(final String data) throws ConverterException {
+    public Document stringToXml(final String data) throws ConverterException {
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder()
                     .parse(new InputSource(new StringReader(data)));

@@ -1,12 +1,11 @@
 package de.hszg.atocc.core.pluginregistry.internal;
 
-import de.hszg.atocc.core.pluginregistry.PluginRegistry;
+import de.hszg.atocc.core.pluginregistry.PluginRegistryService;
 
 import org.restlet.Component;
-import org.restlet.Restlet;
 import org.restlet.resource.ServerResource;
 
-public final class PluginRegistryImpl implements PluginRegistry {
+public final class PluginRegistryServiceImpl implements PluginRegistryService {
 
     private static final String COMPONENT_NOT_SET = "Component not set";
 

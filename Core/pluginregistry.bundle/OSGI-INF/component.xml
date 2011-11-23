@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="false" name="atocc.core.pluginregistry.bundle">
+   <implementation class="de.hszg.atocc.core.pluginregistry.internal.PluginRegistryServiceImpl" />
+   <service>
+      <provide interface="de.hszg.atocc.core.pluginregistry.PluginRegistryService"/>
+   </service>
+</scr:component>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="atocc.core.util.set">
+   <implementation class="de.hszg.atocc.core.util.internal.SetServiceImpl"/>
+   <service>
+      <provide interface="de.hszg.atocc.core.util.SetService"/>
+   </service>
+</scr:component>

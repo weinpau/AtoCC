@@ -46,7 +46,7 @@
 		<module name="EqualsAvoidNull" />
 		<module name="EqualsHashCode" />
 		<module name="FinalLocalVariable">
-			<property name="tokens" value="VARIABLE_DEF,PARAMETER_DEF" />
+			<property name="tokens" value="VARIABLE_DEF" />
 		</module>
 		<module name="HiddenField" />
 
@@ -101,7 +101,7 @@
 
 		<!-- Metrics -->
 		<module name="ClassDataAbstractionCoupling">
-			<property name="max" value="5" />
+			<property name="max" value="6" />
 		</module>
 
 		<module name="ClassFanOutComplexity">

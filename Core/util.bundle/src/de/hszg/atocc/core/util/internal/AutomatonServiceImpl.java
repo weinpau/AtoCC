@@ -1,4 +1,7 @@
-package de.hszg.atocc.core.util.automata;
+package de.hszg.atocc.core.util.internal;
+
+import de.hszg.atocc.core.util.AutomatonService;
+import de.hszg.atocc.core.util.SetService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,23 +15,21 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public final class AutomataUtils {
+public final class AutomatonServiceImpl implements AutomatonService {
 
-    private AutomataUtils() {
+    private SetService setService;
 
-    }
-
-    public static NodeList getStatesFrom(final Document automaton) {
+    public NodeList getStatesFrom(final Document automaton) {
         return automaton.getElementsByTagName("STATE");
     }
 
-    public static Set<String> getStateNamesFrom(final Document automaton) {
+    public Set<String> getStateNamesFrom(final Document automaton) {
         final NodeList states = getStatesFrom(automaton);
 
         return getStateNamesFrom(states);
     }
 
-    public static Set<String> getStateNamesFrom(final NodeList states) {
+    public Set<String> getStateNamesFrom(final NodeList states) {
         final Set<String> stateNames = new HashSet<String>();
 
         for (int i = 0; i < states.getLength(); ++i) {
@@ -39,12 +40,13 @@ public final class AutomataUtils {
         return stateNames;
     }
 
-    public static Set<String> getNamesOfFinalStatesFrom(final Document automaton) {
+    public Set<String> getNamesOfFinalStatesFrom(final Document automaton) {
         final XPath xpath = XPathFactory.newInstance().newXPath();
 
         try {
-            final NodeList finalStates = (NodeList) xpath.evaluate("//STATE[@finalstate='true']",
-                    automaton, XPathConstants.NODESET);
+            final NodeList finalStates =
+                    (NodeList) xpath.evaluate("//STATE[@finalstate='true']", automaton,
+                            XPathConstants.NODESET);
 
             return getStateNamesFrom(finalStates);
 
@@ -53,7 +55,7 @@ public final class AutomataUtils {
         }
     }
 
-    public static String getNameOfInitialStateFrom(final Document automaton) {
+    public String getNameOfInitialStateFrom(final Document automaton) {
         final XPath xpath = XPathFactory.newInstance().newXPath();
 
         try {
@@ -64,17 +66,17 @@ public final class AutomataUtils {
         }
     }
 
-    public static Set<Set<String>> getStatePowerSetFrom(final Document automaton) {
+    public Set<Set<String>> getStatePowerSetFrom(final Document automaton) {
         final Set<String> stateNames = getStateNamesFrom(automaton);
 
-        return PowerSet.from(stateNames);
+        return setService.powerSetFrom(stateNames);
     }
 
-    public static Set<String> getAlphabetFrom(final Document nea) {
+    public Set<String> getAlphabetFrom(final Document nea) {
         final Set<String> alphabet = new HashSet<String>();
 
-        final Element alphabetElement = (Element) nea.getDocumentElement()
-                .getElementsByTagName("ALPHABET").item(0);
+        final Element alphabetElement =
+                (Element) nea.getDocumentElement().getElementsByTagName("ALPHABET").item(0);
 
         final NodeList itemElements = alphabetElement.getElementsByTagName("ITEM");
 
@@ -86,16 +88,17 @@ public final class AutomataUtils {
         return alphabet;
     }
 
-    public static Set<String> getTargetsOf(final Document automaton, final String stateName,
+    public Set<String> getTargetsOf(final Document automaton, final String stateName,
             final String alphabetCharacter) {
         final XPath xpath = XPathFactory.newInstance().newXPath();
 
         try {
             final Set<String> targets = new HashSet<String>();
 
-            final NodeList targetNodes = (NodeList) xpath.evaluate(String.format(
-                    "//STATE[@name='%s']/TRANSITION/LABEL[@read='%s']/../@target", stateName,
-                    alphabetCharacter), automaton, XPathConstants.NODESET);
+            final NodeList targetNodes =
+                    (NodeList) xpath.evaluate(String.format(
+                            "//STATE[@name='%s']/TRANSITION/LABEL[@read='%s']/../@target",
+                            stateName, alphabetCharacter), automaton, XPathConstants.NODESET);
 
             for (int i = 0; i < targetNodes.getLength(); ++i) {
                 targets.add(targetNodes.item(i).getTextContent());
@@ -105,6 +108,16 @@ public final class AutomataUtils {
 
         } catch (final XPathExpressionException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public synchronized void setSetService(SetService service) {
+        setService = service;
+    }
+
+    public synchronized void unsetSetService(SetService service) {
+        if (setService == service) {
+            setService = null;
         }
     }
 

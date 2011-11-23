@@ -1,4 +1,7 @@
-package de.hszg.atocc.core.util;
+package de.hszg.atocc.core.util.internal;
+
+import de.hszg.atocc.core.util.XmlUtilService;
+import de.hszg.atocc.core.util.XmlUtilsException;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,16 +16,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-public final class XmlUtils {
+public final class XmlUtilServiceImpl implements XmlUtilService {
 
     private static final String ERROR = "error";
 
-    private XmlUtils() {
-
-    }
-
-    public static Document documentFromFile(final String filename) throws XmlUtilsException {
-
+    public Document documentFromFile(final String filename) throws XmlUtilsException {
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder()
                     .parse(new File(filename));
@@ -35,7 +33,7 @@ public final class XmlUtils {
         }
     }
 
-    public static Document createResult(final Document doc) {
+    public Document createResult(final Document doc) {
 
         final Document resultDocument = createEmptyDocument();
         final Element resultElement = createResultElement(resultDocument, "success");
@@ -48,7 +46,7 @@ public final class XmlUtils {
         return resultDocument;
     }
 
-    public static Document createResultWithError(final String errorMessage, final Exception reason) {
+    public Document createResultWithError(final String errorMessage, final Exception reason) {
 
         final Document resultDocument = createEmptyDocument();
 
@@ -66,7 +64,7 @@ public final class XmlUtils {
         return resultDocument;
     }
 
-    public static Document createEmptyDocument() {
+    public Document createEmptyDocument() {
         Document result = null;
 
         try {
@@ -78,7 +76,7 @@ public final class XmlUtils {
         return result;
     }
 
-    private static Element createResultElement(final Document doc, final String status) {
+    private Element createResultElement(final Document doc, final String status) {
         final Element resultElement = doc.createElement("result");
         resultElement.setAttribute("status", status);
         doc.appendChild(resultElement);
@@ -86,14 +84,14 @@ public final class XmlUtils {
         return resultElement;
     }
 
-    private static Element createErrorMessageElement(final Document doc, final String errorMessage) {
+    private Element createErrorMessageElement(final Document doc, final String errorMessage) {
         final Element errorMessageElement = doc.createElement("message");
         errorMessageElement.setTextContent(errorMessage);
 
         return errorMessageElement;
     }
 
-    private static Element createErrorReasonElement(final Document doc, final Exception reason) {
+    private Element createErrorReasonElement(final Document doc, final Exception reason) {
 
         final StringWriter sw = new StringWriter();
         reason.printStackTrace(new PrintWriter(sw));

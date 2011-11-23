@@ -3,7 +3,7 @@ package de.hszg.atocc.core.pluginregistry;
 import org.restlet.Component;
 import org.restlet.resource.ServerResource;
 
-public interface PluginRegistry {
+public interface PluginRegistryService {
 
     void setComponent(Component component);
     

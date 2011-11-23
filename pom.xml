@@ -14,11 +14,11 @@
 
   <repositories>
     
-    <repository>
+    <!--<repository>
 	<id>org.sonatype.forge</id>
 	<name>Sonatype Forge</name>
 	<url>http://repository.sonatype.org/content/groups/forge</url>
-    </repository>
+      </repository>-->
     
    <repository>  
       <id>maven-restlet</id>  
@@ -74,11 +74,6 @@
     <artifactId>org.restlet.ext.xml</artifactId>
     <version>${restlet.version}</version>
   </dependency>
-  
-  <dependency>
-    <groupId>org.eclipse</groupId>
-    <artifactId>org.eclipse.osgi</artifactId>
-    <version>[3.7.0,)</version>
-  </dependency>
+
  </dependencies>
 </project>
