@@ -1,16 +1,16 @@
 package de.hszg.atocc.core.starter.internal;
 
+import de.hszg.atocc.core.pluginregistry.PluginRegistryService;
+import de.hszg.atocc.core.starter.StarterService;
+import de.hszg.atocc.core.util.AutomatonService;
+import de.hszg.atocc.core.util.XmlUtilService;
+
 import java.util.concurrent.ConcurrentMap;
 
 import org.restlet.Component;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
-
-import de.hszg.atocc.core.pluginregistry.PluginRegistryService;
-import de.hszg.atocc.core.starter.StarterService;
-import de.hszg.atocc.core.util.AutomatonService;
-import de.hszg.atocc.core.util.XmlUtilService;
 
 public final class StarterServiceImpl implements StarterService {
 
@@ -47,7 +47,6 @@ public final class StarterServiceImpl implements StarterService {
         initializeComponent();
         
         pluginRegistry = service;
-        pluginRegistry.setComponent(component);
         pluginRegistry.setRouter(router);
     }
 
@@ -64,18 +63,21 @@ public final class StarterServiceImpl implements StarterService {
         server.getContext().getParameters().add("maxThreads", "255");
 
         try {
-            
-            router = new Router(component.getContext().createChildContext());
-            
-            final ConcurrentMap<String, Object> attributes = router.getContext().getAttributes(); 
-            attributes.put(XmlUtilService.class.getName(), xmlUtils);
-            attributes.put(AutomatonService.class.getName(), automatonUtils);
+            initializeRouter();
             
             component.getDefaultHost().attach(router);
             component.start();
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void initializeRouter() {
+        router = new Router(component.getContext().createChildContext());
+        
+        final ConcurrentMap<String, Object> attributes = router.getContext().getAttributes(); 
+        attributes.put(XmlUtilService.class.getName(), xmlUtils);
+        attributes.put(AutomatonService.class.getName(), automatonUtils);
     }
     
 }

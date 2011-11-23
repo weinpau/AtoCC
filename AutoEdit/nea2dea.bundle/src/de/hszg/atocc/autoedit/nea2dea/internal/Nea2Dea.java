@@ -1,5 +1,9 @@
 package de.hszg.atocc.autoedit.nea2dea.internal;
 
+import de.hszg.atocc.core.util.AutomatonService;
+import de.hszg.atocc.core.util.RestfulWebService;
+import de.hszg.atocc.core.util.XmlUtilService;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -9,10 +13,6 @@ import java.util.Set;
 import org.restlet.resource.Put;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import de.hszg.atocc.core.util.AutomatonService;
-import de.hszg.atocc.core.util.RestfulWebService;
-import de.hszg.atocc.core.util.XmlUtilService;
 
 public final class Nea2Dea extends RestfulWebService {
     
