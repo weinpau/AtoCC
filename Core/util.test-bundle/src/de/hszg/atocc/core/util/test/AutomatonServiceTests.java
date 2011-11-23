@@ -9,49 +9,64 @@ import java.util.Set;
 
 import org.junit.Assert;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceReference;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-public final class AutomataUtilsTests {
+public class AutomatonServiceTests {
 
     private static final String Z1 = "Z1";
     private static final String Z3 = "Z3";
 
     private static final String STATE = "STATE";
-    
+
     private static final String Q0 = "q0";
     private static final String Q2 = "q2";
-    
+
     private static final String Q_0 = "q_0";
     private static final String Q_1 = "q_1";
-    
+
     private static final int NUMBER_OF_STATES_IN_NEA1 = 6;
     private static final int NUMBER_OF_STATES_IN_NEA2 = 3;
     private static final int NUMBER_OF_STATES_IN_NEA3 = 2;
 
-    private static Document nea1;
-    private static Document nea2;
-    private static Document nea3;
+    private Document nea1;
+    private Document nea2;
+    private Document nea3;
 
-    private static Set<String> stateNamesOfNea1;
-    private static Set<String> stateNamesOfNea2;
-    private static Set<String> stateNamesOfNea3;
+    private Set<String> stateNamesOfNea1;
+    private Set<String> stateNamesOfNea2;
+    private Set<String> stateNamesOfNea3;
 
-    private static Set<String> finalStatesOfNea1;
-    private static Set<String> finalStatesOfNea2;
-    private static Set<String> finalStatesOfNea3;
+    private Set<String> finalStatesOfNea1;
+    private Set<String> finalStatesOfNea2;
+    private Set<String> finalStatesOfNea3;
 
-    private static String initialStateOfNea1;
-    private static String initialStateOfNea2;
-    private static String initialStateOfNea3;
-    
-    private static AutomatonService automatonService;
-    private static XmlUtilService xmlService;
+    private String initialStateOfNea1;
+    private String initialStateOfNea2;
+    private String initialStateOfNea3;
 
-    @BeforeClass
-    public static void initialize() throws XmlUtilsException {
+    private AutomatonService automatonService;
+    private XmlUtilService xmlService;
+
+    @Before
+    public void setUp() throws XmlUtilsException {
+        final BundleContext bc =
+                FrameworkUtil.getBundle(AutomatonServiceTests.class).getBundleContext();
+        
+        final ServiceReference<AutomatonService> automatonServiceReference =
+                bc.getServiceReference(AutomatonService.class);
+        
+        final ServiceReference<XmlUtilService> xmlServiceReference =
+                bc.getServiceReference(XmlUtilService.class);
+        
+        automatonService = bc.getService(automatonServiceReference);
+        xmlService = bc.getService(xmlServiceReference);
+
         initializeNea1();
         initializeNea2();
         initializeNea3();
@@ -59,12 +74,12 @@ public final class AutomataUtilsTests {
 
     @Test
     public void testGetStatesFrom() {
-        Assert.assertEquals(NUMBER_OF_STATES_IN_NEA1, 
-                automatonService.getStatesFrom(nea1).getLength());
-        Assert.assertEquals(NUMBER_OF_STATES_IN_NEA2, 
-                automatonService.getStatesFrom(nea2).getLength());
-        Assert.assertEquals(NUMBER_OF_STATES_IN_NEA3, 
-                automatonService.getStatesFrom(nea3).getLength());
+        Assert.assertEquals(NUMBER_OF_STATES_IN_NEA1, automatonService.getStatesFrom(nea1)
+                .getLength());
+        Assert.assertEquals(NUMBER_OF_STATES_IN_NEA2, automatonService.getStatesFrom(nea2)
+                .getLength());
+        Assert.assertEquals(NUMBER_OF_STATES_IN_NEA3, automatonService.getStatesFrom(nea3)
+                .getLength());
     }
 
     @Test
@@ -155,7 +170,7 @@ public final class AutomataUtilsTests {
     public void testGetStatePowerSetFrom2() {
         Assert.fail("Not yet implemented");
     }
-    
+
     @Test
     public void testGetStatePowerSetFrom3() {
         Assert.fail("Not yet implemented");
@@ -165,12 +180,12 @@ public final class AutomataUtilsTests {
     public void testGetAlphabetFrom1() {
         Assert.fail("Not yet implemented");
     }
-    
+
     @Test
     public void testGetAlphabetFrom2() {
         Assert.fail("Not yet implemented");
     }
-    
+
     @Test
     public void testGetAlphabetFrom3() {
         Assert.fail("Not yet implemented");
@@ -180,18 +195,18 @@ public final class AutomataUtilsTests {
     public void testGetTargetsOf1() {
         Assert.fail("Not yet implemented");
     }
-    
+
     @Test
     public void testGetTargetsOf2() {
         Assert.fail("Not yet implemented");
     }
-    
+
     @Test
     public void testGetTargetsOf3() {
         Assert.fail("Not yet implemented");
     }
 
-    private static void initializeNea1() throws XmlUtilsException {
+    private void initializeNea1() throws XmlUtilsException {
         nea1 = xmlService.documentFromFile("nea1.xml");
 
         initializeStateNamesOfNea1();
@@ -202,7 +217,7 @@ public final class AutomataUtilsTests {
         initialStateOfNea1 = Z1;
     }
 
-    private static void initializeStateNamesOfNea1() {
+    private void initializeStateNamesOfNea1() {
         stateNamesOfNea1 = new HashSet<String>();
         stateNamesOfNea1.add(Z1);
         stateNamesOfNea1.add("Z2");
@@ -212,7 +227,7 @@ public final class AutomataUtilsTests {
         stateNamesOfNea1.add("Z6");
     }
 
-    private static void initializeNea2() throws XmlUtilsException {
+    private void initializeNea2() throws XmlUtilsException {
         nea2 = xmlService.documentFromFile("nea2.xml");
 
         initializeStateNamesOfNea2();
@@ -223,14 +238,14 @@ public final class AutomataUtilsTests {
         initialStateOfNea2 = Q0;
     }
 
-    private static void initializeStateNamesOfNea2() {
+    private void initializeStateNamesOfNea2() {
         stateNamesOfNea2 = new HashSet<String>();
         stateNamesOfNea2.add(Q0);
         stateNamesOfNea2.add("q1");
         stateNamesOfNea2.add(Q2);
     }
 
-    private static void initializeNea3() throws XmlUtilsException {
+    private void initializeNea3() throws XmlUtilsException {
         nea3 = xmlService.documentFromFile("nea3.xml");
 
         initializeStateNamesOfNea3();
@@ -241,7 +256,7 @@ public final class AutomataUtilsTests {
         initialStateOfNea3 = Q_0;
     }
 
-    private static void initializeStateNamesOfNea3() {
+    private void initializeStateNamesOfNea3() {
         stateNamesOfNea3 = new HashSet<String>();
         stateNamesOfNea3.add(Q_0);
         stateNamesOfNea3.add(Q_1);
