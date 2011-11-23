@@ -4,5 +4,7 @@
    <service>
       <provide interface="de.hszg.atocc.core.starter.StarterService"/>
    </service>
+   <reference bind="setXmlUtilService" cardinality="1..1" interface="de.hszg.atocc.core.util.XmlUtilService" name="XmlUtilService" policy="static" unbind="unsetXmlUtilService"/>
+   <reference bind="setAutomatonUtilService" cardinality="1..1" interface="de.hszg.atocc.core.util.AutomatonService" name="AutomatonService" policy="static"/>
    <reference bind="setPluginRegistryService" cardinality="1..1" interface="de.hszg.atocc.core.pluginregistry.PluginRegistryService" name="PluginRegistryService" policy="static" unbind="unsetPluginRegistryService"/>
 </scr:component>

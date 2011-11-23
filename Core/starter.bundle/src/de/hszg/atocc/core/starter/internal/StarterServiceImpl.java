@@ -1,26 +1,54 @@
 package de.hszg.atocc.core.starter.internal;
 
-import de.hszg.atocc.core.pluginregistry.PluginRegistryService;
-import de.hszg.atocc.core.starter.StarterService;
+import java.util.concurrent.ConcurrentMap;
 
 import org.restlet.Component;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
+import org.restlet.routing.Router;
+
+import de.hszg.atocc.core.pluginregistry.PluginRegistryService;
+import de.hszg.atocc.core.starter.StarterService;
+import de.hszg.atocc.core.util.AutomatonService;
+import de.hszg.atocc.core.util.XmlUtilService;
 
 public final class StarterServiceImpl implements StarterService {
 
     private static final int PORT = 8081;
 
     private Component component;
+    private Router router;
 
     private PluginRegistryService pluginRegistry;
+    private XmlUtilService xmlUtils;
+    private AutomatonService automatonUtils;
+    
+    public synchronized void setXmlUtilService(XmlUtilService service) {
+        xmlUtils = service;
+    }
+
+    public synchronized void unsetXmlUtilService(XmlUtilService service) {
+        if (xmlUtils == service) {
+            xmlUtils = null;
+        }
+    }
+    
+    public synchronized void setAutomatonUtilService(AutomatonService service) {
+        automatonUtils = service;
+    }
+
+    public synchronized void unsetAutomatonUtilService(AutomatonService service) {
+        if (automatonUtils == service) {
+            automatonUtils = null;
+        }
+    }
 
     public synchronized void setPluginRegistryService(PluginRegistryService service) {
-        System.out.println("SET REG");
         initializeComponent();
         
         pluginRegistry = service;
         pluginRegistry.setComponent(component);
+        pluginRegistry.setRouter(router);
     }
 
     public synchronized void unsetPluginRegistryService(PluginRegistryService service) {
@@ -36,6 +64,14 @@ public final class StarterServiceImpl implements StarterService {
         server.getContext().getParameters().add("maxThreads", "255");
 
         try {
+            
+            router = new Router(component.getContext().createChildContext());
+            
+            final ConcurrentMap<String, Object> attributes = router.getContext().getAttributes(); 
+            attributes.put(XmlUtilService.class.getName(), xmlUtils);
+            attributes.put(AutomatonService.class.getName(), automatonUtils);
+            
+            component.getDefaultHost().attach(router);
             component.start();
         } catch (final Exception e) {
             throw new RuntimeException(e);
