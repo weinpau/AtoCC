@@ -50,23 +50,11 @@ public class AutomatonServiceTests {
     private String initialStateOfNea2;
     private String initialStateOfNea3;
 
-    private AutomatonService automatonService;
-    private XmlUtilService xmlService;
+    public static AutomatonService automatonService;
+    public static XmlUtilService xmlService;
 
     @Before
     public void setUp() throws XmlUtilsException {
-        final BundleContext bc =
-                FrameworkUtil.getBundle(AutomatonServiceTests.class).getBundleContext();
-        
-        final ServiceReference<AutomatonService> automatonServiceReference =
-                bc.getServiceReference(AutomatonService.class);
-        
-        final ServiceReference<XmlUtilService> xmlServiceReference =
-                bc.getServiceReference(XmlUtilService.class);
-        
-        automatonService = bc.getService(automatonServiceReference);
-        xmlService = bc.getService(xmlServiceReference);
-
         initializeNea1();
         initializeNea2();
         initializeNea3();

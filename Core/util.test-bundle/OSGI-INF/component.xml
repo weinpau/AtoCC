@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="util.test-bundle">
-   <implementation class="de.hszg.atocc.core.util.test.AutomatonServiceTests"/>
-   <service>
-      <provide interface="de.hszg.atocc.core.util.test.AutomatonServiceTests"/>
-   </service>
-</scr:component>
