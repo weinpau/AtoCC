@@ -9,7 +9,7 @@ public final class Nea2DeaService {
     public synchronized void setPluginRegistryService(PluginRegistryService service) {
         System.out.println("NEA2DEA started");
         pluginRegistry = service;
-        pluginRegistry.register("/nea2dea", Nea2Dea.class);
+        pluginRegistry.register("/autoedit/nea2dea", Nea2Dea.class);
     }
 
     public synchronized void unsetPluginRegistryService(PluginRegistryService service) {

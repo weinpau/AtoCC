@@ -19,6 +19,18 @@ public final class WebUtilServiceImpl implements WebUtilService {
         }
 
     }
+    
+    public Document post(final String uri, final Document doc) {
+
+        try {
+            final ClientResource resource = new ClientResource(uri);
+
+            return resource.post(doc, Document.class);
+        } catch (final ResourceException e) {
+            throw new WebServiceException(e);
+        }
+
+    }
 
     public Document put(final String uri, final Document doc) {
 

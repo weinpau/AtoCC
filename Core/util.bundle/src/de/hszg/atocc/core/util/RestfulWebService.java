@@ -15,7 +15,11 @@ public class RestfulWebService extends ServerResource {
         attributes = getContext().getAttributes();
     }
     
-    protected final <T> T getService(Class<T> c) {
+    protected final <T> T getService(Class<T> c) throws ServiceNotFoundException {
+        if(attributes.get(c.getName()) == null) {
+            throw new ServiceNotFoundException(c.getName());
+        }
+        
         return (T) attributes.get(c.getName()); 
     }
     

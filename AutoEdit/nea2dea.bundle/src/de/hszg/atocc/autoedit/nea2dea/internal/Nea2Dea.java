@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.restlet.resource.Put;
+import org.restlet.resource.Post;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -38,7 +38,7 @@ public final class Nea2Dea extends RestfulWebService {
     private XmlUtilService xmlUtils;
     private AutomatonService automatonUtils;
     
-    @Put
+    @Post
     public Document transform(final Document aNea) {
         
         this.nea = aNea;
