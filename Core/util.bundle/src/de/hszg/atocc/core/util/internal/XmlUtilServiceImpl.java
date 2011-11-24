@@ -10,6 +10,7 @@ import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -74,6 +75,20 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
         }
 
         return result;
+    }
+    
+    @Override
+    public String xmlToString(Document doc) throws TransformerException {
+        final Converter converter = new Converter();
+        
+        return converter.xmlToString(doc);
+    }
+
+    @Override
+    public Document stringToXml(String data) throws ConverterException {
+        final Converter converter = new Converter();
+        
+        return converter.stringToXml(data);
     }
 
     private Element createResultElement(final Document doc, final String status) {

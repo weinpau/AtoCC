@@ -123,7 +123,9 @@
 		</module>
 
 		<!-- Miscellaneous -->
-		<module name="TodoComment" />
+		<module name="TodoComment">
+		  <property name="severity" value="warning"/>
+		</module>
 		<module name="UncommentedMain" />
 		<module name="UpperEll" />
 		<module name="ArrayTypeStyle" />

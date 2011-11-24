@@ -5,12 +5,9 @@ import de.hszg.atocc.core.util.RestfulWebService;
 import de.hszg.atocc.core.util.ServiceNotFoundException;
 import de.hszg.atocc.core.util.XmlUtilService;
 
-import org.restlet.resource.Finder;
 import org.restlet.resource.Get;
-import org.restlet.resource.ServerResource;
 import org.restlet.routing.Route;
 import org.restlet.routing.Router;
-import org.restlet.util.RouteList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

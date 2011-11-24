@@ -19,7 +19,7 @@ public final class Activator implements BundleActivator {
 
         AutomatonServiceTests.setAutomatonService((AutomatonService) context
                 .getService(automatonServiceReference));
-        
+
         TestAutomatons.setXmlService((XmlUtilService) context
                 .getService(xmlServiceReference));
     }

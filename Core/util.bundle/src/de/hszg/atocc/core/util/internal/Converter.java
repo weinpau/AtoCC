@@ -1,7 +1,5 @@
 package de.hszg.atocc.core.util.internal;
 
-import de.hszg.atocc.core.util.ConverterService;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -18,7 +16,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public final class ConverterServiceImpl implements ConverterService {
+public final class Converter {
     
     public String xmlToString(final Document doc) throws TransformerException {
         final StringWriter sw = new StringWriter();
