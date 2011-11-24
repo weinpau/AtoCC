@@ -5,7 +5,9 @@ import de.hszg.atocc.core.util.RestfulWebService;
 import de.hszg.atocc.core.util.ServiceNotFoundException;
 import de.hszg.atocc.core.util.XmlUtilService;
 
+import org.restlet.resource.Finder;
 import org.restlet.resource.Get;
+import org.restlet.resource.ServerResource;
 import org.restlet.routing.Route;
 import org.restlet.routing.Router;
 import org.restlet.util.RouteList;
@@ -26,7 +28,7 @@ public final class ListService extends RestfulWebService {
         try {
             createServiceListDocument();
             createServicesElement();
-            createserviceElements();
+            createServiceElements();
 
             return xmlUtils.createResult(serviceListDocument);
         } catch (final ServiceNotFoundException e) {
@@ -43,12 +45,10 @@ public final class ListService extends RestfulWebService {
         serviceListDocument.appendChild(servicesElement);
     }
 
-    private void createserviceElements() {
+    private void createServiceElements() {
         final Router router = getService(PluginRegistryService.class).getRouter();
-        final RouteList routes = router.getRoutes();
 
-        for (int i = 0; i < routes.size(); ++i) {
-            final Route route = routes.get(i);
+        for (Route route : router.getRoutes()) {
             createServiceElement(route);
         }
     }
@@ -57,8 +57,11 @@ public final class ListService extends RestfulWebService {
         final Element serviceElement = serviceListDocument.createElement("service");
         servicesElement.appendChild(serviceElement);
         
+        final String[] routeParts = route.toString().split("->");
+        final String url = routeParts[0].trim().replace("\"", "");
+        
         final Element urlElement = serviceListDocument.createElement("url");
-        urlElement.setTextContent(route.getTemplate().getPattern());
+        urlElement.setTextContent(url);
         serviceElement.appendChild(urlElement);
     }
 }

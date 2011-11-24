@@ -9,7 +9,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <restlet.version>2.0.10</restlet.version>
+    <restlet.version>2.1-SNAPSHOT</restlet.version>
   </properties>
 
   <repositories>
@@ -64,13 +64,13 @@
 
  <dependencies>
   <dependency>
-    <groupId>org.restlet.jse</groupId>
+    <groupId>org.restlet.osgi</groupId>
     <artifactId>org.restlet</artifactId>
     <version>${restlet.version}</version>
   </dependency>
   
   <dependency>
-    <groupId>org.restlet.jse</groupId>
+    <groupId>org.restlet.osgi</groupId>
     <artifactId>org.restlet.ext.xml</artifactId>
     <version>${restlet.version}</version>
   </dependency>
