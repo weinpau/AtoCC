@@ -133,27 +133,39 @@ public final class AutomatonServiceTests {
 
     @Test
     public void testGetStatePowerSetFrom2() {
-        Assert.fail("Not yet implemented");
+        final Set<Set<String>> actualPowerset =
+                automatonService.getStatePowerSetFrom(automatons.getNea2());
+
+        Assert.assertEquals(automatons.getPowerSetOfStatesFromNea2(), actualPowerset);
     }
 
     @Test
     public void testGetStatePowerSetFrom3() {
-        Assert.fail("Not yet implemented");
+        final Set<Set<String>> actualPowerset =
+                automatonService.getStatePowerSetFrom(automatons.getNea3());
+
+        Assert.assertEquals(automatons.getPowerSetOfStatesFromNea3(), actualPowerset);
     }
 
     @Test
     public void testGetAlphabetFrom1() {
-        Assert.fail("Not yet implemented");
+        final Set<String> acutalAlphabet = automatonService.getAlphabetFrom(automatons.getNea1());
+
+        Assert.assertEquals(automatons.getAlphabetOfNea1(), acutalAlphabet);
     }
 
     @Test
     public void testGetAlphabetFrom2() {
-        Assert.fail("Not yet implemented");
+        final Set<String> acutalAlphabet = automatonService.getAlphabetFrom(automatons.getNea2());
+
+        Assert.assertEquals(automatons.getAlphabetOfNea2(), acutalAlphabet);
     }
 
     @Test
     public void testGetAlphabetFrom3() {
-        Assert.fail("Not yet implemented");
+        final Set<String> acutalAlphabet = automatonService.getAlphabetFrom(automatons.getNea3());
+
+        Assert.assertEquals(automatons.getAlphabetOfNea3(), acutalAlphabet);
     }
 
     @Test

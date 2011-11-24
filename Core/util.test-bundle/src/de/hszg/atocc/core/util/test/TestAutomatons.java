@@ -22,6 +22,7 @@ public final class TestAutomatons {
     private static final String Z3 = "Z3";
 
     private static final String Q0 = "q0";
+    private static final String Q1 = "q1";
     private static final String Q2 = "q2";
 
     private static final String Q_0 = "q_0";
@@ -42,6 +43,13 @@ public final class TestAutomatons {
     private String initialStateOfNea1;
     private String initialStateOfNea2;
     private String initialStateOfNea3;
+    
+    private Set<Set<String>> powerSetOfStatesFromNea2;
+    private Set<Set<String>> powerSetOfStatesFromNea3;
+    
+    private Set<String> alphabetOfNea1;
+    private Set<String> alphabetOfNea2;
+    private Set<String> alphabetOfNea3;
 
     public TestAutomatons() throws XmlUtilsException {
         initializeNea1();
@@ -65,6 +73,14 @@ public final class TestAutomatons {
         return nea3;
     }
     
+    public Set<Set<String>> getPowerSetOfStatesFromNea2() {
+        return powerSetOfStatesFromNea2;
+    }
+
+    public Set<Set<String>> getPowerSetOfStatesFromNea3() {
+        return powerSetOfStatesFromNea3;
+    }
+
     public Set<String> getStateNamesOfNea1() {
         return stateNamesOfNea1;
     }
@@ -110,6 +126,10 @@ public final class TestAutomatons {
         finalStatesOfNea1.add(Z3);
 
         initialStateOfNea1 = Z1;
+        
+        alphabetOfNea1 = new HashSet<String>();
+        alphabetOfNea1.add("a");
+        alphabetOfNea1.add("b");
     }
 
     private void initializeStateNamesOfNea1() {
@@ -131,6 +151,51 @@ public final class TestAutomatons {
         finalStatesOfNea2.add(Q2);
 
         initialStateOfNea2 = Q0;
+        
+        initializeStatePowerSetOfNea2();
+        
+        alphabetOfNea2 = new HashSet<String>();
+        alphabetOfNea2.add("a");
+        alphabetOfNea2.add("b");
+        alphabetOfNea2.add("c");
+    }
+
+    private void initializeStatePowerSetOfNea2() {
+        final Set<String> emptySet = new HashSet<String>();
+        
+        final Set<String> q0Set = new HashSet<String>();
+        q0Set.add(Q0);
+        final Set<String> q1Set = new HashSet<String>();
+        q1Set.add(Q1);
+        final Set<String> q2Set = new HashSet<String>();
+        q2Set.add(Q2);
+        
+        final Set<String> q0q1Set = new HashSet<String>();
+        q0q1Set.add(Q0);
+        q0q1Set.add(Q1);
+        
+        final Set<String> q0q2Set = new HashSet<String>();
+        q0q2Set.add(Q0);
+        q0q2Set.add(Q2);
+        
+        final Set<String> q1q2Set = new HashSet<String>();
+        q1q2Set.add(Q1);
+        q1q2Set.add(Q2);
+        
+        final Set<String> q0q1q2Set = new HashSet<String>();
+        q0q1q2Set.add(Q0);
+        q0q1q2Set.add(Q1);
+        q0q1q2Set.add(Q2);
+        
+        powerSetOfStatesFromNea2 = new HashSet<Set<String>>();
+        powerSetOfStatesFromNea2.add(emptySet);
+        powerSetOfStatesFromNea2.add(q0Set);
+        powerSetOfStatesFromNea2.add(q1Set);
+        powerSetOfStatesFromNea2.add(q2Set);
+        powerSetOfStatesFromNea2.add(q0q1Set);
+        powerSetOfStatesFromNea2.add(q0q2Set);
+        powerSetOfStatesFromNea2.add(q1q2Set);
+        powerSetOfStatesFromNea2.add(q0q1q2Set);
     }
 
     private void initializeStateNamesOfNea2() {
@@ -149,6 +214,46 @@ public final class TestAutomatons {
         finalStatesOfNea3.add(Q_1);
 
         initialStateOfNea3 = Q_0;
+        
+        initializeStatePowerSetOfNea3();
+        
+        alphabetOfNea3 = new HashSet<String>();
+        alphabetOfNea3.add("a");
+        alphabetOfNea3.add("b");
+        alphabetOfNea3.add("c");
+    }
+
+    public Set<String> getAlphabetOfNea1() {
+        return alphabetOfNea1;
+    }
+
+    public Set<String> getAlphabetOfNea2() {
+        return alphabetOfNea2;
+    }
+
+    public Set<String> getAlphabetOfNea3() {
+        return alphabetOfNea3;
+    }
+
+    private void initializeStatePowerSetOfNea3() {
+        powerSetOfStatesFromNea3 = new HashSet<Set<String>>();
+        
+        final Set<String> emptySet = new HashSet<String>();
+        
+        final Set<String> q0Set = new HashSet<String>();
+        q0Set.add(Q_0);
+        
+        final Set<String> q1Set = new HashSet<String>();
+        q1Set.add(Q_1);
+        
+        final Set<String> q0q1Set = new HashSet<String>();
+        q0q1Set.add(Q_0);
+        q0q1Set.add(Q_1);
+        
+        powerSetOfStatesFromNea3.add(emptySet);
+        powerSetOfStatesFromNea3.add(q0Set);
+        powerSetOfStatesFromNea3.add(q1Set);
+        powerSetOfStatesFromNea3.add(q0q1Set);
     }
 
     private void initializeStateNamesOfNea3() {
