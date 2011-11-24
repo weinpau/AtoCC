@@ -71,6 +71,7 @@ public final class Nea2Dea extends RestfulWebService {
         neaStatePowerSet = automatonUtils.getStatePowerSetFrom(aNea);
         neaInitialState = automatonUtils.getNameOfInitialStateFrom(aNea);
         alphabet = automatonUtils.getAlphabetFrom(aNea);
+        alphabet.add("EPSILON");
     }
 
     private void createDeaDocument() {

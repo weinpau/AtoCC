@@ -16,10 +16,14 @@ public final class TestAutomatons {
     
     public static final String STATE = "STATE";
     
-    private static XmlUtilService xmlService;
+    public static final String Z1 = "Z1";
+    public static final String Z2 = "Z2";
+    public static final String Z3 = "Z3";
+    public static final String Z4 = "Z4";
+    public static final String Z5 = "Z5";
+    public static final String Z6 = "Z6";
     
-    private static final String Z1 = "Z1";
-    private static final String Z3 = "Z3";
+    private static XmlUtilService xmlService;
 
     private static final String Q0 = "q0";
     private static final String Q1 = "q1";
