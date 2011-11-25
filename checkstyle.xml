@@ -117,7 +117,6 @@
 		</module>
 
 		<module name="JavaNCSS">
-			<property name="methodMaximum" value="15" />
 			<property name="classMaximum" value="200" />
 			<property name="fileMaximum" value="500" />
 		</module>
