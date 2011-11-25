@@ -14,6 +14,10 @@ import org.w3c.dom.NodeList;
 
 public final class AutomatonServiceTests {
 
+    private static final String EPSILON = "EPSILON";
+    private static final String B = "b";
+    private static final String A = "a";
+
     private static AutomatonService automatonService;
 
     private TestAutomatons automatons;
@@ -192,46 +196,46 @@ public final class AutomatonServiceTests {
         z6.add(TestAutomatons.Z6);
 
         Assert.assertEquals(z4,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z1, "a"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z1, A));
         Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z1, "b"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z1, B));
         Assert.assertEquals(z2,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z1, "EPSILON"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z1, EPSILON));
 
         Assert.assertEquals(z5,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z2, "a"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z2, A));
         Assert.assertEquals(z3,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z2, "b"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z2, B));
         Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z2, "EPSILON"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z2, EPSILON));
 
         Assert.assertEquals(new HashSet<String>(),
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z3, "a"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z3, A));
         Assert.assertEquals(new HashSet<String>(),
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z3, "b"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z3, B));
         Assert.assertEquals(new HashSet<String>(),
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z3, "EPSILON"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z3, EPSILON));
 
         Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z4, "a"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z4, A));
         Assert.assertEquals(z5,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z4, "b"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z4, B));
         Assert.assertEquals(z2,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z4, "EPSILON"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z4, EPSILON));
 
         Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z5, "a"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z5, A));
         Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z5, "b"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z5, B));
         Assert.assertEquals(z6,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z5, "EPSILON"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z5, EPSILON));
 
         Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z6, "a"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z6, A));
         Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z6, "b"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z6, B));
         Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z6, "EPSILON"));
+                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z6, EPSILON));
     }
 
 }

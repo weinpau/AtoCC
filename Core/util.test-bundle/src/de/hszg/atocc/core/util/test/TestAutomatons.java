@@ -23,6 +23,10 @@ public final class TestAutomatons {
     public static final String Z5 = "Z5";
     public static final String Z6 = "Z6";
     
+    private static final String B = "b";
+    private static final String A = "a";
+    private static final String C = "c";
+    
     private static XmlUtilService xmlService;
 
     private static final String Q0 = "q0";
@@ -132,18 +136,18 @@ public final class TestAutomatons {
         initialStateOfNea1 = Z1;
         
         alphabetOfNea1 = new HashSet<String>();
-        alphabetOfNea1.add("a");
-        alphabetOfNea1.add("b");
+        alphabetOfNea1.add(A);
+        alphabetOfNea1.add(B);
     }
 
     private void initializeStateNamesOfNea1() {
         stateNamesOfNea1 = new HashSet<String>();
         stateNamesOfNea1.add(Z1);
-        stateNamesOfNea1.add("Z2");
+        stateNamesOfNea1.add(Z2);
         stateNamesOfNea1.add(Z3);
-        stateNamesOfNea1.add("Z4");
-        stateNamesOfNea1.add("Z5");
-        stateNamesOfNea1.add("Z6");
+        stateNamesOfNea1.add(Z4);
+        stateNamesOfNea1.add(Z5);
+        stateNamesOfNea1.add(Z6);
     }
 
     private void initializeNea2() throws XmlUtilsException {
@@ -159,9 +163,9 @@ public final class TestAutomatons {
         initializeStatePowerSetOfNea2();
         
         alphabetOfNea2 = new HashSet<String>();
-        alphabetOfNea2.add("a");
-        alphabetOfNea2.add("b");
-        alphabetOfNea2.add("c");
+        alphabetOfNea2.add(A);
+        alphabetOfNea2.add(B);
+        alphabetOfNea2.add(C);
     }
 
     private void initializeStatePowerSetOfNea2() {
@@ -205,7 +209,7 @@ public final class TestAutomatons {
     private void initializeStateNamesOfNea2() {
         stateNamesOfNea2 = new HashSet<String>();
         stateNamesOfNea2.add(Q0);
-        stateNamesOfNea2.add("q1");
+        stateNamesOfNea2.add(Q1);
         stateNamesOfNea2.add(Q2);
     }
 
@@ -222,9 +226,9 @@ public final class TestAutomatons {
         initializeStatePowerSetOfNea3();
         
         alphabetOfNea3 = new HashSet<String>();
-        alphabetOfNea3.add("a");
-        alphabetOfNea3.add("b");
-        alphabetOfNea3.add("c");
+        alphabetOfNea3.add(A);
+        alphabetOfNea3.add(B);
+        alphabetOfNea3.add(C);
     }
 
     public Set<String> getAlphabetOfNea1() {
