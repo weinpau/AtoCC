@@ -128,6 +128,17 @@ public final class AutomatonServiceImpl implements AutomatonService {
     }
 
     @Override
+    public Set<String> getEpsilonHull(Document automaton, Set<String> states) {
+        final Set<String> epsilonHull = new TreeSet<String>();
+
+        for (String state : states) {
+            epsilonHull.addAll(getEpsilonHull(automaton, state));
+        }
+
+        return epsilonHull;
+    }
+
+    @Override
     public Set<String> getEpsilonHull(Document automaton, String stateName) {
         final Set<String> epsilonHull = new TreeSet<String>();
 
@@ -149,5 +160,4 @@ public final class AutomatonServiceImpl implements AutomatonService {
             setService = null;
         }
     }
-
 }

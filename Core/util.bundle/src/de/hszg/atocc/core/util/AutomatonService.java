@@ -24,6 +24,7 @@ public interface AutomatonService {
     
     boolean containsEpsilonRules(Document automaton);
     
+    Set<String> getEpsilonHull(Document automaton, Set<String> states);
     Set<String> getEpsilonHull(Document automaton, String stateName);
     
 }
