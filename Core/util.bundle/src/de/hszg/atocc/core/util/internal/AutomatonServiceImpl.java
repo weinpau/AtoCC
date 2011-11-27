@@ -111,6 +111,21 @@ public final class AutomatonServiceImpl implements AutomatonService {
         }
     }
 
+    @Override
+    public boolean containsEpsilonRules(Document automaton) {
+        final XPath xpath = XPathFactory.newInstance().newXPath();
+
+        try {
+            final NodeList nodes =
+                    (NodeList) xpath.evaluate("//LABEL[@read='EPSILON']", automaton,
+                            XPathConstants.NODESET);
+
+            return nodes.getLength() > 0;
+        } catch (final XPathExpressionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public synchronized void setSetService(SetService service) {
         setService = service;
     }

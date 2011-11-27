@@ -3,6 +3,7 @@ package de.hszg.atocc.core.starter.internal;
 import de.hszg.atocc.core.pluginregistry.PluginRegistryService;
 import de.hszg.atocc.core.starter.StarterService;
 import de.hszg.atocc.core.util.AutomatonService;
+import de.hszg.atocc.core.util.WebUtilService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlValidatorService;
 
@@ -24,6 +25,7 @@ public final class StarterServiceImpl implements StarterService {
     private XmlUtilService xmlUtils;
     private AutomatonService automatonUtils;
     private XmlValidatorService xmlValidator;
+    private WebUtilService webUtils;
     
     public synchronized void setXmlUtilService(XmlUtilService service) {
         xmlUtils = service;
@@ -32,6 +34,16 @@ public final class StarterServiceImpl implements StarterService {
     public synchronized void unsetXmlUtilService(XmlUtilService service) {
         if (xmlUtils == service) {
             xmlUtils = null;
+        }
+    }
+    
+    public synchronized void setWebUtilService(WebUtilService service) {
+        webUtils = service;
+    }
+
+    public synchronized void unsetWebUtilService(WebUtilService service) {
+        if (webUtils == service) {
+            webUtils = null;
         }
     }
     
@@ -91,6 +103,7 @@ public final class StarterServiceImpl implements StarterService {
         attributes.put(XmlUtilService.class.getName(), xmlUtils);
         attributes.put(AutomatonService.class.getName(), automatonUtils);
         attributes.put(XmlValidatorService.class.getName(), xmlValidator);
+        attributes.put(WebUtilService.class.getName(), webUtils);
     }
     
 }

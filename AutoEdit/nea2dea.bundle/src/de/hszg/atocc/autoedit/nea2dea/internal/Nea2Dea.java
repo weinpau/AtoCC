@@ -2,6 +2,7 @@ package de.hszg.atocc.autoedit.nea2dea.internal;
 
 import de.hszg.atocc.core.util.AutomatonService;
 import de.hszg.atocc.core.util.RestfulWebService;
+import de.hszg.atocc.core.util.WebUtilService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlValidationException;
 import de.hszg.atocc.core.util.XmlValidatorService;
@@ -17,12 +18,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public final class Nea2Dea extends RestfulWebService {
-    
+
     private static final String AUTOMATON = "AUTOMATON";
     private static final String VALUE = "value";
     private static final String TYPE = "TYPE";
     private static final String FINALSTATE = "finalstate";
-    
+
     private Document nea;
     private Set<Set<String>> neaStatePowerSet;
     private String neaInitialState;
@@ -37,26 +38,25 @@ public final class Nea2Dea extends RestfulWebService {
 
     private Set<String> deaFinalStates;
     private String deaInitialState;
-    
+
     private XmlUtilService xmlUtils;
     private AutomatonService automatonUtils;
     private XmlValidatorService xmlValidator;
-    
+    private WebUtilService webUtils;
+
     @Post
     public Document transform(final Document aNea) {
-        
+
         tryToGetRequiredServices();
-        
-        this.nea = aNea;
-        
         Document result = null;
-        
+
         try {
-            validateInput();
-            
+            validateInput(aNea);
+            this.nea = removeEpsilonRulesIfNeeded(aNea);
+
             initializeDeaDocument();
             transformAutomaton();
-            
+
             xmlValidator.validate(dea, AUTOMATON);
 
             result = xmlUtils.createResult(dea);
@@ -69,9 +69,20 @@ public final class Nea2Dea extends RestfulWebService {
         return result;
     }
 
-    private void validateInput() throws XmlValidationException {
-        xmlValidator.validate(nea, AUTOMATON);
+    private void validateInput(Document aNea) throws XmlValidationException {
+        xmlValidator.validate(aNea, AUTOMATON);
         checkAutomatonType();
+    }
+
+    private Document removeEpsilonRulesIfNeeded(Document aNea) {
+        if (automatonUtils.containsEpsilonRules(aNea)) {
+            final Document result =
+                    webUtils.post("http://localhost:8081/autoedit/NeaEpsilon2Nea", aNea);
+            
+            return xmlUtils.getContent(result);
+        } else {
+            return aNea;
+        }
     }
 
     private void transformAutomaton() {
@@ -90,7 +101,6 @@ public final class Nea2Dea extends RestfulWebService {
         neaStatePowerSet = automatonUtils.getStatePowerSetFrom(aNea);
         neaInitialState = automatonUtils.getNameOfInitialStateFrom(aNea);
         alphabet = automatonUtils.getAlphabetFrom(aNea);
-//        alphabet.add("EPSILON");
     }
 
     private void createDeaDocument() {
@@ -248,7 +258,7 @@ public final class Nea2Dea extends RestfulWebService {
                 finished = true;
             }
         }
-        
+
         remainingStates.add(deaInitialState);
 
         for (String state : remainingStates) {
@@ -294,10 +304,11 @@ public final class Nea2Dea extends RestfulWebService {
 
         return allOriginalStates;
     }
-    
+
     private void tryToGetRequiredServices() {
         xmlUtils = getService(XmlUtilService.class);
         automatonUtils = getService(AutomatonService.class);
         xmlValidator = getService(XmlValidatorService.class);
+        webUtils = getService(WebUtilService.class);
     }
 }

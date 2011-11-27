@@ -22,4 +22,6 @@ public interface AutomatonService {
     Set<String> getTargetsOf(Document automaton, String stateName,
             String alphabetCharacter);
     
+    boolean containsEpsilonRules(Document automaton);
+    
 }
