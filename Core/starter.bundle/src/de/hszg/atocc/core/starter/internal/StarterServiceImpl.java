@@ -4,6 +4,7 @@ import de.hszg.atocc.core.pluginregistry.PluginRegistryService;
 import de.hszg.atocc.core.starter.StarterService;
 import de.hszg.atocc.core.util.AutomatonService;
 import de.hszg.atocc.core.util.XmlUtilService;
+import de.hszg.atocc.core.util.XmlValidatorService;
 
 import java.util.concurrent.ConcurrentMap;
 
@@ -22,6 +23,7 @@ public final class StarterServiceImpl implements StarterService {
     private PluginRegistryService pluginRegistry;
     private XmlUtilService xmlUtils;
     private AutomatonService automatonUtils;
+    private XmlValidatorService xmlValidator;
     
     public synchronized void setXmlUtilService(XmlUtilService service) {
         xmlUtils = service;
@@ -30,6 +32,16 @@ public final class StarterServiceImpl implements StarterService {
     public synchronized void unsetXmlUtilService(XmlUtilService service) {
         if (xmlUtils == service) {
             xmlUtils = null;
+        }
+    }
+    
+    public synchronized void setXmlValidatorService(XmlValidatorService service) {
+        xmlValidator = service;
+    }
+
+    public synchronized void unsetXmlValidatorService(XmlValidatorService service) {
+        if (xmlValidator == service) {
+            xmlValidator = null;
         }
     }
     
@@ -78,6 +90,7 @@ public final class StarterServiceImpl implements StarterService {
         final ConcurrentMap<String, Object> attributes = router.getContext().getAttributes(); 
         attributes.put(XmlUtilService.class.getName(), xmlUtils);
         attributes.put(AutomatonService.class.getName(), automatonUtils);
+        attributes.put(XmlValidatorService.class.getName(), xmlValidator);
     }
     
 }

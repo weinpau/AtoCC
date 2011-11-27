@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" enabled="false" name="atocc.autoedit.nea2dea.serverresource">
-   <implementation class="de.hszg.atocc.autoedit.nea2dea.internal.Nea2Dea"
-   	bind="setXmlUtilService" cardinality="1..1" 
-   	interface="de.hszg.atocc.core.util.XmlUtilService" 
-   	name="XmlUtilService" policy="static" 
-   	unbind="unsetXmlUtilService" />
-   <reference bind="setXmlUtilService" cardinality="1..1" interface="de.hszg.atocc.core.util.XmlUtilService" name="XmlUtilService" policy="static"/>
-</scr:component>

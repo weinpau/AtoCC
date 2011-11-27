@@ -3,6 +3,8 @@ package de.hszg.atocc.autoedit.nea2dea.internal;
 import de.hszg.atocc.core.util.AutomatonService;
 import de.hszg.atocc.core.util.RestfulWebService;
 import de.hszg.atocc.core.util.XmlUtilService;
+import de.hszg.atocc.core.util.XmlValidationException;
+import de.hszg.atocc.core.util.XmlValidatorService;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,6 +18,7 @@ import org.w3c.dom.Element;
 
 public final class Nea2Dea extends RestfulWebService {
     
+    private static final String AUTOMATON = "AUTOMATON";
     private static final String VALUE = "value";
     private static final String TYPE = "TYPE";
     private static final String FINALSTATE = "finalstate";
@@ -37,28 +40,44 @@ public final class Nea2Dea extends RestfulWebService {
     
     private XmlUtilService xmlUtils;
     private AutomatonService automatonUtils;
+    private XmlValidatorService xmlValidator;
     
     @Post
     public Document transform(final Document aNea) {
         
+        tryToGetRequiredServices();
+        
         this.nea = aNea;
-
+        
+        Document result = null;
+        
         try {
-            tryToGetRequiredServices();
-//            TODO: XmlUtils.validate(aNea, "AUTOMATA");
+            validateInput();
             
-            checkAutomatonType();
-
             initializeDeaDocument();
-            extractDataFromNea(nea);
-            generateDeaData();
-            createDeaDocument();
+            transformAutomaton();
+            
+            xmlValidator.validate(dea, AUTOMATON);
 
-            return xmlUtils.createResult(dea);
+            result = xmlUtils.createResult(dea);
         } catch (final RuntimeException e) {
-            return xmlUtils.createResultWithError("TRANSFORM_FAILED", e);
+            result = xmlUtils.createResultWithError("TRANSFORM_FAILED", e);
+        } catch (XmlValidationException e) {
+            result = xmlUtils.createResultWithError("INVALID_INPUT", e);
         }
 
+        return result;
+    }
+
+    private void validateInput() throws XmlValidationException {
+        xmlValidator.validate(nea, AUTOMATON);
+        checkAutomatonType();
+    }
+
+    private void transformAutomaton() {
+        extractDataFromNea(nea);
+        generateDeaData();
+        createDeaDocument();
     }
 
     private void generateDeaData() {
@@ -71,7 +90,7 @@ public final class Nea2Dea extends RestfulWebService {
         neaStatePowerSet = automatonUtils.getStatePowerSetFrom(aNea);
         neaInitialState = automatonUtils.getNameOfInitialStateFrom(aNea);
         alphabet = automatonUtils.getAlphabetFrom(aNea);
-        alphabet.add("EPSILON");
+//        alphabet.add("EPSILON");
     }
 
     private void createDeaDocument() {
@@ -96,7 +115,7 @@ public final class Nea2Dea extends RestfulWebService {
     }
 
     private void createAutomatonElement() {
-        deaAutomatonElement = dea.createElement("AUTOMATON");
+        deaAutomatonElement = dea.createElement(AUTOMATON);
         dea.appendChild(deaAutomatonElement);
     }
 
@@ -229,6 +248,8 @@ public final class Nea2Dea extends RestfulWebService {
                 finished = true;
             }
         }
+        
+        remainingStates.add(deaInitialState);
 
         for (String state : remainingStates) {
             final Element stateElement = deaStateElementMap.get(state);
@@ -277,5 +298,6 @@ public final class Nea2Dea extends RestfulWebService {
     private void tryToGetRequiredServices() {
         xmlUtils = getService(XmlUtilService.class);
         automatonUtils = getService(AutomatonService.class);
+        xmlValidator = getService(XmlValidatorService.class);
     }
 }
