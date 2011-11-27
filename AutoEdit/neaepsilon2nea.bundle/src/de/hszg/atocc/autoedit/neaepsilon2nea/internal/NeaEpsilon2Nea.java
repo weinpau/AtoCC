@@ -70,7 +70,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
         createAlphabetElement();
         initializeStateElement();
 
-        final Element initialStateElement = nea.createElement("initialstate");
+        final Element initialStateElement = nea.createElement("INITIALSTATE");
         initialStateElement.setAttribute(VALUE,
                 automatonUtils.getNameOfInitialStateFrom(neaEpsilon));
         automatonElement.appendChild(initialStateElement);
@@ -124,8 +124,9 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
     }
 
     private void checkAutomatonType() {
-        final Element automatonElement = neaEpsilon.getDocumentElement();
-        final Element typeElement = (Element) automatonElement.getElementsByTagName(TYPE).item(0);
+        final Element neaEpsilonAutomatonElement = neaEpsilon.getDocumentElement();
+        final Element typeElement =
+                (Element) neaEpsilonAutomatonElement.getElementsByTagName(TYPE).item(0);
 
         if (!NEA.equals(typeElement.getAttribute(VALUE))) {
             throw new RuntimeException("INVALID_AUTOMATON_TYPE");

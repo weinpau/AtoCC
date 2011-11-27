@@ -47,13 +47,16 @@ public final class Nea2Dea extends RestfulWebService {
     @Post
     public Document transform(final Document aNea) {
 
-        tryToGetRequiredServices();
+        nea = aNea;
         Document result = null;
 
         try {
-            validateInput(aNea);
-            this.nea = removeEpsilonRulesIfNeeded(aNea);
-
+            tryToGetRequiredServices();
+            
+            removeEpsilonRulesIfNeeded();
+            
+            validateInput();
+            
             initializeDeaDocument();
             transformAutomaton();
 
@@ -69,19 +72,18 @@ public final class Nea2Dea extends RestfulWebService {
         return result;
     }
 
-    private void validateInput(Document aNea) throws XmlValidationException {
-        xmlValidator.validate(aNea, AUTOMATON);
+    private void validateInput() throws XmlValidationException {
+        xmlValidator.validate(nea, AUTOMATON);
         checkAutomatonType();
     }
 
-    private Document removeEpsilonRulesIfNeeded(Document aNea) {
-        if (automatonUtils.containsEpsilonRules(aNea)) {
+    private void removeEpsilonRulesIfNeeded() {
+        if (automatonUtils.containsEpsilonRules(nea)) {
             final Document result =
-                    webUtils.post("http://localhost:8081/autoedit/NeaEpsilon2Nea", aNea);
+                    webUtils.post("http://localhost:8081/autoedit/neaepsilon2nea", nea);
             
-            return xmlUtils.getContent(result);
-        } else {
-            return aNea;
+            
+            nea = xmlUtils.getContent(result);
         }
     }
 

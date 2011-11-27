@@ -6,6 +6,5 @@ public interface WebUtilService {
 
     Document get(String uri);
     Document post(String uri, Document doc);
-    Document put(String uri, Document doc);
     
 }
