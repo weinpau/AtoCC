@@ -84,6 +84,7 @@ public final class StarterServiceImpl implements StarterService {
         component = new Component();
 
         final Server server = component.getServers().add(Protocol.HTTP, PORT);
+        component.getClients().add(Protocol.HTTP);
         server.getContext().getParameters().add("maxThreads", "255");
 
         try {
