@@ -5,6 +5,7 @@ import de.hszg.atocc.core.util.SetService;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -124,6 +125,19 @@ public final class AutomatonServiceImpl implements AutomatonService {
         } catch (final XPathExpressionException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Set<String> getEpsilonHull(Document automaton, String stateName) {
+        final Set<String> epsilonHull = new TreeSet<String>();
+
+        epsilonHull.add(stateName);
+
+        for (String target : getTargetsOf(automaton, stateName, "EPSILON")) {
+            epsilonHull.add(target);
+        }
+
+        return epsilonHull;
     }
 
     public synchronized void setSetService(SetService service) {
