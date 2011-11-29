@@ -10,7 +10,6 @@ import org.junit.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.NodeList;
 
 public final class AutomatonServiceTests {
 
@@ -21,7 +20,16 @@ public final class AutomatonServiceTests {
     private static AutomatonService automatonService;
 
     private TestAutomatons automatons;
+    
+    private final Set<String> emptySet = new HashSet<String>();
 
+    private Set<String> z1;
+    private Set<String> z2;
+    private Set<String> z3;
+    private Set<String> z4;
+    private Set<String> z5;
+    private Set<String> z6;
+    
     public static void setAutomatonService(AutomatonService service) {
         automatonService = service;
     }
@@ -29,109 +37,93 @@ public final class AutomatonServiceTests {
     @Before
     public void setUp() throws XmlUtilsException {
         automatons = new TestAutomatons();
+        
+        z1 = new HashSet<String>();
+        z2 = new HashSet<String>();
+        z3 = new HashSet<String>();
+        z4 = new HashSet<String>();
+        z5 = new HashSet<String>();
+        z6 = new HashSet<String>();
+        
+        z1.add(TestAutomatons.Z1);
+        z2.add(TestAutomatons.Z2);
+        z3.add(TestAutomatons.Z3);
+        z4.add(TestAutomatons.Z4);
+        z5.add(TestAutomatons.Z5);
+        z6.add(TestAutomatons.Z6);
     }
 
     @Test
     public void testGetStatesFrom() {
-        Assert.assertEquals(TestAutomatons.NUMBER_OF_STATES_IN_NEA1, automatonService
-                .getStatesFrom(automatons.getNea1()).getLength());
+        Assert.assertEquals(TestAutomatons.NUMBER_OF_STATES_IN_NEA1, automatons.getNea1()
+                .getStates().size());
 
-        Assert.assertEquals(TestAutomatons.NUMBER_OF_STATES_IN_NEA2, automatonService
-                .getStatesFrom(automatons.getNea2()).getLength());
+        Assert.assertEquals(TestAutomatons.NUMBER_OF_STATES_IN_NEA2, automatons.getNea2()
+                .getStates().size());
 
-        Assert.assertEquals(TestAutomatons.NUMBER_OF_STATES_IN_NEA3, automatonService
-                .getStatesFrom(automatons.getNea3()).getLength());
+        Assert.assertEquals(TestAutomatons.NUMBER_OF_STATES_IN_NEA3, automatons.getNea3()
+                .getStates().size());
     }
 
     @Test
     public void testGetStateNamesFromDocument1() {
-        final Set<String> actualNames = automatonService.getStateNamesFrom(automatons.getNea1());
+        final Set<String> actualNames = automatons.getNea1().getStates();
 
         Assert.assertEquals(automatons.getStateNamesOfNea1(), actualNames);
     }
 
     @Test
     public void testGetStateNamesFromDocument2() {
-        final Set<String> actualNames = automatonService.getStateNamesFrom(automatons.getNea2());
+        final Set<String> actualNames = automatons.getNea2().getStates();
 
         Assert.assertEquals(automatons.getStateNamesOfNea2(), actualNames);
     }
 
     @Test
     public void testGetStateNamesFromDocument3() {
-        final Set<String> actualNames = automatonService.getStateNamesFrom(automatons.getNea3());
+        final Set<String> actualNames = automatons.getNea3().getStates();
 
         Assert.assertEquals(automatons.getStateNamesOfNea3(), actualNames);
     }
 
     @Test
-    public void testGetStateNamesFromNodeList1() {
-        final NodeList states = automatons.getNea1().getElementsByTagName(TestAutomatons.STATE);
-
-        Assert.assertEquals(automatons.getStateNamesOfNea1(),
-                automatonService.getStateNamesFrom(states));
-    }
-
-    @Test
-    public void testGetStateNamesFromNodeList2() {
-        final NodeList states = automatons.getNea2().getElementsByTagName(TestAutomatons.STATE);
-
-        Assert.assertEquals(automatons.getStateNamesOfNea2(),
-                automatonService.getStateNamesFrom(states));
-    }
-
-    @Test
-    public void testGetStateNamesFromNodeList3() {
-        final NodeList states = automatons.getNea3().getElementsByTagName(TestAutomatons.STATE);
-
-        Assert.assertEquals(automatons.getStateNamesOfNea3(),
-                automatonService.getStateNamesFrom(states));
-    }
-
-    @Test
     public void testGetNamesOfFinalStatesFrom1() {
-        final Set<String> actualFinalStates =
-                automatonService.getNamesOfFinalStatesFrom(automatons.getNea1());
+        final Set<String> actualFinalStates = automatons.getNea1().getFinalStates();
 
         Assert.assertEquals(automatons.getFinalStatesOfNea1(), actualFinalStates);
     }
 
     @Test
     public void testGetNamesOfFinalStatesFrom2() {
-        final Set<String> actualFinalStates =
-                automatonService.getNamesOfFinalStatesFrom(automatons.getNea2());
+        final Set<String> actualFinalStates = automatons.getNea2().getFinalStates();
 
         Assert.assertEquals(automatons.getFinalStatesOfNea2(), actualFinalStates);
     }
 
     @Test
     public void testGetNamesOfFinalStatesFrom3() {
-        final Set<String> actualFinalStates =
-                automatonService.getNamesOfFinalStatesFrom(automatons.getNea3());
+        final Set<String> actualFinalStates = automatons.getNea3().getFinalStates();
 
         Assert.assertEquals(automatons.getFinalStatesOfNea3(), actualFinalStates);
     }
 
     @Test
     public void testGetNameOfInitialStateFrom1() {
-        final String actualInitialState =
-                automatonService.getNameOfInitialStateFrom(automatons.getNea1());
+        final String actualInitialState = automatons.getNea1().getInitialState();
 
         Assert.assertEquals(automatons.getInitialStateOfNea1(), actualInitialState);
     }
 
     @Test
     public void testGetNameOfInitialStateFrom2() {
-        final String actualInitialState =
-                automatonService.getNameOfInitialStateFrom(automatons.getNea2());
+        final String actualInitialState = automatons.getNea2().getInitialState();
 
         Assert.assertEquals(automatons.getInitialStateOfNea2(), actualInitialState);
     }
 
     @Test
     public void testGetNameOfInitialStateFrom3() {
-        final String actualInitialState =
-                automatonService.getNameOfInitialStateFrom(automatons.getNea3());
+        final String actualInitialState = automatons.getNea3().getInitialState();
 
         Assert.assertEquals(automatons.getInitialStateOfNea3(), actualInitialState);
     }
@@ -154,88 +146,70 @@ public final class AutomatonServiceTests {
 
     @Test
     public void testGetAlphabetFrom1() {
-        final Set<String> acutalAlphabet = automatonService.getAlphabetFrom(automatons.getNea1());
+        final Set<String> acutalAlphabet = automatons.getNea1().getAlphabet();
 
         Assert.assertEquals(automatons.getAlphabetOfNea1(), acutalAlphabet);
     }
 
     @Test
     public void testGetAlphabetFrom2() {
-        final Set<String> acutalAlphabet = automatonService.getAlphabetFrom(automatons.getNea2());
+        final Set<String> acutalAlphabet = automatons.getNea2().getAlphabet();
 
         Assert.assertEquals(automatons.getAlphabetOfNea2(), acutalAlphabet);
     }
 
     @Test
     public void testGetAlphabetFrom3() {
-        final Set<String> acutalAlphabet = automatonService.getAlphabetFrom(automatons.getNea3());
+        final Set<String> acutalAlphabet = automatons.getNea3().getAlphabet();
 
         Assert.assertEquals(automatons.getAlphabetOfNea3(), acutalAlphabet);
     }
 
     @Test
-    public void testGetTargetsOf1() {
-        final Set<String> emptySet = new HashSet<String>();
-
-        final Set<String> z1 = new HashSet<String>();
-        z1.add(TestAutomatons.Z1);
-
-        final Set<String> z2 = new HashSet<String>();
-        z2.add(TestAutomatons.Z2);
-
-        final Set<String> z3 = new HashSet<String>();
-        z3.add(TestAutomatons.Z3);
-
-        final Set<String> z4 = new HashSet<String>();
-        z4.add(TestAutomatons.Z4);
-
-        final Set<String> z5 = new HashSet<String>();
-        z5.add(TestAutomatons.Z5);
-
-        final Set<String> z6 = new HashSet<String>();
-        z6.add(TestAutomatons.Z6);
-
-        Assert.assertEquals(z4,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z1, A));
-        Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z1, B));
-        Assert.assertEquals(z2,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z1, EPSILON));
-
-        Assert.assertEquals(z5,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z2, A));
-        Assert.assertEquals(z3,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z2, B));
-        Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z2, EPSILON));
-
+    public void testGetTargetsOfNea1ForZ1() {
+        Assert.assertEquals(z4, automatons.getNea1().getTargetsFor(TestAutomatons.Z1, A));
+        Assert.assertEquals(emptySet, automatons.getNea1().getTargetsFor(TestAutomatons.Z1, B));
+        Assert.assertEquals(z2, automatons.getNea1().getTargetsFor(TestAutomatons.Z1, EPSILON));
+    }
+    
+    @Test
+    public void testGetTargetsOfNea1ForZ2() {
+        Assert.assertEquals(z5, automatons.getNea1().getTargetsFor(TestAutomatons.Z2, A));
+        Assert.assertEquals(z3, automatons.getNea1().getTargetsFor(TestAutomatons.Z2, B));
+        Assert.assertEquals(emptySet, automatons.getNea1()
+                .getTargetsFor(TestAutomatons.Z2, EPSILON));
+    }
+    
+    @Test
+    public void testGetTargetsOfNea1ForZ3() {
         Assert.assertEquals(new HashSet<String>(),
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z3, A));
+                automatons.getNea1().getTargetsFor(TestAutomatons.Z3, A));
         Assert.assertEquals(new HashSet<String>(),
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z3, B));
+                automatons.getNea1().getTargetsFor(TestAutomatons.Z3, B));
         Assert.assertEquals(new HashSet<String>(),
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z3, EPSILON));
+                automatons.getNea1().getTargetsFor(TestAutomatons.Z3, EPSILON));
+    }
+    
+    @Test
+    public void testGetTargetsOfNea1ForZ4() {
+        Assert.assertEquals(emptySet, automatons.getNea1().getTargetsFor(TestAutomatons.Z4, A));
+        Assert.assertEquals(z5, automatons.getNea1().getTargetsFor(TestAutomatons.Z4, B));
+        Assert.assertEquals(z2, automatons.getNea1().getTargetsFor(TestAutomatons.Z4, EPSILON));
+    }
+    
+    @Test
+    public void testGetTargetsOfNea1ForZ5() {
+        Assert.assertEquals(emptySet, automatons.getNea1().getTargetsFor(TestAutomatons.Z5, A));
+        Assert.assertEquals(emptySet, automatons.getNea1().getTargetsFor(TestAutomatons.Z5, B));
+        Assert.assertEquals(z6, automatons.getNea1().getTargetsFor(TestAutomatons.Z5, EPSILON));
+    }
 
-        Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z4, A));
-        Assert.assertEquals(z5,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z4, B));
-        Assert.assertEquals(z2,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z4, EPSILON));
-
-        Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z5, A));
-        Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z5, B));
-        Assert.assertEquals(z6,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z5, EPSILON));
-
-        Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z6, A));
-        Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z6, B));
-        Assert.assertEquals(emptySet,
-                automatonService.getTargetsOf(automatons.getNea1(), TestAutomatons.Z6, EPSILON));
+    @Test
+    public void testGetTargetsOfNea1ForZ6() {
+        Assert.assertEquals(emptySet, automatons.getNea1().getTargetsFor(TestAutomatons.Z6, A));
+        Assert.assertEquals(emptySet, automatons.getNea1().getTargetsFor(TestAutomatons.Z6, B));
+        Assert.assertEquals(emptySet, automatons.getNea1()
+                .getTargetsFor(TestAutomatons.Z6, EPSILON));
     }
 
 }

@@ -5,54 +5,42 @@ import de.hszg.atocc.core.util.RestfulWebService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlValidationException;
 import de.hszg.atocc.core.util.XmlValidatorService;
+import de.hszg.atocc.core.util.automaton.Automaton;
+import de.hszg.atocc.core.util.automaton.AutomatonType;
+import de.hszg.atocc.core.util.automaton.Transition;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.restlet.resource.Post;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 public final class NeaEpsilon2Nea extends RestfulWebService {
-
-    private static final String AUTOMATON = "AUTOMATON";
-    private static final String TYPE = "TYPE";
-    private static final String FINALSTATE = "finalstate";
-    private static final String VALUE = "value";
-    private static final String NEA = "NEA";
 
     private XmlUtilService xmlUtils;
     private AutomatonService automatonUtils;
     private XmlValidatorService xmlValidator;
 
-    private Document neaEpsilon;
     private Document result;
 
-    private Set<String> neaEpsilonFinalStates;
-    private Set<String> alphabet;
-    private Set<String> stateNames;
-    private Set<String> neaFinalStates;
-
-    private Document nea;
-    private Element automatonElement;
-    private Map<String, Element> stateElements;
+    private Automaton neaEpsilon;
+    private Automaton nea;
 
     @Post
-    public Document transform(Document aNeaEpsilon) {
-        neaEpsilon = aNeaEpsilon;
-
+    public Document transform(Document neaEpsilonDocument) {
         try {
             tryToGetRequiredServices();
-            validateInput();
-            extractDataFromInput();
 
-            initializeOutputDocument();
+            xmlValidator.validate(neaEpsilonDocument, "AUTOMATON");
+            neaEpsilon = automatonUtils.automatonFrom(neaEpsilonDocument);
+            
+            initializeOutputAutomaton();
+
+            checkAutomatonType();
+
             createNewDeltaRules();
-            finishOutputDocument();
 
-            result = xmlUtils.createResult(nea);
+            result = xmlUtils.createResult(automatonUtils.automatonToXml(nea));
         } catch (final XmlValidationException e) {
             result = xmlUtils.createResultWithError("INVALID_INPUT", e);
         }
@@ -60,56 +48,11 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
         return result;
     }
 
-    private void initializeOutputDocument() {
-        nea = xmlUtils.createEmptyDocument();
-
-        automatonElement = nea.createElement(AUTOMATON);
-        nea.appendChild(automatonElement);
-
-        createAutomatonTypeElement();
-        createAlphabetElement();
-        initializeStateElement();
-
-        final Element initialStateElement = nea.createElement("INITIALSTATE");
-        initialStateElement.setAttribute(VALUE,
-                automatonUtils.getNameOfInitialStateFrom(neaEpsilon));
-        automatonElement.appendChild(initialStateElement);
-    }
-
-    private void createAutomatonTypeElement() {
-        final Element typeElement = nea.createElement(TYPE);
-        typeElement.setAttribute(VALUE, NEA);
-        automatonElement.appendChild(typeElement);
-    }
-
-    private void createAlphabetElement() {
-        final Element alphabetElement = nea.createElement("ALPHABET");
-        automatonElement.appendChild(alphabetElement);
-
-        for (String alphabetCharacter : alphabet) {
-            final Element itemElement = nea.createElement("ITEM");
-            itemElement.setAttribute(VALUE, alphabetCharacter);
-            alphabetElement.appendChild(itemElement);
-        }
-    }
-
-    private void initializeStateElement() {
-        stateElements = new HashMap<String, Element>();
-
-        for (String stateName : stateNames) {
-            final Element stateElement = nea.createElement("STATE");
-            stateElement.setAttribute("name", stateName);
-            stateElement.setAttribute(FINALSTATE, "false");
-            automatonElement.appendChild(stateElement);
-
-            stateElements.put(stateName, stateElement);
-        }
-    }
-
-    private void finishOutputDocument() {
-        for (String stateName : neaFinalStates) {
-            stateElements.get(stateName).setAttribute(FINALSTATE, "true");
-        }
+    private void initializeOutputAutomaton() {
+        nea = new Automaton(AutomatonType.NEA);
+        nea.setAlphabet(neaEpsilon.getAlphabet());
+        nea.setStates(neaEpsilon.getStates());
+        nea.setInitialState(neaEpsilon.getInitialState());
     }
 
     private void tryToGetRequiredServices() {
@@ -118,33 +61,15 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
         xmlValidator = getService(XmlValidatorService.class);
     }
 
-    private void validateInput() throws XmlValidationException {
-        xmlValidator.validate(neaEpsilon, AUTOMATON);
-        checkAutomatonType();
-    }
-
     private void checkAutomatonType() {
-        final Element neaEpsilonAutomatonElement = neaEpsilon.getDocumentElement();
-        final Element typeElement =
-                (Element) neaEpsilonAutomatonElement.getElementsByTagName(TYPE).item(0);
-
-        if (!NEA.equals(typeElement.getAttribute(VALUE))) {
+        if (neaEpsilon.getType() != AutomatonType.NEA) {
             throw new RuntimeException("INVALID_AUTOMATON_TYPE");
         }
     }
 
-    private void extractDataFromInput() {
-        neaEpsilonFinalStates = automatonUtils.getNamesOfFinalStatesFrom(neaEpsilon);
-
-        alphabet = automatonUtils.getAlphabetFrom(neaEpsilon);
-        stateNames = automatonUtils.getStateNamesFrom(neaEpsilon);
-
-        neaFinalStates = new TreeSet<String>();
-    }
-
     private void createNewDeltaRules() {
-        for (String stateName : stateNames) {
-            for (String character : alphabet) {
+        for (String stateName : neaEpsilon.getStates()) {
+            for (String character : neaEpsilon.getAlphabet()) {
                 createNewDeltaRuleFor(stateName, character);
             }
         }
@@ -153,29 +78,24 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
     private void createNewDeltaRuleFor(String stateName, String character) {
         final Set<String> epsilonHull = automatonUtils.getEpsilonHull(neaEpsilon, stateName);
 
-        if (containsAnyOf(epsilonHull, neaEpsilonFinalStates)) {
-            neaFinalStates.add(stateName);
+        if (containsAnyOf(epsilonHull, neaEpsilon.getFinalStates())) {
+            nea.addFinalState(stateName);
         }
 
         final Set<String> d = new TreeSet<String>();
 
         for (String state : epsilonHull) {
-            d.addAll(automatonUtils.getTargetsOf(neaEpsilon, state, character));
+            d.addAll(neaEpsilon.getTargetsFor(state, character));
         }
 
-        createTransitionElements(stateName, character, d);
+        createTransitions(stateName, character, d);
     }
 
-    private void createTransitionElements(String stateName, String character, final Set<String> d) {
+    private void createTransitions(String stateName, String character, final Set<String> d) {
         for (String stateForNewRule : automatonUtils.getEpsilonHull(neaEpsilon, d)) {
-            final Element transitionElement = nea.createElement("TRANSITION");
-            transitionElement.setAttribute("target", stateForNewRule);
+            final Transition transition = new Transition(stateName, stateForNewRule, character);
 
-            final Element labelElement = nea.createElement("LABEL");
-            labelElement.setAttribute("read", character);
-            transitionElement.appendChild(labelElement);
-
-            stateElements.get(stateName).appendChild(transitionElement);
+            nea.addTransition(transition);
         }
     }
 

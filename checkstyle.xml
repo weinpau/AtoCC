@@ -152,7 +152,7 @@
 
 		<!-- Size constraints -->
 		<module name="ExecutableStatementCount">
-			<property name="max" value="10" />
+			<property name="max" value="15" />
 		</module>
 		<module name="LineLength">
 			<property name="max" value="100" />
@@ -166,7 +166,7 @@
 		<module name="OuterTypeNumber" />
 
 		<module name="MethodCount">
-			<property name="maxTotal" value="30" />
+			<property name="maxTotal" value="35" />
 		</module>
 		
 		<!-- Whitespace -->

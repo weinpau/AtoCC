@@ -5,4 +5,5 @@
       <provide interface="de.hszg.atocc.core.util.AutomatonService"/>
    </service>
    <reference bind="setSetService" cardinality="1..1" interface="de.hszg.atocc.core.util.SetService" name="SetService" policy="static" unbind="unsetSetService"/>
+   <reference bind="setXmlUtilService" cardinality="1..1" interface="de.hszg.atocc.core.util.XmlUtilService" name="XmlUtilService" policy="static" unbind="unsetXmlUtilService"/>
 </scr:component>

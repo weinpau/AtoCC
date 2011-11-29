@@ -6,6 +6,9 @@ import de.hszg.atocc.core.util.WebUtilService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlValidationException;
 import de.hszg.atocc.core.util.XmlValidatorService;
+import de.hszg.atocc.core.util.automaton.Automaton;
+import de.hszg.atocc.core.util.automaton.AutomatonType;
+import de.hszg.atocc.core.util.automaton.Transition;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,54 +18,40 @@ import java.util.Set;
 
 import org.restlet.resource.Post;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 public final class Nea2Dea extends RestfulWebService {
 
     private static final String AUTOMATON = "AUTOMATON";
-    private static final String VALUE = "value";
-    private static final String TYPE = "TYPE";
-    private static final String FINALSTATE = "finalstate";
 
-    private Document nea;
-    private Set<Set<String>> neaStatePowerSet;
-    private String neaInitialState;
-
-    private Set<String> alphabet;
-
-    private Document dea;
-    private Element deaAutomatonElement;
-
-    private Map<String, Set<String>> deaStateNameMap;
-    private Map<String, Element> deaStateElementMap;
-
-    private Set<String> deaFinalStates;
-    private String deaInitialState;
+    private Automaton nea;
+    private Automaton dea;
+    private Document deaDocument;
 
     private XmlUtilService xmlUtils;
     private AutomatonService automatonUtils;
     private XmlValidatorService xmlValidator;
     private WebUtilService webUtils;
 
-    @Post
-    public Document transform(final Document aNea) {
+    private Set<String> processedStates;
 
-        nea = aNea;
-        Document result = null;
+    private Document result;
+
+    private Map<String, Set<String>> deaToNeaStateMap;
+    
+    private String currentState;
+
+    @Post
+    public Document transform(final Document neaDocument) {
+        tryToGetRequiredServices();
 
         try {
-            tryToGetRequiredServices();
-            
-            removeEpsilonRulesIfNeeded();
-            
-            validateInput();
-            
-            initializeDeaDocument();
+            initialize(neaDocument);
+
             transformAutomaton();
 
-            xmlValidator.validate(dea, AUTOMATON);
+            xmlValidator.validate(deaDocument, AUTOMATON);
 
-            result = xmlUtils.createResult(dea);
+            result = xmlUtils.createResult(deaDocument);
         } catch (final RuntimeException e) {
             result = xmlUtils.createResultWithError("TRANSFORM_FAILED", e);
         } catch (XmlValidationException e) {
@@ -72,91 +61,54 @@ public final class Nea2Dea extends RestfulWebService {
         return result;
     }
 
-    private void validateInput() throws XmlValidationException {
-        xmlValidator.validate(nea, AUTOMATON);
+    private void initialize(final Document neaDocument) throws XmlValidationException {
+        xmlValidator.validate(neaDocument, AUTOMATON);
+        nea = automatonUtils.automatonFrom(neaDocument);
+        dea = new Automaton(AutomatonType.DEA);
+        dea.setAlphabet(nea.getAlphabet());
+
         checkAutomatonType();
+
+        removeEpsilonRulesIfNeeded();
     }
 
     private void removeEpsilonRulesIfNeeded() {
-        if (automatonUtils.containsEpsilonRules(nea)) {
-            final Document result =
-                    webUtils.post("http://localhost:8081/autoedit/neaepsilon2nea", nea);
-            
-            
-            nea = xmlUtils.getContent(result);
+        System.out.println("EPSILON: " + nea.containsEpsilonRules());
+        if (nea.containsEpsilonRules()) {
+            final Document neaDocument = automatonUtils.automatonToXml(nea);
+
+            final Document serviceResult = webUtils.post(
+                    "http://localhost:8081/autoedit/neaepsilon2nea", neaDocument);
+
+            final Document resultNeaDocument = xmlUtils.getContent(serviceResult);
+
+            nea = automatonUtils.automatonFrom(resultNeaDocument);
         }
     }
 
     private void transformAutomaton() {
-        extractDataFromNea(nea);
-        generateDeaData();
-        createDeaDocument();
-    }
+        generateNewStatesFrom(automatonUtils.getStatePowerSetFrom(nea));
 
-    private void generateDeaData() {
-        generateNewStatesFrom(neaStatePowerSet);
-        generateNewFinalStates();
         generateNewInitialState();
-    }
-
-    private void extractDataFromNea(final Document aNea) {
-        neaStatePowerSet = automatonUtils.getStatePowerSetFrom(aNea);
-        neaInitialState = automatonUtils.getNameOfInitialStateFrom(aNea);
-        alphabet = automatonUtils.getAlphabetFrom(aNea);
-    }
-
-    private void createDeaDocument() {
-        createAutomatonElement();
-        createTypeElement();
-        createAlphabetElement();
         createNewTransitions();
-        createInitialStateElement();
+        generateNewFinalStates();
+
+        deaDocument = automatonUtils.automatonToXml(dea);
     }
 
     private void checkAutomatonType() {
-        final Element automatonElement = nea.getDocumentElement();
-        final Element typeElement = (Element) automatonElement.getElementsByTagName(TYPE).item(0);
-
-        if (!"NEA".equals(typeElement.getAttribute(VALUE))) {
+        if (nea.getType() != AutomatonType.NEA) {
             throw new RuntimeException("INVALID_AUTOMATON_TYPE");
         }
     }
 
-    private void initializeDeaDocument() {
-        dea = xmlUtils.createEmptyDocument();
-    }
-
-    private void createAutomatonElement() {
-        deaAutomatonElement = dea.createElement(AUTOMATON);
-        dea.appendChild(deaAutomatonElement);
-    }
-
-    private void createTypeElement() {
-        final Element typeElement = dea.createElement(TYPE);
-        typeElement.setAttribute(VALUE, "DEA");
-        deaAutomatonElement.appendChild(typeElement);
-    }
-
-    private void createAlphabetElement() {
-        final Element alphabetElement = dea.createElement("ALPHABET");
-        deaAutomatonElement.appendChild(alphabetElement);
-
-        for (String alphabetItem : alphabet) {
-            final Element itemElement = dea.createElement("ITEM");
-            itemElement.setAttribute(VALUE, alphabetItem);
-            alphabetElement.appendChild(itemElement);
-        }
-    }
-
     private void generateNewStatesFrom(final Set<Set<String>> statePowerSet) {
-        deaStateNameMap = new HashMap<String, Set<String>>();
-        deaStateElementMap = new HashMap<String, Element>();
+        deaToNeaStateMap = new HashMap<String, Set<String>>();
 
         int i = 0;
-        for (Set<String> element : statePowerSet) {
+        for (Set<String> elementFromPowerset : statePowerSet) {
             final String newName = generateNewStateName(i);
-            deaStateNameMap.put(newName, element);
-            deaStateElementMap.put(newName, createStateElement(newName));
+            deaToNeaStateMap.put(newName, elementFromPowerset);
             ++i;
         }
     }
@@ -165,114 +117,84 @@ public final class Nea2Dea extends RestfulWebService {
         return String.format("z_%d", i);
     }
 
-    private Element createStateElement(final String name) {
-        final Element stateElement = dea.createElement("STATE");
-        stateElement.setAttribute("name", name);
-
-        return stateElement;
-    }
-
     private void generateNewFinalStates() {
-        deaFinalStates = new HashSet<String>();
-        final Set<String> neaFinalStates = automatonUtils.getNamesOfFinalStatesFrom(nea);
-
-        for (Entry<String, Set<String>> deaState : deaStateNameMap.entrySet()) {
-            addToFinalStatesIfNeeded(neaFinalStates, deaState);
-        }
-
-        for (Entry<String, Element> deaState : deaStateElementMap.entrySet()) {
-            if (isFinalState(deaState.getKey())) {
-                deaState.getValue().setAttribute(FINALSTATE, "true");
-            } else {
-                deaState.getValue().setAttribute(FINALSTATE, "false");
-            }
+        for (Entry<String, Set<String>> deaState : deaToNeaStateMap.entrySet()) {
+            addToFinalStatesIfNeeded(deaState);
         }
     }
 
-    private boolean isFinalState(final String name) {
-        return deaFinalStates.contains(name);
-    }
-
-    private void addToFinalStatesIfNeeded(final Set<String> neaFinalStates,
-            final Entry<String, Set<String>> newState) {
-        for (String neaFinalState : neaFinalStates) {
-            if (newState.getValue().contains(neaFinalState)) {
-                deaFinalStates.add(newState.getKey());
+    private void addToFinalStatesIfNeeded(Entry<String, Set<String>> newState) {
+        for (String neaFinalState : nea.getFinalStates()) {
+            if (newState.getValue().contains(neaFinalState)
+                    && dea.getStates().contains(newState.getKey())) {
+                dea.addFinalState(newState.getKey());
             }
         }
     }
 
     private void generateNewInitialState() {
-        final Set<String> setToSeach = new HashSet<String>();
-        setToSeach.add(neaInitialState);
+        final Set<String> setToSearch = new HashSet<String>();
+        setToSearch.add(nea.getInitialState());
 
-        for (Entry<String, Set<String>> deaState : deaStateNameMap.entrySet()) {
-            if (deaState.getValue().equals(setToSeach)) {
-                deaInitialState = deaState.getKey();
+        for (Entry<String, Set<String>> deaState : deaToNeaStateMap.entrySet()) {
+            if (deaState.getValue().equals(setToSearch)) {
+                dea.setInitialState(deaState.getKey());
 
                 return;
             }
         }
     }
 
-    private void createInitialStateElement() {
-        final Element initialStateElement = dea.createElement("INITIALSTATE");
-        initialStateElement.setAttribute(VALUE, deaInitialState);
-        deaAutomatonElement.appendChild(initialStateElement);
-    }
-
     private void createNewTransitions() {
-        final Set<String> processedStates = new HashSet<String>();
-        final Set<String> remainingStates = new HashSet<String>();
+        processedStates = new HashSet<String>();
 
-        String currentState = deaInitialState;
+        currentState = dea.getInitialState();
         Set<String> originalStates = null;
         boolean finished = false;
 
         while (!finished) {
-            originalStates = deaStateNameMap.get(currentState);
+            originalStates = deaToNeaStateMap.get(currentState);
 
-            for (String character : alphabet) {
-
+            for (String character : nea.getAlphabet()) {
                 final Set<String> allOriginalStates = getTargets(originalStates, character);
                 final String newState = getNewStateFor(allOriginalStates);
 
-                final Element transitionElement = createTransitionElement(currentState, newState);
-                createLabelElement(character, transitionElement);
-
-                remainingStates.add(newState);
+                dea.addState(currentState);
+                dea.addState(newState);
+                dea.addTransition(new Transition(currentState, newState, character));
             }
 
             processedStates.add(currentState);
 
-            // get next unprocessed state
-            boolean foundNext = false;
-            for (String s : remainingStates) {
+            finished = getNextUnprocessedState();
+        }
+    }
 
-                if (!processedStates.contains(s)) {
-                    currentState = s;
-                    foundNext = true;
-                    break;
-                }
-            }
+    private boolean getNextUnprocessedState() {
+        boolean finished = false;
+        boolean foundNext = false;
+        
+        for (String s : dea.getStates()) {
 
-            if (!foundNext) {
-                finished = true;
+            if (!processedStates.contains(s)) {
+                currentState = s;
+                foundNext = true;
+                
+                break;
             }
         }
 
-        remainingStates.add(deaInitialState);
-
-        for (String state : remainingStates) {
-            final Element stateElement = deaStateElementMap.get(state);
-            deaAutomatonElement.appendChild(stateElement);
+        if (!foundNext) {
+            finished = true;
         }
+        
+        return finished;
     }
 
     private String getNewStateFor(final Set<String> allOriginalStates) {
         String newState = "";
 
-        for (Entry<String, Set<String>> entry : deaStateNameMap.entrySet()) {
+        for (Entry<String, Set<String>> entry : deaToNeaStateMap.entrySet()) {
             if (entry.getValue().equals(allOriginalStates)) {
                 newState = entry.getKey();
 
@@ -283,24 +205,11 @@ public final class Nea2Dea extends RestfulWebService {
         return newState;
     }
 
-    private void createLabelElement(final String character, final Element transitionElement) {
-        final Element labelElement = dea.createElement("LABEL");
-        labelElement.setAttribute("read", character);
-        transitionElement.appendChild(labelElement);
-    }
-
-    private Element createTransitionElement(final String currentState, final String newState) {
-        final Element transitionElement = dea.createElement("TRANSITION");
-        transitionElement.setAttribute("target", newState);
-        deaStateElementMap.get(currentState).appendChild(transitionElement);
-        return transitionElement;
-    }
-
     private Set<String> getTargets(final Set<String> originalStates, final String character) {
         final Set<String> allOriginalStates = new HashSet<String>();
 
         for (String originalState : originalStates) {
-            final Set<String> targets = automatonUtils.getTargetsOf(nea, originalState, character);
+            final Set<String> targets = nea.getTargetsFor(originalState, character);
             allOriginalStates.addAll(targets);
         }
 
