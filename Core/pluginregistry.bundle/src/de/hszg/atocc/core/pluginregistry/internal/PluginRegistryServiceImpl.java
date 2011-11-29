@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
+import org.osgi.service.log.LogService;
 import org.restlet.resource.ServerResource;
 import org.restlet.routing.Router;
 
@@ -14,8 +15,10 @@ public final class PluginRegistryServiceImpl implements PluginRegistryService {
     private static final String ROUTER_NOT_SET = "Router not set";
 
     private Router router;
-    private Map<Class<? extends ServerResource>, String> registeredWebServices =
-            new HashMap<Class<? extends ServerResource>, String>();
+    private Map<Class<? extends ServerResource>, String> registeredWebServices 
+        = new HashMap<Class<? extends ServerResource>, String>();
+
+    private LogService logger;
 
     @Override
     public void setRouter(Router aRouter) {
@@ -26,14 +29,15 @@ public final class PluginRegistryServiceImpl implements PluginRegistryService {
 
     @Override
     public void register(final String urlPattern, final Class<? extends ServerResource> c) {
-        System.out.println("REGISTER " + urlPattern);
+        // System.out.println("REGISTER " + urlPattern);
+        logger.log(LogService.LOG_ERROR, String.format("REGISTER WEBSERVICE: %s", urlPattern));
 
         if (router == null) {
             throw new NullPointerException(ROUTER_NOT_SET);
         }
 
         router.attach(urlPattern, c);
-        
+
         registeredWebServices.put(c, urlPattern);
     }
 
@@ -44,8 +48,18 @@ public final class PluginRegistryServiceImpl implements PluginRegistryService {
         }
 
         router.detach(c);
-        
+
         registeredWebServices.remove(c);
+    }
+
+    public synchronized void setLogService(LogService service) {
+        logger = service;
+    }
+
+    public synchronized void unsetLogService(LogService service) {
+        if (logger == service) {
+            logger = null;
+        }
     }
 
     private void registerRegistryServices() {

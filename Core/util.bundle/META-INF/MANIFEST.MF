@@ -5,8 +5,10 @@ Bundle-SymbolicName: atocc.core.util.bundle
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.osgi.framework;version="1.3.0",
+ org.osgi.service.log;version="1.3.0",
  org.restlet,
  org.restlet.resource
 Export-Package: de.hszg.atocc.core.util,
  de.hszg.atocc.core.util.automaton
-Service-Component: OSGI-INF/automaton_component.xml, OSGI-INF/set_component.xml, OSGI-INF/webutil_component.xml, OSGI-INF/xmlutil_component.xml, OSGI-INF/xmlvalidator_component.xml
+Service-Component: OSGI-INF/automaton_component.xml, OSGI-INF/set_component.xml, OSGI-INF/webutil_component.xml, OSGI-INF/xmlutil_component.xml, OSGI-INF/xmlvalidator_component.xml, OSGI-INF/log_component.xml
+Require-Bundle: org.eclipse.equinox.log;bundle-version="1.0.100"

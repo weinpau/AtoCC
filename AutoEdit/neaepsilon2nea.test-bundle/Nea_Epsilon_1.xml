@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AUTOMATON>
+    <TYPE value="NEA"/>
+    <ALPHABET>
+        <ITEM value="a"/>
+        <ITEM value="b"/>
+    </ALPHABET>
+    <STATE name="q_0" finalstate="false">
+        <TRANSITION target="q_1">
+            <LABEL read="EPSILON"/>
+        </TRANSITION>
+        <TRANSITION target="q_3">
+            <LABEL read="a"/>
+        </TRANSITION>
+    </STATE>
+    <STATE name="q_1" finalstate="false">
+        <TRANSITION target="q_2">
+            <LABEL read="b"/>
+        </TRANSITION>
+        <TRANSITION target="q_4">
+            <LABEL read="a"/>
+        </TRANSITION>
+    </STATE>
+    <STATE name="q_2" finalstate="true"/>
+    <STATE name="q_3" finalstate="false">
+        <TRANSITION target="q_1">
+            <LABEL read="EPSILON"/>
+        </TRANSITION>
+        <TRANSITION target="q_4">
+            <LABEL read="b"/>
+        </TRANSITION>
+    </STATE>
+    <STATE name="q_4" finalstate="false">
+        <TRANSITION target="q_5">
+            <LABEL read="EPSILON"/>
+        </TRANSITION>
+    </STATE>
+    <STATE name="q_5" finalstate="false"/>
+    <INITIALSTATE value="q_0"/>
+    <LAYOUT>
+        <STATELAYOUT name="q_0">
+            <LEFT value="100"/>
+            <TOP value="72"/>
+            <TRANSITIONLAYOUT target="q_1" drawvertical="false"/>
+            <TRANSITIONLAYOUT target="q_3" drawvertical="false"/>
+        </STATELAYOUT>
+        <STATELAYOUT name="q_1">
+            <LEFT value="242"/>
+            <TOP value="72"/>
+            <TRANSITIONLAYOUT target="q_2" drawvertical="false"/>
+            <TRANSITIONLAYOUT target="q_4" drawvertical="false"/>
+        </STATELAYOUT>
+        <STATELAYOUT name="q_2">
+            <LEFT value="380"/>
+            <TOP value="72"/>
+        </STATELAYOUT>
+        <STATELAYOUT name="q_3">
+            <LEFT value="100"/>
+            <TOP value="216"/>
+            <TRANSITIONLAYOUT target="q_1" drawvertical="false"/>
+            <TRANSITIONLAYOUT target="q_4" drawvertical="false"/>
+        </STATELAYOUT>
+        <STATELAYOUT name="q_4">
+            <LEFT value="242"/>
+            <TOP value="216"/>
+            <TRANSITIONLAYOUT target="q_5" drawvertical="false"/>
+        </STATELAYOUT>
+        <STATELAYOUT name="q_5">
+            <LEFT value="380"/>
+            <TOP value="216"/>
+        </STATELAYOUT>
+        <NOTEPAD>
+            {\rtf1\ansi\ansicpg1252\deff0\deflang1031{\fonttbl{\f0\fnil\fcharset0 Arial;}}
+\viewkind4\uc1\pard\fs20 
+\par }
+
+        </NOTEPAD>
+    </LAYOUT>
+</AUTOMATON>

@@ -9,6 +9,7 @@ import de.hszg.atocc.core.util.XmlValidatorService;
 
 import java.util.concurrent.ConcurrentMap;
 
+import org.osgi.service.log.LogService;
 import org.restlet.Component;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
@@ -21,11 +22,23 @@ public final class StarterServiceImpl implements StarterService {
     private Component component;
     private Router router;
 
+    private LogService logger;
+    
     private PluginRegistryService pluginRegistry;
     private XmlUtilService xmlUtils;
     private AutomatonService automatonUtils;
     private XmlValidatorService xmlValidator;
     private WebUtilService webUtils;
+    
+    public synchronized void setLogService(LogService service) {
+        logger = service;
+    }
+
+    public synchronized void unsetLogService(LogService service) {
+        if (logger == service) {
+            logger = null;
+        }
+    }
     
     public synchronized void setXmlUtilService(XmlUtilService service) {
         xmlUtils = service;
@@ -81,6 +94,8 @@ public final class StarterServiceImpl implements StarterService {
     }
 
     private void initializeComponent() {
+        logger.log(LogService.LOG_WARNING, "Enabled logging");
+        
         component = new Component();
 
         final Server server = component.getServers().add(Protocol.HTTP, PORT);
