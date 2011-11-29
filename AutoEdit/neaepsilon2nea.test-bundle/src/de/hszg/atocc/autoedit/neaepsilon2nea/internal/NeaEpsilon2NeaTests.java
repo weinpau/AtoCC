@@ -11,6 +11,7 @@ import junit.framework.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public final class NeaEpsilon2NeaTests {
 
@@ -23,6 +24,8 @@ public final class NeaEpsilon2NeaTests {
     
     private static Document neaDocument1;
     private static Automaton nea1;
+    
+    private static Document invalidTypeDocument;
 
     public static void setWebService(WebUtilService service) {
         webService = service;
@@ -43,6 +46,32 @@ public final class NeaEpsilon2NeaTests {
         
         neaDocument1 = webService.post("http://localhost:8081/autoedit/neaepsilon2nea", neaEpsilonDocument1);
         nea1 = automatonService.automatonFrom(neaDocument1);
+        
+        invalidTypeDocument = xmlUtils.documentFromFile("Nea_Epsilon_1.xml");
+        final Element typeElement = (Element) invalidTypeDocument.getElementsByTagName("TYPE").item(0);
+        typeElement.setAttribute("value", "DEA");
+    }
+    
+    @Test
+    public void verifyInvalidNeaEpsilonProducesError() {
+        Document invalid = xmlUtils.createEmptyDocument();
+        final Element automatonElement = invalid.createElement("AUTOMATON");
+        invalid.appendChild(automatonElement);
+        
+        final Document resultDocument = webService.post("http://localhost:8081/autoedit/neaepsilon2nea", invalid);
+        
+        final String result = xmlUtils.getResultStatus(resultDocument);
+        
+        Assert.assertEquals("error", result);
+    }
+    
+    @Test
+    public void verifyInvalidAutomatonTypeProducesError() {
+        final Document resultDocument = webService.post("http://localhost:8081/autoedit/neaepsilon2nea", invalidTypeDocument);
+        
+        final String result = xmlUtils.getResultStatus(resultDocument);
+        
+        Assert.assertEquals("error", result);
     }
     
     @Test

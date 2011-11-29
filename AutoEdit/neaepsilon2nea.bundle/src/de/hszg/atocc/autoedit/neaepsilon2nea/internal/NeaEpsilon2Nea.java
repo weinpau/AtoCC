@@ -43,6 +43,8 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
             result = xmlUtils.createResult(automatonUtils.automatonToXml(nea));
         } catch (final XmlValidationException e) {
             result = xmlUtils.createResultWithError("INVALID_INPUT", e);
+        } catch (final RuntimeException e) {
+            result = xmlUtils.createResultWithError(e.getLocalizedMessage(), e);
         }
 
         return result;
