@@ -16,6 +16,16 @@ public final class SetServiceImpl implements SetService {
             return powerSetFromNonEmptySet(originalSet);
         }
     }
+    
+    public <T> boolean containsAnyOf(Set<T> s1, Set<T> s2) {
+        for (T element : s2) {
+            if (s1.contains(element)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     private <T> Set<Set<T>> powerSetFromNonEmptySet(final Set<T> originalSet) {
         final Set<Set<T>> sets = new HashSet<Set<T>>();

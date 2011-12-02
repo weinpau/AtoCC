@@ -2,6 +2,7 @@ package de.hszg.atocc.autoedit.neaepsilon2nea.internal;
 
 import de.hszg.atocc.core.util.AutomatonService;
 import de.hszg.atocc.core.util.RestfulWebService;
+import de.hszg.atocc.core.util.SetService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlValidationException;
 import de.hszg.atocc.core.util.XmlValidatorService;
@@ -20,6 +21,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
     private XmlUtilService xmlUtils;
     private AutomatonService automatonUtils;
     private XmlValidatorService xmlValidator;
+    private SetService setService;
 
     private Document result;
 
@@ -33,10 +35,9 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
 
             xmlValidator.validate(neaEpsilonDocument, "AUTOMATON");
             neaEpsilon = automatonUtils.automatonFrom(neaEpsilonDocument);
+            checkAutomatonType();
             
             initializeOutputAutomaton();
-
-            checkAutomatonType();
 
             createNewDeltaRules();
 
@@ -61,6 +62,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
         xmlUtils = getService(XmlUtilService.class);
         automatonUtils = getService(AutomatonService.class);
         xmlValidator = getService(XmlValidatorService.class);
+        setService = getService(SetService.class);
     }
 
     private void checkAutomatonType() {
@@ -80,7 +82,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
     private void createNewDeltaRuleFor(String stateName, String character) {
         final Set<String> epsilonHull = automatonUtils.getEpsilonHull(neaEpsilon, stateName);
 
-        if (containsAnyOf(epsilonHull, neaEpsilon.getFinalStates())) {
+        if (setService.containsAnyOf(epsilonHull, neaEpsilon.getFinalStates())) {
             nea.addFinalState(stateName);
         }
 
@@ -99,15 +101,5 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
 
             nea.addTransition(transition);
         }
-    }
-
-    private boolean containsAnyOf(Set<String> epsilonHull, Set<String> states) {
-        for (String state : states) {
-            if (epsilonHull.contains(state)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
