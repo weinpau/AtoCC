@@ -5,6 +5,10 @@ import de.hszg.atocc.core.util.WebUtilService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlUtilsException;
 import de.hszg.atocc.core.util.automaton.Automaton;
+import de.hszg.atocc.core.util.automaton.Transition;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import junit.framework.Assert;
 
@@ -18,13 +22,13 @@ public final class NeaEpsilon2NeaTests {
     private static WebUtilService webService;
     private static XmlUtilService xmlUtils;
     private static AutomatonService automatonService;
-    
+
     private static Document neaEpsilonDocument1;
     private static Automaton neaEpsilon1;
-    
+
     private static Document neaDocument1;
     private static Automaton nea1;
-    
+
     private static Document invalidTypeDocument;
 
     public static void setWebService(WebUtilService service) {
@@ -34,46 +38,50 @@ public final class NeaEpsilon2NeaTests {
     public static void setXmlUtils(XmlUtilService service) {
         xmlUtils = service;
     }
-    
+
     public static void setAutomatonService(AutomatonService service) {
         automatonService = service;
     }
-    
+
     @BeforeClass
     public static void initialize() throws XmlUtilsException {
         neaEpsilonDocument1 = xmlUtils.documentFromFile("Nea_Epsilon_1.xml");
         neaEpsilon1 = automatonService.automatonFrom(neaEpsilonDocument1);
-        
-        neaDocument1 = webService.post("http://localhost:8081/autoedit/neaepsilon2nea", neaEpsilonDocument1);
+
+        neaDocument1 = webService.post("http://localhost:8081/autoedit/neaepsilon2nea",
+                neaEpsilonDocument1);
         nea1 = automatonService.automatonFrom(neaDocument1);
-        
+
         invalidTypeDocument = xmlUtils.documentFromFile("Nea_Epsilon_1.xml");
-        final Element typeElement = (Element) invalidTypeDocument.getElementsByTagName("TYPE").item(0);
+        final Element typeElement = (Element) invalidTypeDocument.getElementsByTagName("TYPE")
+                .item(0);
         typeElement.setAttribute("value", "DEA");
     }
-    
+
     @Test
     public void verifyInvalidNeaEpsilonProducesError() {
         Document invalid = xmlUtils.createEmptyDocument();
         final Element automatonElement = invalid.createElement("AUTOMATON");
         invalid.appendChild(automatonElement);
-        
-        final Document resultDocument = webService.post("http://localhost:8081/autoedit/neaepsilon2nea", invalid);
-        
+
+        final Document resultDocument = webService.post(
+                "http://localhost:8081/autoedit/neaepsilon2nea", invalid);
+
         final String result = xmlUtils.getResultStatus(resultDocument);
-        
+
         Assert.assertEquals("error", result);
     }
-    
+
     @Test
     public void verifyInvalidAutomatonTypeProducesError() {
-        final Document resultDocument = webService.post("http://localhost:8081/autoedit/neaepsilon2nea", invalidTypeDocument);
-        
+        final Document resultDocument = webService.post(
+                "http://localhost:8081/autoedit/neaepsilon2nea", invalidTypeDocument);
+
         final String result = xmlUtils.getResultStatus(resultDocument);
-        
+
         Assert.assertEquals("error", result);
     }
-    
+
     @Test
     public void testAlphabetsAreEqualForNea1() {
         Assert.assertEquals(neaEpsilon1.getAlphabet(), nea1.getAlphabet());
@@ -83,45 +91,82 @@ public final class NeaEpsilon2NeaTests {
     public void testStatesAreEqualForNea1() {
         Assert.assertEquals(neaEpsilon1.getStates(), nea1.getStates());
     }
-    
+
     @Test
     public void testInitialStatesAreEqualForNea1() {
         Assert.assertEquals(neaEpsilon1.getInitialState(), nea1.getInitialState());
     }
-    
+
     @Test
-    public void testFinalStatesAreEqualNea1() {
+    public void testFinalStatesAreEqualForNea1() {
         Assert.assertEquals(neaEpsilon1.getFinalStates(), nea1.getFinalStates());
     }
-    
+
     @Test
     public void testTransitionsFromQ0ForNea1() {
-        Assert.fail("Not yet implemented");
+        final Set<Transition> actualTransitions = nea1.getTransitionsFor("q_0");
+
+        final Set<Transition> expectedTransitions = new HashSet<Transition>();
+        expectedTransitions.add(new Transition("q_0", "q_1", "a"));
+        expectedTransitions.add(new Transition("q_0", "q_5", "a"));
+        expectedTransitions.add(new Transition("q_0", "q_4", "a"));
+        expectedTransitions.add(new Transition("q_0", "q_3", "a"));
+        expectedTransitions.add(new Transition("q_0", "q_2", "b"));
+
+        Assert.assertEquals(expectedTransitions, actualTransitions);
     }
-    
+
     @Test
     public void testTransitionsFromQ1ForNea1() {
-        Assert.fail("Not yet implemented");
+        final Set<Transition> actualTransitions = nea1.getTransitionsFor("q_1");
+
+        final Set<Transition> expectedTransitions = new HashSet<Transition>();
+        expectedTransitions.add(new Transition("q_1", "q_4", "a"));
+        expectedTransitions.add(new Transition("q_1", "q_5", "a"));
+        expectedTransitions.add(new Transition("q_1", "q_2", "b"));
+        
+        Assert.assertEquals(expectedTransitions, actualTransitions);
     }
-    
+
     @Test
     public void testTransitionsFromQ2ForNea1() {
-        Assert.fail("Not yet implemented");
+        final Set<Transition> actualTransitions = nea1.getTransitionsFor("q_2");
+
+        final Set<Transition> expectedTransitions = new HashSet<Transition>();
+        
+        Assert.assertEquals(expectedTransitions, actualTransitions);
     }
-    
+
     @Test
     public void testTransitionsFromQ3ForNea1() {
-        Assert.fail("Not yet implemented");
+        final Set<Transition> actualTransitions = nea1.getTransitionsFor("q_3");
+
+        final Set<Transition> expectedTransitions = new HashSet<Transition>();
+        expectedTransitions.add(new Transition("q_3", "q_2", "b"));
+        expectedTransitions.add(new Transition("q_3", "q_4", "a"));
+        expectedTransitions.add(new Transition("q_3", "q_4", "b"));
+        expectedTransitions.add(new Transition("q_3", "q_5", "a"));
+        expectedTransitions.add(new Transition("q_3", "q_5", "b"));
+        
+        Assert.assertEquals(expectedTransitions, actualTransitions);
     }
-    
+
     @Test
     public void testTransitionsFromQ4ForNea1() {
-        Assert.fail("Not yet implemented");
+        final Set<Transition> actualTransitions = nea1.getTransitionsFor("q_4");
+
+        final Set<Transition> expectedTransitions = new HashSet<Transition>();
+        
+        Assert.assertEquals(expectedTransitions, actualTransitions);
     }
-    
+
     @Test
     public void testTransitionsFromQ5ForNea1() {
-        Assert.fail("Not yet implemented");
+        final Set<Transition> actualTransitions = nea1.getTransitionsFor("q_5");
+
+        final Set<Transition> expectedTransitions = new HashSet<Transition>();
+        
+        Assert.assertEquals(expectedTransitions, actualTransitions);
     }
 
 }
