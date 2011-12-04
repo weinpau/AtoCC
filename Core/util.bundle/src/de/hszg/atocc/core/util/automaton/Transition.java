@@ -42,10 +42,6 @@ public final class Transition {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
         if (!(obj instanceof Transition)) {
             return false;
         }
