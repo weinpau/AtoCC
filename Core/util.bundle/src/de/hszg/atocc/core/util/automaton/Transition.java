@@ -33,9 +33,9 @@ public final class Transition {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((characterToRead == null) ? 0 : characterToRead.hashCode());
-        result = prime * result + ((source == null) ? 0 : source.hashCode());
-        result = prime * result + ((target == null) ? 0 : target.hashCode());
+        result = prime * result + characterToRead.hashCode();
+        result = prime * result + source.hashCode();
+        result = prime * result + target.hashCode();
         
         return result;
     }

@@ -31,11 +31,7 @@ public final class Converter {
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder()
                     .parse(new InputSource(new StringReader(data)));
-        } catch (final SAXException e) {
-            throw new ConverterException(e);
-        } catch (final IOException e) {
-            throw new ConverterException(e);
-        } catch (final ParserConfigurationException e) {
+        } catch (final SAXException | IOException | ParserConfigurationException e) {
             throw new ConverterException(e);
         }
     }

@@ -29,7 +29,7 @@ public final class XmlValidatorServiceImpl implements XmlValidatorService {
                     schemaFactory.newSchema(getClass().getResource("/AutoEdit.xsd"));
 
             registerSchema(schema, "AUTOMATON");
-        } catch (SAXException e) {
+        } catch (final SAXException e) {
             e.printStackTrace();
         }
     }
@@ -60,9 +60,7 @@ public final class XmlValidatorServiceImpl implements XmlValidatorService {
 
         try {
             validator.validate(new DOMSource(document));
-        } catch (final SAXException e) {
-            throw new XmlValidationException(e);
-        } catch (final IOException e) {
+        } catch (final SAXException | IOException e) {
             throw new XmlValidationException(e);
         }
     }

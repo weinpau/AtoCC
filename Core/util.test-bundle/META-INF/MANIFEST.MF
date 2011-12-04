@@ -3,9 +3,9 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Util Test-bundle
 Bundle-SymbolicName: util.test-bundle;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.osgi.framework;version="1.3.0"
 Require-Bundle: org.junit4,
  atocc.core.util.bundle
 Bundle-Activator: de.hszg.atocc.core.util.test.Activator
 Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

@@ -6,7 +6,6 @@ import de.hszg.atocc.core.util.XmlUtilsException;
 
 import junit.framework.Assert;
 
-import org.junit.Test;
 import org.w3c.dom.Document;
 
 public final class Nea2DeaTests {
@@ -22,7 +21,6 @@ public final class Nea2DeaTests {
         xmlUtils = service;
     }
 
-    @Test
     public void test() throws XmlUtilsException {
         final Document nea4 = xmlUtils.documentFromFile("nea4.xml");
 

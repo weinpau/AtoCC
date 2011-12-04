@@ -30,11 +30,7 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder()
                     .parse(new File(filename));
-        } catch (final SAXException e) {
-            throw new XmlUtilsException(e);
-        } catch (final IOException e) {
-            throw new XmlUtilsException(e);
-        } catch (final ParserConfigurationException e) {
+        } catch (final SAXException | IOException | ParserConfigurationException e) {
             throw new XmlUtilsException(e);
         }
     }
