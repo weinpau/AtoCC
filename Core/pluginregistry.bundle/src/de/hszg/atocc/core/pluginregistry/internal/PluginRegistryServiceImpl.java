@@ -27,10 +27,8 @@ public final class PluginRegistryServiceImpl implements PluginRegistryService {
     }
 
     @Override
-    public void register(final String urlPattern,
-            final Class<? extends ServerResource> c) {
-        logger.log(LogService.LOG_ERROR,
-                String.format("REGISTER WEBSERVICE: %s", urlPattern));
+    public void register(final String urlPattern, final Class<? extends ServerResource> c) {
+        logger.log(LogService.LOG_ERROR, String.format("REGISTER WEBSERVICE: %s", urlPattern));
 
         if (router == null) {
             throw new NullPointerException(ROUTER_NOT_SET);
@@ -63,8 +61,7 @@ public final class PluginRegistryServiceImpl implements PluginRegistryService {
     }
 
     private void registerRegistryServices() {
-        final ConcurrentMap<String, Object> attributes = router.getContext()
-                .getAttributes();
+        final ConcurrentMap<String, Object> attributes = router.getContext().getAttributes();
         attributes.put(PluginRegistryService.class.getName(), this);
 
         register("/services/list", ListService.class);
