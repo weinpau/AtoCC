@@ -50,7 +50,7 @@ public final class Automaton {
         states.add(state);
 
         if (!transitions.containsKey(state)) {
-            transitions.put(state, new HashSet<String>());
+            transitions.put(state, new HashSet<Transition>());
         }
     }
 
