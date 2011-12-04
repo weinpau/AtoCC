@@ -11,6 +11,7 @@ public abstract class AbstractServiceComponent {
 
     public final synchronized void setPluginRegistryService(PluginRegistryService service) {
         pluginRegistry = service;
+        extractServiceAnnotations();
         registerWebServices();
     }
 
@@ -21,31 +22,34 @@ public abstract class AbstractServiceComponent {
         }
     }
 
-    private void registerWebServices() {
+    private void extractServiceAnnotations() {
         final WebServices servicesAnnotation = getClass().getAnnotation(WebServices.class);
 
         if (servicesAnnotation != null) {
             for (WebService serviceAnnotation : servicesAnnotation.value()) {
-                registerWebService(serviceAnnotation);
+                annotations.add(serviceAnnotation);
             }
         } else {
-            final WebService annotation = getClass().getAnnotation(WebService.class);
+            final WebService serviceAnnotation = getClass().getAnnotation(WebService.class);
 
-            if (annotation != null) {
-                registerWebService(annotation);
+            if (serviceAnnotation != null) {
+                annotations.add(serviceAnnotation);
             }
         }
     }
 
-    private void registerWebService(WebService serviceAnnotation) {
-        annotations.add(serviceAnnotation);
-        pluginRegistry.register(serviceAnnotation.url(), serviceAnnotation.resource());
-    }
-    
-    private void unregisterWebServices() {
-        for (WebService annotation : annotations) {
-            pluginRegistry.unregister(annotation.resource());
+    private void registerWebServices() {
+        for (WebService serviceAnnotation : annotations) {
+            pluginRegistry.register(serviceAnnotation.url(), serviceAnnotation.resource());
         }
+    }
+
+    private void unregisterWebServices() {
+        for (WebService serviceAnnotation : annotations) {
+            pluginRegistry.unregister(serviceAnnotation.resource());
+        }
+        
+        annotations.clear();
     }
 
 }
