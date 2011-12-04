@@ -21,7 +21,7 @@ public final class AutomatonServiceTests {
 
     private TestAutomatons automatons;
     
-    private final Set<String> emptySet = new HashSet<String>();
+    private final Set<String> emptySet = new HashSet<>();
 
     private Set<String> z1;
     private Set<String> z2;
@@ -38,12 +38,12 @@ public final class AutomatonServiceTests {
     public void setUp() throws XmlUtilsException {
         automatons = new TestAutomatons();
         
-        z1 = new HashSet<String>();
-        z2 = new HashSet<String>();
-        z3 = new HashSet<String>();
-        z4 = new HashSet<String>();
-        z5 = new HashSet<String>();
-        z6 = new HashSet<String>();
+        z1 = new HashSet<>();
+        z2 = new HashSet<>();
+        z3 = new HashSet<>();
+        z4 = new HashSet<>();
+        z5 = new HashSet<>();
+        z6 = new HashSet<>();
         
         z1.add(TestAutomatons.Z1);
         z2.add(TestAutomatons.Z2);

@@ -28,16 +28,16 @@ public final class SetServiceImpl implements SetService {
     }
 
     private <T> Set<Set<T>> powerSetFromNonEmptySet(final Set<T> originalSet) {
-        final Set<Set<T>> sets = new HashSet<Set<T>>();
+        final Set<Set<T>> sets = new HashSet<>();
 
-        final List<T> list = new ArrayList<T>(originalSet);
+        final List<T> list = new ArrayList<>(originalSet);
 
         final T head = list.get(0);
 
-        final Set<T> rest = new HashSet<T>(list.subList(1, list.size()));
+        final Set<T> rest = new HashSet<>(list.subList(1, list.size()));
 
         for (Set<T> set : powerSetFrom(rest)) {
-            final Set<T> newSet = new HashSet<T>();
+            final Set<T> newSet = new HashSet<>();
             newSet.add(head);
             newSet.addAll(set);
             sets.add(newSet);
@@ -48,7 +48,7 @@ public final class SetServiceImpl implements SetService {
     }
 
     private <T> Set<Set<T>> setOnlyContainingEmptySet() {
-        final Set<Set<T>> set = new HashSet<Set<T>>();
+        final Set<Set<T>> set = new HashSet<>();
         set.add(new HashSet<T>());
 
         return set;

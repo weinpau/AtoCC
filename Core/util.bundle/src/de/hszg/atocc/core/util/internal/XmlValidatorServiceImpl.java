@@ -18,7 +18,7 @@ import org.xml.sax.SAXException;
 
 public final class XmlValidatorServiceImpl implements XmlValidatorService {
 
-    private Map<String, Schema> schemas = new HashMap<String, Schema>();
+    private Map<String, Schema> schemas = new HashMap<>();
 
     public XmlValidatorServiceImpl() {
         try {

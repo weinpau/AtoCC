@@ -103,7 +103,7 @@ public final class Nea2Dea extends RestfulWebService {
     }
 
     private void generateNewStatesFrom(final Set<Set<String>> statePowerSet) {
-        deaToNeaStateMap = new HashMap<String, Set<String>>();
+        deaToNeaStateMap = new HashMap<>();
 
         int i = 0;
         for (Set<String> elementFromPowerset : statePowerSet) {
@@ -133,7 +133,7 @@ public final class Nea2Dea extends RestfulWebService {
     }
 
     private void generateNewInitialState() {
-        final Set<String> setToSearch = new HashSet<String>();
+        final Set<String> setToSearch = new HashSet<>();
         setToSearch.add(nea.getInitialState());
 
         for (Entry<String, Set<String>> deaState : deaToNeaStateMap.entrySet()) {
@@ -146,7 +146,7 @@ public final class Nea2Dea extends RestfulWebService {
     }
 
     private void createNewTransitions() {
-        processedStates = new HashSet<String>();
+        processedStates = new HashSet<>();
 
         currentState = dea.getInitialState();
         Set<String> originalStates = null;
@@ -206,7 +206,7 @@ public final class Nea2Dea extends RestfulWebService {
     }
 
     private Set<String> getTargets(final Set<String> originalStates, final String character) {
-        final Set<String> allOriginalStates = new HashSet<String>();
+        final Set<String> allOriginalStates = new HashSet<>();
 
         for (String originalState : originalStates) {
             final Set<String> targets = nea.getTargetsFor(originalState, character);

@@ -86,7 +86,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
             nea.addFinalState(stateName);
         }
 
-        final Set<String> d = new TreeSet<String>();
+        final Set<String> d = new TreeSet<>();
 
         for (String state : epsilonHull) {
             d.addAll(neaEpsilon.getTargetsFor(state, character));
@@ -95,7 +95,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
         createTransitions(stateName, character, d);
     }
 
-    private void createTransitions(String stateName, String character, final Set<String> d) {
+    private void createTransitions(String stateName, String character, Set<String> d) {
         for (String stateForNewRule : automatonUtils.getEpsilonHull(neaEpsilon, d)) {
             final Transition transition = new Transition(stateName, stateForNewRule, character);
 

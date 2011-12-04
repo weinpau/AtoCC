@@ -8,12 +8,12 @@ import java.util.Set;
 public final class Automaton {
 
     private AutomatonType type;
-    private Set<String> alphabet = new HashSet<String>();
-    private Set<String> states = new HashSet<String>();
-    private Map<String, Set<Transition>> transitions = new HashMap<String, Set<Transition>>();
+    private Set<String> alphabet = new HashSet<>();
+    private Set<String> states = new HashSet<>();
+    private Map<String, Set<Transition>> transitions = new HashMap<>();
 
     private String initialState;
-    private Set<String> finalStates = new HashSet<String>();
+    private Set<String> finalStates = new HashSet<>();
 
     private boolean containsEpsilonRules;
 
@@ -50,7 +50,7 @@ public final class Automaton {
         states.add(state);
 
         if (!transitions.containsKey(state)) {
-            transitions.put(state, new HashSet<Transition>());
+            transitions.put(state, new HashSet<String>());
         }
     }
 
@@ -67,7 +67,7 @@ public final class Automaton {
     }
 
     public Set<String> getTargetsFor(String state, String read) {
-        final Set<String> targets = new HashSet<String>();
+        final Set<String> targets = new HashSet<>();
 
         for (Transition transition : getTransitionsFor(state)) {
             if (transition.getCharacterToRead().equals(read)) {

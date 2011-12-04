@@ -73,7 +73,7 @@ public final class AutomatonDeserializer {
     }
 
     private void setTransitions() {
-        final Set<Transition> transitions = new HashSet<Transition>();
+        final Set<Transition> transitions = new HashSet<>();
 
         for (String state : automaton.getStates()) {
             transitions.addAll(getTransitionsFromDocumentFor(state));
@@ -111,7 +111,7 @@ public final class AutomatonDeserializer {
     }
 
     private Set<Transition> getTransitionsFromDocumentFor(String state) {
-        final Set<Transition> transitions = new HashSet<Transition>();
+        final Set<Transition> transitions = new HashSet<>();
 
         automaton.addAlphabetItem(EPSILON);
         for (String alphabetCharacter : automaton.getAlphabet()) {
@@ -130,7 +130,7 @@ public final class AutomatonDeserializer {
         final XPath xpath = XPathFactory.newInstance().newXPath();
 
         try {
-            final Set<String> targets = new HashSet<String>();
+            final Set<String> targets = new HashSet<>();
 
             final NodeList targetNodes = (NodeList) xpath.evaluate(String.format(
                     "//STATE[@name='%s']/TRANSITION/LABEL[@read='%s']/../@target", stateName,
@@ -148,7 +148,7 @@ public final class AutomatonDeserializer {
     }
 
     private Set<String> getStateNamesFrom(NodeList states) {
-        final Set<String> stateNames = new HashSet<String>();
+        final Set<String> stateNames = new HashSet<>();
 
         for (int i = 0; i < states.getLength(); ++i) {
             final Element state = (Element) states.item(i);
