@@ -3,6 +3,8 @@ package de.hszg.atocc.core.util.test;
 import de.hszg.atocc.core.util.AutomatonService;
 import de.hszg.atocc.core.util.SetService;
 import de.hszg.atocc.core.util.XmlUtilsException;
+import de.hszg.atocc.core.util.automaton.Automaton;
+import de.hszg.atocc.core.util.automaton.AutomatonType;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,6 +13,7 @@ import org.junit.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.Document;
 
 public final class AutomatonServiceTests {
 
@@ -211,4 +214,13 @@ public final class AutomatonServiceTests {
                 .getTargetsFor(TestAutomatons.Z6, EPSILON));
     }
 
+    @Test
+    public void testSerialization() {
+        final Automaton sourceAutomaton = new Automaton(AutomatonType.NEA);
+        
+        final Document document = automatonService.automatonToXml(sourceAutomaton);
+        final Automaton destination = automatonService.automatonFrom(document);
+        
+        Assert.assertEquals(sourceAutomaton, destination);
+    }
 }

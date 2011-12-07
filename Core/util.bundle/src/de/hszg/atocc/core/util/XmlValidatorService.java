@@ -9,6 +9,8 @@ public interface XmlValidatorService {
     void registerSchema(Schema schema, String name) throws SchemaRegistrationException;
     void unregisterSchema(String name);
     
+    boolean isSchemaRegistered(String name);
+    
     void validate(Document document, String schemaName) throws XmlValidationException;
     
 }

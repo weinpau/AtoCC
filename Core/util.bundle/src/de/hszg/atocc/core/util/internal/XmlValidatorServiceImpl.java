@@ -53,6 +53,11 @@ public final class XmlValidatorServiceImpl implements XmlValidatorService {
     public void unregisterSchema(String name) {
         schemas.remove(name);
     }
+    
+    @Override
+    public boolean isSchemaRegistered(String name) {
+        return schemas.containsKey(name); 
+    }
 
     @Override
     public void validate(Document document, String schemaName) throws XmlValidationException {

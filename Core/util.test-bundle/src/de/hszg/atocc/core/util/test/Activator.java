@@ -3,6 +3,7 @@ package de.hszg.atocc.core.util.test;
 import de.hszg.atocc.core.util.AutomatonService;
 import de.hszg.atocc.core.util.SetService;
 import de.hszg.atocc.core.util.XmlUtilService;
+import de.hszg.atocc.core.util.XmlValidatorService;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -20,9 +21,13 @@ public final class Activator implements BundleActivator {
 
         final ServiceReference<SetService> setServiceReference = context
                 .getServiceReference(SetService.class);
+        
+        final ServiceReference<XmlValidatorService> validatorServiceReference =
+                context.getServiceReference(XmlValidatorService.class);
 
         final AutomatonService automatonService = context.getService(automatonServiceReference);
         final SetService setService = context.getService(setServiceReference);
+        final XmlValidatorService validatorService = context.getService(validatorServiceReference);
         
         AutomatonServiceTests.setAutomatonService(automatonService);
         AutomatonServiceTests.setSetService(setService);
@@ -32,6 +37,8 @@ public final class Activator implements BundleActivator {
         TestAutomatons.setSetService(setService);
         
         SetServiceTests.setSetService(setService);
+        
+        XmlValidatorServiceTests.setXmlValidatorService(validatorService);
     }
 
     @Override

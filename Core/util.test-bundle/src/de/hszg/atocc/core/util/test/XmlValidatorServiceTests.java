@@ -1,17 +1,29 @@
 package de.hszg.atocc.core.util.test;
 
+import de.hszg.atocc.core.util.SchemaNotRegisteredException;
+import de.hszg.atocc.core.util.SchemaRegistrationException;
+import de.hszg.atocc.core.util.XmlValidationException;
+import de.hszg.atocc.core.util.XmlValidatorService;
+
 import org.junit.Assert;
 
 import org.junit.Test;
 
 public final class XmlValidatorServiceTests {
+    
+    private static XmlValidatorService validator;
+    
+    public static void setXmlValidatorService(XmlValidatorService service) {
+        validator = service;
+    }
 
-    @Test
-    public void registerSchemaShouldFailIfNameAlreadyExists() {
-        Assert.fail("Not yet implemented");
+    @Test(expected = SchemaRegistrationException.class)
+    public void registerSchemaShouldFailIfNameAlreadyExists() throws SchemaRegistrationException {
+        Assert.assertFalse(validator.isSchemaRegistered("AUTOMATON"));
+        validator.registerSchema(null, "AUTOMATON");
     }
     
-    @Test
+    @Test(expected = SchemaRegistrationException.class)
     public void registerSchemaShouldFailIfSchemaAlreadyExists() {
         Assert.fail("Not yet implemented");
     }
@@ -21,19 +33,23 @@ public final class XmlValidatorServiceTests {
         Assert.fail("Not yet implemented");
     }
 
-    @Test
+    @Test(expected = SchemaNotRegisteredException.class)
     public void unregisterSchemaShouldFailIfNameDoesNotExists() {
         Assert.fail("Not yet implemented");
     }
     
-    @Test
+    @Test(expected = SchemaNotRegisteredException.class)
     public void validateShoulsFailIfSchemaIsNotRegistered() {
         Assert.fail("Not yet implemented");
     }
 
-    @Test
+    @Test(expected = XmlValidationException.class)
     public void validateShouldThrowIfDocumentIsInvalid() {
         Assert.fail("Not yet implemented");
     }
 
+    @Test
+    public void validateShouldSucceedForValidInput() {
+        Assert.fail("Not yet implemented");
+    }
 }
