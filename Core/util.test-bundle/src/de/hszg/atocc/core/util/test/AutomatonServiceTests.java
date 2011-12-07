@@ -1,6 +1,7 @@
 package de.hszg.atocc.core.util.test;
 
 import de.hszg.atocc.core.util.AutomatonService;
+import de.hszg.atocc.core.util.SetService;
 import de.hszg.atocc.core.util.XmlUtilsException;
 
 import java.util.HashSet;
@@ -18,12 +19,13 @@ public final class AutomatonServiceTests {
     private static final String A = "a";
 
     private static AutomatonService automatonService;
+    private static SetService setService;
 
     private TestAutomatons automatons;
     
     private final Set<String> emptySet = new HashSet<>();
 
-    private Set<String> z1;
+//    private Set<String> z1;
     private Set<String> z2;
     private Set<String> z3;
     private Set<String> z4;
@@ -33,24 +35,21 @@ public final class AutomatonServiceTests {
     public static void setAutomatonService(AutomatonService service) {
         automatonService = service;
     }
+    
+    public static void setSetService(SetService service) {
+        setService = service;
+    }
 
     @Before
     public void setUp() throws XmlUtilsException {
         automatons = new TestAutomatons();
         
-        z1 = new HashSet<>();
-        z2 = new HashSet<>();
-        z3 = new HashSet<>();
-        z4 = new HashSet<>();
-        z5 = new HashSet<>();
-        z6 = new HashSet<>();
-        
-        z1.add(TestAutomatons.Z1);
-        z2.add(TestAutomatons.Z2);
-        z3.add(TestAutomatons.Z3);
-        z4.add(TestAutomatons.Z4);
-        z5.add(TestAutomatons.Z5);
-        z6.add(TestAutomatons.Z6);
+//        z1 = setService.createSetFrom(TestAutomatons.Z1);
+        z2 = setService.createSetWith(TestAutomatons.Z2);
+        z3 = setService.createSetWith(TestAutomatons.Z3);
+        z4 = setService.createSetWith(TestAutomatons.Z4);
+        z5 = setService.createSetWith(TestAutomatons.Z5);
+        z6 = setService.createSetWith(TestAutomatons.Z6);
     }
 
     @Test
