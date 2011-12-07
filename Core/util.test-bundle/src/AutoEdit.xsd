@@ -1,0 +1,293 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:element name="AUTOMATON">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TYPE">
+          <xs:complexType>
+            <xs:attribute name="value" use="required">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="DEA" />
+                  <xs:enumeration value="MOORE" />
+                  <xs:enumeration value="MEALY" />
+                  <xs:enumeration value="NEA" />
+                  <xs:enumeration value="DKA" />
+                  <xs:enumeration value="NKA" />
+                  <xs:enumeration value="TM" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ALPHABET">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ITEM" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="value" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="STACKALPHABET" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ITEM" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="value" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="OUTPUTALPHABET" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ITEM" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="value" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TAPEALPHABET" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ITEM" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="value" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="STATE" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TRANSITION" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="LABEL" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="read" type="xs:string" use="required" />
+                        <xs:attribute name="direction" use="optional">
+                          <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                              <xs:enumeration value="RIGHT" />
+                              <xs:enumeration value="LEFT" />
+                              <xs:enumeration value="NONE" />
+                            </xs:restriction>
+                          </xs:simpleType>
+                        </xs:attribute>
+                        <xs:attribute name="output" type="xs:string" use="optional" />
+                        <xs:attribute name="write" type="xs:string" use="optional" />
+                        <xs:attribute name="topofstack" type="xs:string" use="optional" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="target" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required" />
+            <xs:attribute name="output" type="xs:string" use="optional" />
+            <xs:attribute name="finalstate" type="xs:string" use="optional" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="INITIALSTATE" minOccurs="0">
+          <xs:complexType>
+            <xs:attribute name="value" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TAPEINITIALCHAR" minOccurs="0">
+          <xs:complexType>
+            <xs:attribute name="value" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="STACKINITIALCHAR" minOccurs="0">
+          <xs:complexType>
+            <xs:attribute name="value" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="LAYOUT" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="STATELAYOUT" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="LEFT" minOccurs="0">
+                      <xs:complexType>
+                        <xs:attribute name="value" type="xs:integer" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="TOP" minOccurs="0">
+                      <xs:complexType>
+                        <xs:attribute name="value" type="xs:integer" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="RADIUS" minOccurs="0">
+                      <xs:complexType>
+                        <xs:attribute name="value" type="xs:unsignedInt" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="COLOR" minOccurs="0">
+                      <xs:complexType>
+                        <xs:attribute name="value" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PENWIDTH" minOccurs="0">
+                      <xs:complexType>
+                        <xs:attribute name="value" type="xs:unsignedInt" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PENCOLOR" minOccurs="0">
+                      <xs:complexType>
+                        <xs:attribute name="value" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="FONTSIZE" minOccurs="0">
+                      <xs:complexType>
+                        <xs:attribute name="value" type="xs:unsignedInt" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="FONTCOLOR" minOccurs="0">
+                      <xs:complexType>
+                        <xs:attribute name="value" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="TRACETEXT" minOccurs="0">
+                      <xs:complexType>
+                        <xs:attribute name="value" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="TRANSITIONLAYOUT" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="LEFT" minOccurs="0">
+                            <xs:complexType>
+                              <xs:attribute name="value" type="xs:integer" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="TOP" minOccurs="0">
+                            <xs:complexType>
+                              <xs:attribute name="value" type="xs:integer" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="PENWIDTH" minOccurs="0">
+                            <xs:complexType>
+                              <xs:attribute name="value" type="xs:unsignedInt" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="PENCOLOR" minOccurs="0">
+                            <xs:complexType>
+                              <xs:attribute name="value" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="FONTSIZE" minOccurs="0">
+                            <xs:complexType>
+                              <xs:attribute name="value" type="xs:unsignedInt" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="FONTCOLOR" minOccurs="0">
+                            <xs:complexType>
+                              <xs:attribute name="value" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="ARROWSIZE" minOccurs="0">
+                            <xs:complexType>
+                              <xs:attribute name="value" use="required">
+                                <xs:simpleType>
+                                  <xs:restriction base="xs:string">
+                                    <xs:enumeration value="none" />
+                                    <xs:enumeration value="very small" />
+                                    <xs:enumeration value="small" />
+                                    <xs:enumeration value="normal" />
+                                    <xs:enumeration value="large" />
+                                    <xs:enumeration value="very large" />
+                                  </xs:restriction>
+                                </xs:simpleType>
+                              </xs:attribute>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="TRACETEXT" minOccurs="0">
+                            <xs:complexType>
+                              <xs:attribute name="value" type="xs:string" use="required" />
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="LABELLAYOUT" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="LEFT" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:attribute name="value" type="xs:integer" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="TOP" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:attribute name="value" type="xs:integer" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="FONTCOLOR" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:attribute name="value" type="xs:string" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="TRACETEXT" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:attribute name="value" type="xs:string" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="read" type="xs:string" use="required" />
+                              <xs:attribute name="write" type="xs:string" use="optional" />
+                              <xs:attribute name="topofstack" type="xs:string" use="optional" />
+                              <xs:attribute name="direction" type="xs:string" use="optional" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="target" type="xs:string" use="required" />
+                        <xs:attribute name="drawvertical" type="xs:string" use="optional" />
+                        <xs:attribute name="negate" type="xs:string" use="optional" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="SIMULATIONINPUT" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="INPUT" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="value" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="NOTEPAD" type="xs:string" minOccurs="0" />
+              <xs:element name="COMMENTS" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="COMMENT" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="text" type="xs:string" use="required" />
+                        <xs:attribute name="x" type="xs:string" use="required" />
+                        <xs:attribute name="y" type="xs:string" use="required" />
+                        <xs:attribute name="size" type="xs:string" use="required" />
+                        <xs:attribute name="color" type="xs:string" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
