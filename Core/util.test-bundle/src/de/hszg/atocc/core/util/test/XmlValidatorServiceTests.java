@@ -11,6 +11,7 @@ import org.junit.Test;
 
 public final class XmlValidatorServiceTests {
     
+    private static final String AUTOMATON = "AUTOMATON";
     private static XmlValidatorService validator;
     
     public static void setXmlValidatorService(XmlValidatorService service) {
@@ -19,8 +20,8 @@ public final class XmlValidatorServiceTests {
 
     @Test(expected = SchemaRegistrationException.class)
     public void registerSchemaShouldFailIfNameAlreadyExists() throws SchemaRegistrationException {
-        Assert.assertFalse(validator.isSchemaRegistered("AUTOMATON"));
-        validator.registerSchema(null, "AUTOMATON");
+        Assert.assertFalse(validator.isSchemaRegistered(AUTOMATON));
+        validator.registerSchema(null, AUTOMATON);
     }
     
     @Test(expected = SchemaRegistrationException.class)

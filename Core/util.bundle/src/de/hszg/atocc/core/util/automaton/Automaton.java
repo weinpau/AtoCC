@@ -8,6 +8,8 @@ import java.util.Set;
 
 public final class Automaton {
 
+    private static final String EPSILON = "EPSILON";
+    
     private AutomatonType type = AutomatonType.DEA;
     private Set<String> alphabet = new HashSet<>();
     private Set<String> states = new HashSet<>();
@@ -93,7 +95,7 @@ public final class Automaton {
 
             transitions.get(transition.getSource()).add(transition);
 
-            if ("EPSILON".equals(transition.getCharacterToRead())) {
+            if (EPSILON.equals(transition.getCharacterToRead())) {
                 containsEpsilonRules = true;
             }
         } catch (final InvalidStateException | InvalidAlphabetCharacterException e) {
@@ -113,9 +115,9 @@ public final class Automaton {
         return finalStates;
     }
 
-    public void addFinalState(String state) {
+    public void addFinalState(String state) throws InvalidStateException {
         if (!states.contains(state)) {
-            throw new IllegalArgumentException("State not found: " + state);
+            throw new InvalidStateException(state);
         }
 
         finalStates.add(state);
@@ -157,8 +159,8 @@ public final class Automaton {
     
     private void verifyAlphabetCharacterExists(String character)
         throws InvalidAlphabetCharacterException {
-        if ("EPSILON".equals(character) && type != AutomatonType.NEA) {
-            throw new InvalidAlphabetCharacterException(character);
+        if (EPSILON.equals(character) && type == AutomatonType.NEA) {
+            return;
         }
         
         if (!alphabet.contains(character)) {

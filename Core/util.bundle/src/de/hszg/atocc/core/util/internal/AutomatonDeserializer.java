@@ -2,6 +2,7 @@ package de.hszg.atocc.core.util.internal;
 
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.AutomatonType;
+import de.hszg.atocc.core.util.automaton.InvalidStateException;
 import de.hszg.atocc.core.util.automaton.InvalidTransitionException;
 import de.hszg.atocc.core.util.automaton.Transition;
 
@@ -97,7 +98,7 @@ public final class AutomatonDeserializer {
             for (String state : getStateNamesFrom(finalStates)) {
                 automaton.addFinalState(state);
             }
-        } catch (final XPathExpressionException e) {
+        } catch (final XPathExpressionException | InvalidStateException e) {
             throw new RuntimeException(e);
         }
     }

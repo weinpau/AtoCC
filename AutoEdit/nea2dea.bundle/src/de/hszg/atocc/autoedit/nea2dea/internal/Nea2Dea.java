@@ -8,6 +8,7 @@ import de.hszg.atocc.core.util.XmlValidationException;
 import de.hszg.atocc.core.util.XmlValidatorService;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.AutomatonType;
+import de.hszg.atocc.core.util.automaton.InvalidStateException;
 import de.hszg.atocc.core.util.automaton.InvalidTransitionException;
 import de.hszg.atocc.core.util.automaton.Transition;
 
@@ -53,7 +54,7 @@ public final class Nea2Dea extends RestfulWebService {
             xmlValidator.validate(deaDocument, AUTOMATON);
 
             result = xmlUtils.createResult(deaDocument);
-        } catch (final RuntimeException | InvalidTransitionException e) {
+        } catch (final RuntimeException | InvalidTransitionException | InvalidStateException e) {
             result = xmlUtils.createResultWithError("TRANSFORM_FAILED", e);
         } catch (XmlValidationException e) {
             result = xmlUtils.createResultWithError("INVALID_INPUT", e);
@@ -87,7 +88,7 @@ public final class Nea2Dea extends RestfulWebService {
         }
     }
 
-    private void transformAutomaton() throws InvalidTransitionException {
+    private void transformAutomaton() throws InvalidTransitionException, InvalidStateException {
         generateNewStatesFrom(automatonUtils.getStatePowerSetFrom(nea));
 
         generateNewInitialState();
@@ -118,13 +119,14 @@ public final class Nea2Dea extends RestfulWebService {
         return String.format("z_%d", i);
     }
 
-    private void generateNewFinalStates() {
+    private void generateNewFinalStates() throws InvalidStateException {
         for (Entry<String, Set<String>> deaState : deaToNeaStateMap.entrySet()) {
             addToFinalStatesIfNeeded(deaState);
         }
     }
 
-    private void addToFinalStatesIfNeeded(Entry<String, Set<String>> newState) {
+    private void addToFinalStatesIfNeeded(Entry<String, Set<String>> newState) 
+        throws InvalidStateException {
         for (String neaFinalState : nea.getFinalStates()) {
             if (newState.getValue().contains(neaFinalState)
                     && dea.getStates().contains(newState.getKey())) {

@@ -8,6 +8,7 @@ import de.hszg.atocc.core.util.XmlValidationException;
 import de.hszg.atocc.core.util.XmlValidatorService;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.AutomatonType;
+import de.hszg.atocc.core.util.automaton.InvalidStateException;
 import de.hszg.atocc.core.util.automaton.InvalidTransitionException;
 import de.hszg.atocc.core.util.automaton.Transition;
 
@@ -45,7 +46,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
             result = xmlUtils.createResult(automatonUtils.automatonToXml(nea));
         } catch (final XmlValidationException e) {
             result = xmlUtils.createResultWithError("INVALID_INPUT", e);
-        } catch (final RuntimeException | InvalidTransitionException e) {
+        } catch (final RuntimeException | InvalidTransitionException | InvalidStateException e) {
             result = xmlUtils.createResultWithError(e.getLocalizedMessage(), e);
         }
 
@@ -72,7 +73,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
         }
     }
 
-    private void createNewDeltaRules() throws InvalidTransitionException {
+    private void createNewDeltaRules() throws InvalidTransitionException, InvalidStateException {
         for (String stateName : neaEpsilon.getStates()) {
             for (String character : neaEpsilon.getAlphabet()) {
                 createNewDeltaRuleFor(stateName, character);
@@ -81,7 +82,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
     }
 
     private void createNewDeltaRuleFor(String stateName, String character)
-        throws InvalidTransitionException {
+        throws InvalidTransitionException, InvalidStateException {
         final Set<String> epsilonHull = automatonUtils.getEpsilonHull(neaEpsilon, stateName);
 
         if (setService.containsAnyOf(epsilonHull, neaEpsilon.getFinalStates())) {
