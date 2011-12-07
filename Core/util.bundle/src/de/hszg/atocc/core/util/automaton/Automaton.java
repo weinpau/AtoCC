@@ -7,12 +7,12 @@ import java.util.Set;
 
 public final class Automaton {
 
-    private AutomatonType type;
+    private AutomatonType type = AutomatonType.DEA;
     private Set<String> alphabet = new HashSet<>();
     private Set<String> states = new HashSet<>();
     private Map<String, Set<Transition>> transitions = new HashMap<>();
 
-    private String initialState;
+    private String initialState = "";
     private Set<String> finalStates = new HashSet<>();
 
     private boolean containsEpsilonRules;
@@ -111,6 +111,34 @@ public final class Automaton {
         }
 
         finalStates.add(state);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+
+        result = prime * result + alphabet.hashCode();
+        result = prime * result + finalStates.hashCode();
+        result = prime * result + initialState.hashCode();
+        result = prime * result + states.hashCode();
+        result = prime * result + transitions.hashCode();
+        result = prime * result + type.hashCode();
+
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Automaton)) {
+            return false;
+        }
+
+        final Automaton other = (Automaton) obj;
+
+        return alphabet.equals(other.alphabet) && finalStates.equals(other.finalStates)
+                && initialState.equals(other.initialState) && states.equals(other.states)
+                && transitions.equals(other.transitions);
     }
 
 }
