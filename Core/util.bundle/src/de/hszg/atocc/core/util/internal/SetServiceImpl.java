@@ -3,6 +3,7 @@ package de.hszg.atocc.core.util.internal;
 import de.hszg.atocc.core.util.SetService;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +28,14 @@ public final class SetServiceImpl implements SetService {
         return false;
     }
 
+    public <T> Set<T> createSetWith(@SuppressWarnings("unchecked") T ... args) {
+        final Set<T> set = new HashSet<>();
+        
+        set.addAll(Arrays.asList(args));
+        
+        return set;
+    };
+    
     private <T> Set<Set<T>> powerSetFromNonEmptySet(final Set<T> originalSet) {
         final Set<Set<T>> sets = new HashSet<>();
 

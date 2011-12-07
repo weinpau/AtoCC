@@ -14,4 +14,6 @@ public interface SetService {
      */
     <T> boolean containsAnyOf(Set<T> s1, Set<T> s2);
     
+    <T> Set<T> createSetWith(@SuppressWarnings("unchecked") T ... args);
+    
 }
