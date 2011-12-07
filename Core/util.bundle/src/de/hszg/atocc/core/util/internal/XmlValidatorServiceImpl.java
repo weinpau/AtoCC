@@ -1,5 +1,8 @@
 package de.hszg.atocc.core.util.internal;
 
+import de.hszg.atocc.core.util.InvalidSchemaNameException;
+import de.hszg.atocc.core.util.SchemaAlreadyRegisteredException;
+import de.hszg.atocc.core.util.SchemaRegistrationException;
 import de.hszg.atocc.core.util.XmlValidationException;
 import de.hszg.atocc.core.util.XmlValidatorService;
 
@@ -23,30 +26,27 @@ public final class XmlValidatorServiceImpl implements XmlValidatorService {
     // TODO: move schema registration to client service code
     public XmlValidatorServiceImpl() {
         try {
-            final SchemaFactory schemaFactory =
-                    SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            final SchemaFactory schemaFactory = SchemaFactory
+                    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
-            final Schema schema =
-                    schemaFactory.newSchema(getClass().getResource("/AutoEdit.xsd"));
+            final Schema schema = schemaFactory.newSchema(getClass().getResource("/AutoEdit.xsd"));
 
             registerSchema(schema, "AUTOMATON");
-        } catch (final SAXException e) {
+        } catch (final SAXException | SchemaRegistrationException e) {
             e.printStackTrace();
         }
     }
 
-    // TODO: use dedicated exceptions (e.g. SchemaRegistrationException -> SchemaAlreadyRegistered, SchemaNameAlreadyInUse)
     @Override
-    public void registerSchema(Schema schema, String name) {
-        if (schemas.containsKey(name)) {
-            throw new IllegalArgumentException("SCHEMA_NAME_ALREADY_REGISTERED");
-        }
+    public void registerSchema(Schema schema, String name) throws SchemaRegistrationException {
+        try {
+            verifySchemaNameIsUnique(name);
+            verifySchemaIsNotRegistered(schema, name);
 
-        if (schemas.containsValue(schema)) {
-            throw new IllegalArgumentException("SCHEMA_ALREADY_REGISTERED");
+            schemas.put(name, schema);
+        } catch (final Exception e) {
+            throw new SchemaRegistrationException(e);
         }
-
-        schemas.put(name, schema);
     }
 
     @Override
@@ -67,4 +67,16 @@ public final class XmlValidatorServiceImpl implements XmlValidatorService {
         }
     }
 
+    private void verifySchemaIsNotRegistered(Schema schema, String name)
+        throws SchemaAlreadyRegisteredException {
+        if (schemas.containsValue(schema)) {
+            throw new SchemaAlreadyRegisteredException(name);
+        }
+    }
+
+    private void verifySchemaNameIsUnique(String name) throws InvalidSchemaNameException {
+        if (schemas.containsKey(name)) {
+            throw new InvalidSchemaNameException(name);
+        }
+    }
 }
