@@ -4,7 +4,7 @@ import org.junit.Assert;
 
 import org.junit.Test;
 
-public class RestfulWebServiceTests {
+public final class RestfulWebServiceTests {
 
     @Test
     public void testDoInit() {

@@ -1,14 +1,13 @@
 package de.hszg.atocc.core.util.test;
 
-import static org.junit.Assert.*;
-
+import org.junit.Assert;
 import org.junit.Test;
 
-public class AutomatonDeserializerTests {
+public final class AutomatonDeserializerTests {
 
     @Test
     public void testDeserialize() {
-        fail("Not yet implemented");
+        Assert.fail("Not yet implemented");
     }
 
 }

@@ -4,7 +4,7 @@ import org.junit.Assert;
 
 import org.junit.Test;
 
-public class ConverterTests {
+public final class ConverterTests {
 
     @Test
     public void testXmlToString() {

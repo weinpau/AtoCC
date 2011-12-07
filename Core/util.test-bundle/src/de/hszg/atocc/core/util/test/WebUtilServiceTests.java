@@ -4,7 +4,7 @@ import org.junit.Assert;
 
 import org.junit.Test;
 
-public class WebUtilServiceTests {
+public final class WebUtilServiceTests {
 
     @Test
     public void testGet() {

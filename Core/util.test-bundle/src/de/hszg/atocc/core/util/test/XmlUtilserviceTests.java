@@ -3,7 +3,7 @@ package de.hszg.atocc.core.util.test;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class XmlUtilserviceTests {
+public final class XmlUtilserviceTests {
 
     @Test
     public void testDocumentFromFile() {

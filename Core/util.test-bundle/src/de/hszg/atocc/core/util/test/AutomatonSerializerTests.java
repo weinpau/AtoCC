@@ -3,7 +3,7 @@ package de.hszg.atocc.core.util.test;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AutomatonSerializerTests {
+public final class AutomatonSerializerTests {
 
     @Test
     public void testAutomatonSerializer() {
