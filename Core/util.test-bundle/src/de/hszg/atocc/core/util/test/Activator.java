@@ -1,6 +1,7 @@
 package de.hszg.atocc.core.util.test;
 
 import de.hszg.atocc.core.util.AutomatonService;
+import de.hszg.atocc.core.util.SetService;
 import de.hszg.atocc.core.util.XmlUtilService;
 
 import org.osgi.framework.BundleActivator;
@@ -11,20 +12,26 @@ public final class Activator implements BundleActivator {
 
     @Override
     public void start(BundleContext context) throws Exception {
-        final ServiceReference<?> automatonServiceReference =
-                context.getServiceReference(AutomatonService.class);
+        final ServiceReference<AutomatonService> automatonServiceReference = context
+                .getServiceReference(AutomatonService.class);
 
-        final ServiceReference<?> xmlServiceReference =
-                context.getServiceReference(XmlUtilService.class);
+        final ServiceReference<XmlUtilService> xmlServiceReference = context
+                .getServiceReference(XmlUtilService.class);
 
-        AutomatonServiceTests.setAutomatonService((AutomatonService) context
-                .getService(automatonServiceReference));
+        final ServiceReference<SetService> setServiceReference = context
+                .getServiceReference(SetService.class);
+
+        final AutomatonService automatonService = context.getService(automatonServiceReference);
+        final SetService setService = context.getService(setServiceReference);
         
-        TestAutomatons.setAutomatonService((AutomatonService) context
-                .getService(automatonServiceReference));
+        AutomatonServiceTests.setAutomatonService(automatonService);
+        AutomatonServiceTests.setSetService(setService);
 
-        TestAutomatons.setXmlService((XmlUtilService) context
-                .getService(xmlServiceReference));
+        TestAutomatons.setAutomatonService(automatonService);
+        TestAutomatons.setXmlService(context.getService(xmlServiceReference));
+        TestAutomatons.setSetService(setService);
+        
+        SetServiceTests.setSetService(setService);
     }
 
     @Override
