@@ -7,48 +7,46 @@
 <location path="${eclipse_home}" type="Directory"/>
 </locations>
 <includeBundles>
-<plugin id="org.eclipse.osgi"/>
-<plugin id="org.eclipse.jdt.junit.runtime"/>
-<plugin id="org.junit.source" version="4.8.2.v4_8_2_v20110321-1705"/>
-<plugin id="org.hamcrest.core"/>
-<plugin id="org.eclipse.equinox.ds"/>
-<plugin id="org.eclipse.equinox.registry"/>
-<plugin id="org.eclipse.equinox.common.source"/>
-<plugin id="org.junit" version="4.8.2.v4_8_2_v20110321-1705"/>
-<plugin id="org.eclipse.equinox.ds.source"/>
-<plugin id="org.eclipse.jdt.junit.runtime.source"/>
-<plugin id="org.restlet.ext.xml"/>
-<plugin id="org.eclipse.core.runtime.compatibility.registry"/>
-<plugin id="org.junit.source" version="3.8.2.v3_8_2_v20100427-1100"/>
-<plugin id="org.eclipse.equinox.app"/>
-<plugin id="org.eclipse.core.jobs.source"/>
 <plugin id="javax.servlet.source"/>
 <plugin id="org.junit4"/>
-<plugin id="org.eclipse.core.runtime"/>
-<plugin id="org.eclipse.equinox.preferences.source"/>
-<plugin id="org.eclipse.equinox.util.source"/>
-<plugin id="org.eclipse.osgi.services"/>
-<plugin id="org.eclipse.osgi.source"/>
 <plugin id="org.eclipse.core.runtime.compatibility.registry.source"/>
-<plugin id="org.eclipse.core.contenttype"/>
-<plugin id="org.eclipse.equinox.weaving.hook"/>
-<plugin id="org.eclipse.equinox.preferences"/>
-<plugin id="org.hamcrest.core.source"/>
-<plugin id="org.eclipse.osgi.services.source"/>
-<plugin id="org.eclipse.equinox.registry.source"/>
-<plugin id="javax.servlet"/>
-<plugin id="org.restlet"/>
-<plugin id="org.junit" version="3.8.2.v3_8_2_v20100427-1100"/>
-<plugin id="org.eclipse.jdt.junit4.runtime"/>
-<plugin id="org.eclipse.core.runtime.compatibility.auth"/>
-<plugin id="org.eclipse.equinox.log"/>
-<plugin id="org.eclipse.equinox.app.source"/>
+<plugin id="org.junit" version="4.8.2.v4_8_2_v20110321-1705"/>
 <plugin id="org.eclipse.core.runtime.source"/>
-<plugin id="org.eclipse.core.contenttype.source"/>
-<plugin id="org.eclipse.equinox.util"/>
-<plugin id="org.eclipse.equinox.common"/>
+<plugin id="org.eclipse.jdt.junit.runtime.source"/>
 <plugin id="org.eclipse.core.jobs"/>
-<plugin id="org.eclipse.core.runtime.compatibility.auth.source"/>
+<plugin id="javax.servlet"/>
+<plugin id="org.eclipse.osgi.services"/>
+<plugin id="org.eclipse.equinox.registry.source"/>
+<plugin id="org.eclipse.equinox.common.source"/>
+<plugin id="org.eclipse.equinox.registry"/>
+<plugin id="org.restlet.ext.xml"/>
+<plugin id="org.eclipse.equinox.ds"/>
+<plugin id="org.eclipse.core.jobs.source"/>
+<plugin id="org.eclipse.equinox.preferences"/>
+<plugin id="org.eclipse.core.contenttype"/>
+<plugin id="org.eclipse.equinox.ds.source"/>
+<plugin id="org.eclipse.core.contenttype.source"/>
+<plugin id="org.eclipse.equinox.app.source"/>
+<plugin id="org.restlet"/>
+<plugin id="org.eclipse.equinox.util.source"/>
+<plugin id="org.eclipse.equinox.common"/>
+<plugin id="org.eclipse.osgi"/>
+<plugin id="org.junit.source" version="4.8.2.v4_8_2_v20110321-1705"/>
+<plugin id="org.eclipse.core.runtime"/>
+<plugin id="org.eclipse.equinox.app"/>
+<plugin id="org.eclipse.core.runtime.compatibility.registry"/>
+<plugin id="org.hamcrest.core"/>
+<plugin id="org.eclipse.jdt.junit4.runtime"/>
+<plugin id="org.eclipse.equinox.log"/>
+<plugin id="org.eclipse.osgi.services.source"/>
+<plugin id="org.junit" version="3.8.2.v3_8_2_v20100427-1100"/>
+<plugin id="org.hamcrest.core.source"/>
+<plugin id="org.eclipse.equinox.util"/>
+<plugin id="org.eclipse.jdt.junit.runtime"/>
+<plugin id="org.junit.source" version="3.8.2.v3_8_2_v20100427-1100"/>
+<plugin id="org.eclipse.osgi.source"/>
+<plugin id="org.eclipse.core.runtime.compatibility.auth"/>
+<plugin id="org.eclipse.equinox.preferences.source"/>
 </includeBundles>
 <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 </target>
