@@ -20,6 +20,7 @@ public final class XmlValidatorServiceImpl implements XmlValidatorService {
 
     private Map<String, Schema> schemas = new HashMap<>();
 
+    // TODO: move schema registration to client service code
     public XmlValidatorServiceImpl() {
         try {
             final SchemaFactory schemaFactory =
@@ -34,6 +35,7 @@ public final class XmlValidatorServiceImpl implements XmlValidatorService {
         }
     }
 
+    // TODO: use dedicated exceptions (e.g. SchemaRegistrationException -> SchemaAlreadyRegistered, SchemaNameAlreadyInUse)
     @Override
     public void registerSchema(Schema schema, String name) {
         if (schemas.containsKey(name)) {
