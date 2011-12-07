@@ -8,6 +8,7 @@ import de.hszg.atocc.core.util.XmlValidationException;
 import de.hszg.atocc.core.util.XmlValidatorService;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.AutomatonType;
+import de.hszg.atocc.core.util.automaton.InvalidTransitionException;
 import de.hszg.atocc.core.util.automaton.Transition;
 
 import java.util.Set;
@@ -36,7 +37,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
             xmlValidator.validate(neaEpsilonDocument, "AUTOMATON");
             neaEpsilon = automatonUtils.automatonFrom(neaEpsilonDocument);
             checkAutomatonType();
-            
+
             initializeOutputAutomaton();
 
             createNewDeltaRules();
@@ -44,7 +45,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
             result = xmlUtils.createResult(automatonUtils.automatonToXml(nea));
         } catch (final XmlValidationException e) {
             result = xmlUtils.createResultWithError("INVALID_INPUT", e);
-        } catch (final RuntimeException e) {
+        } catch (final RuntimeException | InvalidTransitionException e) {
             result = xmlUtils.createResultWithError(e.getLocalizedMessage(), e);
         }
 
@@ -71,7 +72,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
         }
     }
 
-    private void createNewDeltaRules() {
+    private void createNewDeltaRules() throws InvalidTransitionException {
         for (String stateName : neaEpsilon.getStates()) {
             for (String character : neaEpsilon.getAlphabet()) {
                 createNewDeltaRuleFor(stateName, character);
@@ -79,7 +80,8 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
         }
     }
 
-    private void createNewDeltaRuleFor(String stateName, String character) {
+    private void createNewDeltaRuleFor(String stateName, String character)
+        throws InvalidTransitionException {
         final Set<String> epsilonHull = automatonUtils.getEpsilonHull(neaEpsilon, stateName);
 
         if (setService.containsAnyOf(epsilonHull, neaEpsilon.getFinalStates())) {
@@ -95,7 +97,8 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
         createTransitions(stateName, character, d);
     }
 
-    private void createTransitions(String stateName, String character, Set<String> d) {
+    private void createTransitions(String stateName, String character, Set<String> d)
+        throws InvalidTransitionException {
         for (String stateForNewRule : automatonUtils.getEpsilonHull(neaEpsilon, d)) {
             final Transition transition = new Transition(stateName, stateForNewRule, character);
 

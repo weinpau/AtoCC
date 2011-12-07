@@ -8,6 +8,7 @@ import de.hszg.atocc.core.util.XmlValidationException;
 import de.hszg.atocc.core.util.XmlValidatorService;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.AutomatonType;
+import de.hszg.atocc.core.util.automaton.InvalidTransitionException;
 import de.hszg.atocc.core.util.automaton.Transition;
 
 import java.util.HashMap;
@@ -52,7 +53,7 @@ public final class Nea2Dea extends RestfulWebService {
             xmlValidator.validate(deaDocument, AUTOMATON);
 
             result = xmlUtils.createResult(deaDocument);
-        } catch (final RuntimeException e) {
+        } catch (final RuntimeException | InvalidTransitionException e) {
             result = xmlUtils.createResultWithError("TRANSFORM_FAILED", e);
         } catch (XmlValidationException e) {
             result = xmlUtils.createResultWithError("INVALID_INPUT", e);
@@ -86,7 +87,7 @@ public final class Nea2Dea extends RestfulWebService {
         }
     }
 
-    private void transformAutomaton() {
+    private void transformAutomaton() throws InvalidTransitionException {
         generateNewStatesFrom(automatonUtils.getStatePowerSetFrom(nea));
 
         generateNewInitialState();
@@ -145,7 +146,7 @@ public final class Nea2Dea extends RestfulWebService {
         }
     }
 
-    private void createNewTransitions() {
+    private void createNewTransitions() throws InvalidTransitionException {
         processedStates = new HashSet<>();
 
         currentState = dea.getInitialState();

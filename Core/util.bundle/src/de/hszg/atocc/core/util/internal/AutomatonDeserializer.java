@@ -2,6 +2,7 @@ package de.hszg.atocc.core.util.internal;
 
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.AutomatonType;
+import de.hszg.atocc.core.util.automaton.InvalidTransitionException;
 import de.hszg.atocc.core.util.automaton.Transition;
 
 import java.util.HashSet;
@@ -28,12 +29,16 @@ public final class AutomatonDeserializer {
     public Automaton deserialize(Document aDocument) {
         document = aDocument;
 
-        setType();
-        setAlphabet();
-        setStates();
-        setTransitions();
-        setFinalStates();
-        setInitialState();
+        try {
+            setType();
+            setAlphabet();
+            setStates();
+            setTransitions();
+            setFinalStates();
+            setInitialState();
+        } catch (final InvalidTransitionException e) {
+            // TODO: throw DeserializationException
+        }
 
         return automaton;
     }
@@ -72,7 +77,7 @@ public final class AutomatonDeserializer {
         }
     }
 
-    private void setTransitions() {
+    private void setTransitions() throws InvalidTransitionException {
         final Set<Transition> transitions = new HashSet<>();
 
         for (String state : automaton.getStates()) {
@@ -122,7 +127,7 @@ public final class AutomatonDeserializer {
             }
         }
         automaton.getAlphabet().remove(EPSILON);
-        
+
         return transitions;
     }
 

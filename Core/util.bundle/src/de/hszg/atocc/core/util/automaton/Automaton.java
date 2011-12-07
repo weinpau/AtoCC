@@ -1,5 +1,6 @@
 package de.hszg.atocc.core.util.automaton;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -30,7 +31,7 @@ public final class Automaton {
     }
 
     public Set<String> getAlphabet() {
-        return alphabet;
+        return Collections.unmodifiableSet(alphabet);
     }
 
     public void addAlphabetItem(String alphabetCharacter) {
@@ -78,20 +79,27 @@ public final class Automaton {
         return targets;
     }
 
-    public void setTransitions(Set<Transition> transitionSet) {
+    public void setTransitions(Set<Transition> transitionSet) throws InvalidTransitionException {
         for (Transition transition : transitionSet) {
             addTransition(transition);
         }
     }
 
-    public void addTransition(Transition transition) {
-        transitions.get(transition.getSource()).add(transition);
+    public void addTransition(Transition transition) throws InvalidTransitionException {
+        try {
+            verifyStateExists(transition.getSource());
+            verifyStateExists(transition.getTarget());
+            verifyAlphabetCharacterExists(transition.getCharacterToRead());
 
-        if ("EPSILON".equals(transition.getCharacterToRead())) {
-            containsEpsilonRules = true;
+            transitions.get(transition.getSource()).add(transition);
+
+            if ("EPSILON".equals(transition.getCharacterToRead())) {
+                containsEpsilonRules = true;
+            }
+        } catch (final InvalidStateException | InvalidAlphabetCharacterException e) {
+            throw new InvalidTransitionException(e);
         }
     }
-
     public String getInitialState() {
         return initialState;
     }
@@ -141,4 +149,20 @@ public final class Automaton {
                 && transitions.equals(other.transitions);
     }
 
+    private void verifyStateExists(String state) throws InvalidStateException {
+        if (!states.contains(state)) {
+            throw new InvalidStateException(state);
+        }
+    }
+    
+    private void verifyAlphabetCharacterExists(String character)
+        throws InvalidAlphabetCharacterException {
+        if ("EPSILON".equals(character) && type != AutomatonType.NEA) {
+            throw new InvalidAlphabetCharacterException(character);
+        }
+        
+        if (!alphabet.contains(character)) {
+            throw new InvalidAlphabetCharacterException(character);
+        }
+    }
 }

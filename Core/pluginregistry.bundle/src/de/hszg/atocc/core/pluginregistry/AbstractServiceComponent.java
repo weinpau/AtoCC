@@ -48,7 +48,7 @@ public abstract class AbstractServiceComponent {
         for (WebService serviceAnnotation : annotations) {
             pluginRegistry.unregister(serviceAnnotation.resource());
         }
-        
+
         annotations.clear();
     }
 
