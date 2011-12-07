@@ -158,11 +158,6 @@ public final class AutomatonTests {
     }
 
     @Test
-    public void testSetStates() {
-        Assert.fail("Not yet implemented");
-    }
-
-    @Test
     public void setStatesShouldCopyValues() {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         Assert.assertEquals(Collections.emptySet(), automaton.getStates());
@@ -223,7 +218,7 @@ public final class AutomatonTests {
         final Automaton automaton = new Automaton(AutomatonType.DEA);
         automaton.addState(Q0);
         automaton.addState(Q1);
-        automaton.addTransition(new Transition(Q0, Q1, "EPSILON"));
+        automaton.addTransition(new Transition(Q0, Q1, EPSILON));
     }
 
     @Test
