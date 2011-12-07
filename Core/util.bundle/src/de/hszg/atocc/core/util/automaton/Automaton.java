@@ -46,7 +46,7 @@ public final class Automaton {
     }
 
     public Set<String> getStates() {
-        return states;
+        return Collections.unmodifiableSet(states);
     }
 
     public void addState(String state) {

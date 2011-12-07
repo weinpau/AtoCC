@@ -143,6 +143,13 @@ public final class AutomatonTests {
         Assert.assertEquals(expected, automaton.getStates());
     }
     
+    @Test
+    public void addStateShouldNotFailForDuplicateState() {
+        final Automaton automaton = new Automaton(AutomatonType.NEA);
+        automaton.addState(Q0);
+        automaton.addState(Q0);
+    }
+    
     @Test(expected = UnsupportedOperationException.class)
     public void getStatesShouldReturnUnmodifiableSet() {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
@@ -188,7 +195,7 @@ public final class AutomatonTests {
 
     @Test(expected = InvalidTransitionException.class)
     public void addTransitionShouldFailIfSourceStateDoesNotExists()
-            throws InvalidTransitionException {
+        throws InvalidTransitionException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addState(Q1);
         automaton.addTransition(new Transition(Q0, Q1, EPSILON));
@@ -196,7 +203,7 @@ public final class AutomatonTests {
 
     @Test(expected = InvalidTransitionException.class)
     public void addTransitionShouldFailIfTargetStateDoesNotExists()
-            throws InvalidTransitionException {
+        throws InvalidTransitionException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addState(Q0);
         automaton.addTransition(new Transition(Q0, Q1, EPSILON));
@@ -204,11 +211,19 @@ public final class AutomatonTests {
 
     @Test(expected = InvalidTransitionException.class)
     public void addTransitionShouldFailIfAlphabetCharacterIsInvalid()
-            throws InvalidTransitionException {
+        throws InvalidTransitionException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addState(Q0);
         automaton.addState(Q1);
         automaton.addTransition(new Transition(Q0, Q1, "invalid"));
+    }
+    
+    @Test(expected = InvalidTransitionException.class)
+    public void addSpontaniousTransitionShouldFailForDea() throws InvalidTransitionException {
+        final Automaton automaton = new Automaton(AutomatonType.DEA);
+        automaton.addState(Q0);
+        automaton.addState(Q1);
+        automaton.addTransition(new Transition(Q0, Q1, "EPSILON"));
     }
 
     @Test
@@ -246,9 +261,15 @@ public final class AutomatonTests {
         
         Assert.assertEquals(expected, automaton.getFinalStates());
     }
+    
+    @Test(expected = InvalidStateException.class)
+    public void addFinalStateShouldFailIfStateDoesNotExist() throws InvalidStateException {
+        final Automaton automaton = new Automaton(AutomatonType.NEA);
+        automaton.addFinalState(Q0);
+    }
 
     @Test
-    public void testEqualsObject() {
+    public void testEquals() {
         Assert.fail("Not yet implemented");
     }
 

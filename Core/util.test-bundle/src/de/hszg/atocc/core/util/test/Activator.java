@@ -28,17 +28,11 @@ public final class Activator implements BundleActivator {
         final AutomatonService automatonService = context.getService(automatonServiceReference);
         final SetService setService = context.getService(setServiceReference);
         final XmlValidatorService validatorService = context.getService(validatorServiceReference);
-        
-        AutomatonServiceTests.setAutomatonService(automatonService);
-        AutomatonServiceTests.setSetService(setService);
-
-        TestAutomatons.setAutomatonService(automatonService);
-        TestAutomatons.setXmlService(context.getService(xmlServiceReference));
-        TestAutomatons.setSetService(setService);
-        
-        SetServiceTests.setSetService(setService);
-        
-        XmlValidatorServiceTests.setXmlValidatorService(validatorService);
+ 
+        AbstractTestHelper.setAutomatonService(automatonService);
+        AbstractTestHelper.setXmlService(context.getService(xmlServiceReference));
+        AbstractTestHelper.setSetService(setService);
+        AbstractTestHelper.setXmlValidatorService(validatorService);
     }
 
     @Override

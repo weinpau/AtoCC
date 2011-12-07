@@ -118,16 +118,18 @@ public final class AutomatonDeserializer {
 
     private Set<Transition> getTransitionsFromDocumentFor(String state) {
         final Set<Transition> transitions = new HashSet<>();
-
-        automaton.addAlphabetItem(EPSILON);
-        for (String alphabetCharacter : automaton.getAlphabet()) {
+        
+        final Set<String> alphabet = new HashSet<>();
+        alphabet.addAll(automaton.getAlphabet());
+        alphabet.add(EPSILON);
+        
+        for (String alphabetCharacter : alphabet) {
             final Set<String> targets = getTargetsOf(state, alphabetCharacter);
 
             for (String target : targets) {
                 transitions.add(new Transition(state, target, alphabetCharacter));
             }
         }
-        automaton.getAlphabet().remove(EPSILON);
 
         return transitions;
     }

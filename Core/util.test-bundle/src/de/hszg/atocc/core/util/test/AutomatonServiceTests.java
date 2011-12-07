@@ -1,7 +1,5 @@
 package de.hszg.atocc.core.util.test;
 
-import de.hszg.atocc.core.util.AutomatonService;
-import de.hszg.atocc.core.util.SetService;
 import de.hszg.atocc.core.util.XmlUtilsException;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.AutomatonType;
@@ -15,14 +13,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
-public final class AutomatonServiceTests {
+public final class AutomatonServiceTests extends AbstractTestHelper {
 
     private static final String EPSILON = "EPSILON";
     private static final String B = "b";
     private static final String A = "a";
-
-    private static AutomatonService automatonService;
-    private static SetService setService;
 
     private TestAutomatons automatons;
     
@@ -34,25 +29,17 @@ public final class AutomatonServiceTests {
     private Set<String> z4;
     private Set<String> z5;
     private Set<String> z6;
-    
-    public static void setAutomatonService(AutomatonService service) {
-        automatonService = service;
-    }
-    
-    public static void setSetService(SetService service) {
-        setService = service;
-    }
 
     @Before
     public void setUp() throws XmlUtilsException {
         automatons = new TestAutomatons();
         
 //        z1 = setService.createSetFrom(TestAutomatons.Z1);
-        z2 = setService.createSetWith(TestAutomatons.Z2);
-        z3 = setService.createSetWith(TestAutomatons.Z3);
-        z4 = setService.createSetWith(TestAutomatons.Z4);
-        z5 = setService.createSetWith(TestAutomatons.Z5);
-        z6 = setService.createSetWith(TestAutomatons.Z6);
+        z2 = getSetService().createSetWith(TestAutomatons.Z2);
+        z3 = getSetService().createSetWith(TestAutomatons.Z3);
+        z4 = getSetService().createSetWith(TestAutomatons.Z4);
+        z5 = getSetService().createSetWith(TestAutomatons.Z5);
+        z6 = getSetService().createSetWith(TestAutomatons.Z6);
     }
 
     @Test
@@ -133,7 +120,7 @@ public final class AutomatonServiceTests {
     @Test
     public void testGetStatePowerSetFrom2() {
         final Set<Set<String>> actualPowerset =
-                automatonService.getStatePowerSetFrom(automatons.getNea2());
+                getAutomatonService().getStatePowerSetFrom(automatons.getNea2());
 
         Assert.assertEquals(automatons.getPowerSetOfStatesFromNea2(), actualPowerset);
     }
@@ -141,7 +128,7 @@ public final class AutomatonServiceTests {
     @Test
     public void testGetStatePowerSetFrom3() {
         final Set<Set<String>> actualPowerset =
-                automatonService.getStatePowerSetFrom(automatons.getNea3());
+                getAutomatonService().getStatePowerSetFrom(automatons.getNea3());
 
         Assert.assertEquals(automatons.getPowerSetOfStatesFromNea3(), actualPowerset);
     }
@@ -218,8 +205,8 @@ public final class AutomatonServiceTests {
     public void testSerialization() {
         final Automaton sourceAutomaton = new Automaton(AutomatonType.NEA);
         
-        final Document document = automatonService.automatonToXml(sourceAutomaton);
-        final Automaton destination = automatonService.automatonFrom(document);
+        final Document document = getAutomatonService().automatonToXml(sourceAutomaton);
+        final Automaton destination = getAutomatonService().automatonFrom(document);
         
         Assert.assertEquals(sourceAutomaton, destination);
     }

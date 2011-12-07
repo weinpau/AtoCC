@@ -3,25 +3,19 @@ package de.hszg.atocc.core.util.test;
 import de.hszg.atocc.core.util.SchemaNotRegisteredException;
 import de.hszg.atocc.core.util.SchemaRegistrationException;
 import de.hszg.atocc.core.util.XmlValidationException;
-import de.hszg.atocc.core.util.XmlValidatorService;
 
 import org.junit.Assert;
 
 import org.junit.Test;
 
-public final class XmlValidatorServiceTests {
+public final class XmlValidatorServiceTests extends AbstractTestHelper {
     
     private static final String AUTOMATON = "AUTOMATON";
-    private static XmlValidatorService validator;
-    
-    public static void setXmlValidatorService(XmlValidatorService service) {
-        validator = service;
-    }
 
     @Test(expected = SchemaRegistrationException.class)
     public void registerSchemaShouldFailIfNameAlreadyExists() throws SchemaRegistrationException {
-        Assert.assertFalse(validator.isSchemaRegistered(AUTOMATON));
-        validator.registerSchema(null, AUTOMATON);
+        Assert.assertFalse(getValidatorService().isSchemaRegistered(AUTOMATON));
+        getValidatorService().registerSchema(null, AUTOMATON);
     }
     
     @Test(expected = SchemaRegistrationException.class)

@@ -1,8 +1,5 @@
 package de.hszg.atocc.core.util.test;
 
-import de.hszg.atocc.core.util.AutomatonService;
-import de.hszg.atocc.core.util.SetService;
-import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlUtilsException;
 import de.hszg.atocc.core.util.automaton.Automaton;
 
@@ -12,7 +9,7 @@ import java.util.Set;
 
 import org.w3c.dom.Document;
 
-public final class TestAutomatons {
+public final class TestAutomatons extends AbstractTestHelper {
 
     public static final int NUMBER_OF_STATES_IN_NEA1 = 6;
     public static final int NUMBER_OF_STATES_IN_NEA2 = 3;
@@ -30,10 +27,6 @@ public final class TestAutomatons {
     private static final String B = "b";
     private static final String A = "a";
     private static final String C = "c";
-
-    private static XmlUtilService xmlService;
-    private static AutomatonService automatonService;
-    private static SetService setService;
 
     private static final String Q0 = "q0";
     private static final String Q1 = "q1";
@@ -69,18 +62,6 @@ public final class TestAutomatons {
         initializeNea1();
         initializeNea2();
         initializeNea3();
-    }
-
-    public static void setXmlService(XmlUtilService service) {
-        xmlService = service;
-    }
-
-    public static void setAutomatonService(AutomatonService service) {
-        automatonService = service;
-    }
-
-    public static void setSetService(SetService service) {
-        setService = service;
     }
 
     public Automaton getNea1() {
@@ -152,45 +133,45 @@ public final class TestAutomatons {
     }
 
     private void initializeNea1() throws XmlUtilsException {
-        final Document doc = xmlService.documentFromFile("nea1.xml");
-        nea1 = automatonService.automatonFrom(doc);
+        final Document doc = getXmlService().documentFromFile("nea1.xml");
+        nea1 = getAutomatonService().automatonFrom(doc);
 
-        stateNamesOfNea1 = setService.createSetWith(Z1, Z2, Z3, Z4, Z5, Z6);
+        stateNamesOfNea1 = getSetService().createSetWith(Z1, Z2, Z3, Z4, Z5, Z6);
 
-        finalStatesOfNea1 = setService.createSetWith(Z3);
+        finalStatesOfNea1 = getSetService().createSetWith(Z3);
 
         initialStateOfNea1 = Z1;
 
-        alphabetOfNea1 = setService.createSetWith(A, B);
+        alphabetOfNea1 = getSetService().createSetWith(A, B);
     }
 
     private void initializeNea2() throws XmlUtilsException {
-        final Document doc = xmlService.documentFromFile("nea2.xml");
-        nea2 = automatonService.automatonFrom(doc);
+        final Document doc = getXmlService().documentFromFile("nea2.xml");
+        nea2 = getAutomatonService().automatonFrom(doc);
 
-        stateNamesOfNea2 = setService.createSetWith(Q0, Q1, Q2);
+        stateNamesOfNea2 = getSetService().createSetWith(Q0, Q1, Q2);
 
-        finalStatesOfNea2 = setService.createSetWith(Q2);
+        finalStatesOfNea2 = getSetService().createSetWith(Q2);
 
         initialStateOfNea2 = Q0;
 
         initializeStatePowerSetOfNea2();
-        alphabetOfNea2 = setService.createSetWith(A, B, C);
+        alphabetOfNea2 = getSetService().createSetWith(A, B, C);
     }
 
     private void initializeNea3() throws XmlUtilsException {
-        final Document doc = xmlService.documentFromFile("nea3.xml");
-        nea3 = automatonService.automatonFrom(doc);
+        final Document doc = getXmlService().documentFromFile("nea3.xml");
+        nea3 = getAutomatonService().automatonFrom(doc);
 
-        stateNamesOfNea3 = setService.createSetWith(Q_0, Q_1);
+        stateNamesOfNea3 = getSetService().createSetWith(Q_0, Q_1);
 
-        finalStatesOfNea3 = setService.createSetWith(Q_1);
+        finalStatesOfNea3 = getSetService().createSetWith(Q_1);
 
         initialStateOfNea3 = Q_0;
 
         initializeStatePowerSetOfNea3();
 
-        alphabetOfNea3 = setService.createSetWith(A, B, C);
+        alphabetOfNea3 = getSetService().createSetWith(A, B, C);
     }
 
     private void initializeStatePowerSetOfNea2() {
@@ -203,15 +184,15 @@ public final class TestAutomatons {
     }
 
     private void createPowerSetElementsWithThreeElementsOfNea2() {
-        final Set<String> q0q1q2Set = setService.createSetWith(Q0, Q1, Q2);
+        final Set<String> q0q1q2Set = getSetService().createSetWith(Q0, Q1, Q2);
 
         powerSetOfStatesFromNea2.add(q0q1q2Set);
     }
 
     private void createPowerSetElementsWithTwoElementsOfNea2() {
-        final Set<String> q0q1Set = setService.createSetWith(Q0, Q1);
-        final Set<String> q0q2Set = setService.createSetWith(Q0, Q2);
-        final Set<String> q1q2Set = setService.createSetWith(Q1, Q2);
+        final Set<String> q0q1Set = getSetService().createSetWith(Q0, Q1);
+        final Set<String> q0q2Set = getSetService().createSetWith(Q0, Q2);
+        final Set<String> q1q2Set = getSetService().createSetWith(Q1, Q2);
 
         powerSetOfStatesFromNea2.add(q0q1Set);
         powerSetOfStatesFromNea2.add(q0q2Set);
@@ -219,9 +200,9 @@ public final class TestAutomatons {
     }
 
     private void createPowerSetElementsWithOneElementofNea2() {
-        final Set<String> q0Set = setService.createSetWith(Q0);
-        final Set<String> q1Set = setService.createSetWith(Q1);
-        final Set<String> q2Set = setService.createSetWith(Q2);
+        final Set<String> q0Set = getSetService().createSetWith(Q0);
+        final Set<String> q1Set = getSetService().createSetWith(Q1);
+        final Set<String> q2Set = getSetService().createSetWith(Q2);
 
         powerSetOfStatesFromNea2.add(q0Set);
         powerSetOfStatesFromNea2.add(q1Set);
@@ -238,10 +219,10 @@ public final class TestAutomatons {
 
         final Set<String> emptySet = Collections.emptySet();
 
-        final Set<String> q0Set = setService.createSetWith(Q_0);
-        final Set<String> q1Set = setService.createSetWith(Q_1);
+        final Set<String> q0Set = getSetService().createSetWith(Q_0);
+        final Set<String> q1Set = getSetService().createSetWith(Q_1);
 
-        final Set<String> q0q1Set = setService.createSetWith(Q_0, Q_1);
+        final Set<String> q0q1Set = getSetService().createSetWith(Q_0, Q_1);
 
         powerSetOfStatesFromNea3.add(emptySet);
         powerSetOfStatesFromNea3.add(q0Set);
