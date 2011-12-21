@@ -17,28 +17,28 @@
    </license>
 
    <plugin
-         id="atocc.core.pluginregistry.bundle"
+         id="atocc.core.pluginregistry"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="atocc.core.starter.bundle"
+         id="atocc.core.starter"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="atocc.core.util.bundle"
+         id="atocc.core.util"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="consolelog.bundle"
+         id="atocc.core.logging"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -1,4 +1,4 @@
-package de.hszg.atocc.core.consolelog.internal;
+package de.hszg.atocc.core.logging.internal;
 
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
@@ -14,6 +14,10 @@ public final class LogListenerService implements LogListener {
         System.out.println(String.format(LOG_MESSAGE, nameOfLogLevel(entry.getLevel()),
                 entry.getTime(), entry.getBundle().getSymbolicName(), entry.getMessage()));
 
+        if (entry.getLevel() == LogService.LOG_WARNING ||
+                entry.getLevel() == LogService.LOG_ERROR) {
+            // send mail to admin
+        }
     }
 
     private String nameOfLogLevel(int level) {

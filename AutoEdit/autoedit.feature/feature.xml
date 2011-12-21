@@ -21,7 +21,14 @@
    </requires>
 
    <plugin
-         id="atocc.autoedit.nea2dea.bundle"
+         id="atocc.autoedit.nea2dea"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="atocc.autoedit.neaepsilon2nea"
          download-size="0"
          install-size="0"
          version="0.0.0"

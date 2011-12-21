@@ -1,4 +1,4 @@
-package de.hszg.atocc.core.consolelog.internal;
+package de.hszg.atocc.core.logging.internal;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

@@ -28,6 +28,8 @@ public final class Nea2DeaTests {
 
         final Document dea = webService.post("http://localhost:8081/autoedit/nea2dea", nea4);
         
+        Assert.assertNotNull(dea);
+        
         Assert.fail("Not yet implemented");
     }
 
