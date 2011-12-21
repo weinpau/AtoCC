@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: AtoCC Starter Bundle
-Bundle-SymbolicName: atocc.core.starter.bundle;singleton:=true
+Bundle-SymbolicName: atocc.core.starter;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hszg.atocc.core.pluginregistry,
@@ -14,3 +14,4 @@ Import-Package: de.hszg.atocc.core.pluginregistry,
  org.restlet.routing,
  org.restlet.util
 Service-Component: OSGI-INF/component.xml
+Require-Bundle: atocc.translation;bundle-version="1.0.0"

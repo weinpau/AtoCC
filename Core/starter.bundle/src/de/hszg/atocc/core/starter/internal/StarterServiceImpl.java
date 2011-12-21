@@ -2,6 +2,7 @@ package de.hszg.atocc.core.starter.internal;
 
 import de.hszg.atocc.core.pluginregistry.PluginRegistryService;
 import de.hszg.atocc.core.starter.StarterService;
+import de.hszg.atocc.core.translation.TranslationService;
 import de.hszg.atocc.core.util.AutomatonService;
 import de.hszg.atocc.core.util.SetService;
 import de.hszg.atocc.core.util.WebUtilService;
@@ -31,6 +32,7 @@ public final class StarterServiceImpl implements StarterService {
     private XmlValidatorService xmlValidator;
     private WebUtilService webUtils;
     private SetService setService;
+    private TranslationService translationService;
     
     public synchronized void setLogService(LogService service) {
         logger = service;
@@ -82,6 +84,16 @@ public final class StarterServiceImpl implements StarterService {
         }
     }
     
+    public synchronized void setTranslationService(TranslationService service) {
+        translationService = service;
+    }
+
+    public synchronized void unsetTranslationService(TranslationService service) {
+        if (translationService == service) {
+            translationService = null;
+        }
+    }
+    
     public synchronized void setAutomatonUtilService(AutomatonService service) {
         automatonUtils = service;
     }
@@ -106,7 +118,7 @@ public final class StarterServiceImpl implements StarterService {
     }
 
     private void initializeComponent() {
-        logger.log(LogService.LOG_WARNING, "Enabled logging");
+        logger.log(LogService.LOG_INFO, "Starting webserver");
         
         component = new Component();
 
@@ -114,11 +126,17 @@ public final class StarterServiceImpl implements StarterService {
         component.getClients().add(Protocol.HTTP);
         server.getContext().getParameters().add("maxThreads", "255");
 
+        startComponent();
+    }
+
+    private void startComponent() {
         try {
             initializeRouter();
             
             component.getDefaultHost().attach(router);
             component.start();
+            
+            logger.log(LogService.LOG_INFO, "Webserver started");
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
@@ -133,6 +151,7 @@ public final class StarterServiceImpl implements StarterService {
         attributes.put(XmlValidatorService.class.getName(), xmlValidator);
         attributes.put(WebUtilService.class.getName(), webUtils);
         attributes.put(SetService.class.getName(), setService);
+        attributes.put(TranslationService.class.getName(), translationService);
     }
     
 }

@@ -1,14 +1,14 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Nea2Dea Bundle
-Bundle-SymbolicName: atocc.autoedit.nea2dea.bundle
+Bundle-Name: AtoCC Nea2Dea Bundle
+Bundle-SymbolicName: AutoEdit_-_Nea2Dea
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hszg.atocc.core.pluginregistry,
  org.osgi.framework;version="1.3.0",
  org.restlet,
  org.restlet.resource
-Require-Bundle: atocc.core.util.bundle;bundle-version="1.0.0",
- atocc.core.starter.bundle;bundle-version="1.0.0",
- atocc.core.pluginregistry.bundle;bundle-version="1.0.0"
+Require-Bundle: atocc.core.util;bundle-version="1.0.0",
+ atocc.core.starter;bundle-version="1.0.0",
+ atocc.core.pluginregistry;bundle-version="1.0.0"
 Service-Component: OSGI-INF/component.xml

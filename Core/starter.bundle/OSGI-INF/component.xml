@@ -10,5 +10,6 @@
    <reference bind="setXmlValidatorService" cardinality="1..1" interface="de.hszg.atocc.core.util.XmlValidatorService" name="XmlValidatorService" policy="static" unbind="unsetXmlValidatorService"/>
    <reference bind="setWebUtilService" cardinality="1..1" interface="de.hszg.atocc.core.util.WebUtilService" name="WebUtilService" policy="static" unbind="unsetWebUtilService"/>
    <reference bind="setSetService" cardinality="1..1" interface="de.hszg.atocc.core.util.SetService" name="SetService" policy="static" unbind="unsetSetService"/>
+   <reference bind="setTranslationService" cardinality="1..1" interface="de.hszg.atocc.core.translation.TranslationService" name="TranslationService" policy="static" unbind="unsetTranslationService"/>
    <reference bind="setPluginRegistryService" cardinality="1..1" interface="de.hszg.atocc.core.pluginregistry.PluginRegistryService" name="PluginRegistryService" policy="static" unbind="unsetPluginRegistryService"/>
 </scr:component>

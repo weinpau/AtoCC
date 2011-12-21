@@ -28,7 +28,7 @@ public final class PluginRegistryServiceImpl implements PluginRegistryService {
 
     @Override
     public void register(final String urlPattern, final Class<? extends ServerResource> c) {
-        logger.log(LogService.LOG_ERROR, String.format("REGISTER WEBSERVICE: %s", urlPattern));
+        logger.log(LogService.LOG_INFO, String.format("REGISTER WEBSERVICE: %s", urlPattern));
 
         if (router == null) {
             throw new NullPointerException(ROUTER_NOT_SET);

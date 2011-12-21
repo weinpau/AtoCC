@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Test-bundle
-Bundle-SymbolicName: nea2dea.test-bundle
+Bundle-Name: AtoCC Nea2Dea Test-bundle
+Bundle-SymbolicName: AutoEdit_-_Nea2Dea_Tests
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hszg.atocc.autoedit.nea2dea.internal.Activator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.osgi.framework;version="1.3.0"
 Require-Bundle: org.junit4;bundle-version="0.0.0",
- atocc.autoedit.nea2dea.bundle;bundle-version="1.0.0",
- atocc.core.util.bundle;bundle-version="1.0.0"
+ AutoEdit_-_Nea2Dea;bundle-version="1.0.0",
+ atocc.core.util;bundle-version="1.0.0"

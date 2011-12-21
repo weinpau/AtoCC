@@ -11,32 +11,46 @@ import org.osgi.framework.ServiceReference;
 
 public final class Activator implements BundleActivator {
 
+    private ServiceReference<AutomatonService> automatonServiceReference;
+    private ServiceReference<XmlUtilService> xmlServiceReference;
+    private ServiceReference<SetService> setServiceReference;
+    private ServiceReference<XmlValidatorService> validatorServiceReference;
+    
+    private AutomatonService automatonService;
+    private XmlUtilService xmlService;
+    private SetService setService;
+    private XmlValidatorService validatorService;
+
     @Override
     public void start(BundleContext context) throws Exception {
-        final ServiceReference<AutomatonService> automatonServiceReference = context
-                .getServiceReference(AutomatonService.class);
-
-        final ServiceReference<XmlUtilService> xmlServiceReference = context
-                .getServiceReference(XmlUtilService.class);
-
-        final ServiceReference<SetService> setServiceReference = context
-                .getServiceReference(SetService.class);
-        
-        final ServiceReference<XmlValidatorService> validatorServiceReference =
-                context.getServiceReference(XmlValidatorService.class);
-
-        final AutomatonService automatonService = context.getService(automatonServiceReference);
-        final SetService setService = context.getService(setServiceReference);
-        final XmlValidatorService validatorService = context.getService(validatorServiceReference);
- 
-        AbstractTestHelper.setAutomatonService(automatonService);
-        AbstractTestHelper.setXmlService(context.getService(xmlServiceReference));
-        AbstractTestHelper.setSetService(setService);
-        AbstractTestHelper.setXmlValidatorService(validatorService);
+        getServiceReferences(context);
+        getServices(context);
+        passServicesToTests();
     }
-
+    
     @Override
     public void stop(BundleContext context) throws Exception {
+    }
+
+    private void getServiceReferences(BundleContext context) {
+        automatonServiceReference = context.getServiceReference(AutomatonService.class);
+        xmlServiceReference = context.getServiceReference(XmlUtilService.class);
+        setServiceReference = context.getServiceReference(SetService.class);
+        validatorServiceReference = context.getServiceReference(XmlValidatorService.class);
+    }
+    
+    private void getServices(BundleContext context) {
+        automatonService = context.getService(automatonServiceReference);
+        xmlService = context.getService(xmlServiceReference);
+        setService = context.getService(setServiceReference);
+        validatorService = context.getService(validatorServiceReference);
+    }
+
+    private void passServicesToTests() {
+        AbstractTestHelper.setAutomatonService(automatonService);
+        AbstractTestHelper.setXmlService(xmlService);
+        AbstractTestHelper.setSetService(setService);
+        AbstractTestHelper.setXmlValidatorService(validatorService);
     }
 
 }
