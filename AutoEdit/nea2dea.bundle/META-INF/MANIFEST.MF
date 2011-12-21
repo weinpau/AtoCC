@@ -10,5 +10,6 @@ Import-Package: de.hszg.atocc.core.pluginregistry,
  org.restlet.resource
 Require-Bundle: atocc.core.util;bundle-version="1.0.0",
  atocc.core.starter;bundle-version="1.0.0",
- atocc.core.pluginregistry;bundle-version="1.0.0"
+ atocc.core.pluginregistry;bundle-version="1.0.0",
+ atocc.core.translation;bundle-version="1.0.0"
 Service-Component: OSGI-INF/component.xml

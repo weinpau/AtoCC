@@ -39,7 +39,8 @@ public final class ListService extends RestfulWebService {
 
             return xmlUtils.createResult(serviceListDocument);
         } catch (final ServiceNotFoundException e) {
-            return xmlUtils.createResultWithError("COULD_NOT_RETREIVE_SERVICE_LIST", e);
+            return xmlUtils
+                    .createResultWithError("COULD_NOT_RETREIVE_SERVICE_LIST", e, getLocale());
         }
     }
 

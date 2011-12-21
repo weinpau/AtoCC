@@ -4,4 +4,5 @@
    <service>
       <provide interface="de.hszg.atocc.core.util.XmlUtilService"/>
    </service>
+   <reference bind="setTranslationService" cardinality="1..1" interface="de.hszg.atocc.core.translation.TranslationService" name="TranslationService" policy="static" unbind="unsetTranslationService"/>
 </scr:component>

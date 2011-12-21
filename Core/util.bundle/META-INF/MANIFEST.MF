@@ -11,3 +11,4 @@ Import-Package: org.osgi.framework;version="1.3.0",
 Export-Package: de.hszg.atocc.core.util,
  de.hszg.atocc.core.util.automaton
 Service-Component: OSGI-INF/automaton_component.xml, OSGI-INF/set_component.xml, OSGI-INF/webutil_component.xml, OSGI-INF/xmlutil_component.xml, OSGI-INF/xmlvalidator_component.xml
+Require-Bundle: atocc.core.translation;bundle-version="1.0.0"

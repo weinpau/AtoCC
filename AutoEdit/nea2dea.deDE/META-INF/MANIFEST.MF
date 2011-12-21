@@ -3,5 +3,5 @@ Bundle-ManifestVersion: 2
 Bundle-Name: AutoEdit - Nea2Dea - de_DE
 Bundle-SymbolicName: atocc.autoedit.nea2dea.deDE
 Bundle-Version: 1.0.0.qualifier
-Fragment-Host: atocc.translation;bundle-version="1.0.0"
+Fragment-Host: atocc.core.translation;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

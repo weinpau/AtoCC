@@ -10,4 +10,4 @@ Service-Component: OSGI-INF/component.xml
 Require-Bundle: atocc.core.pluginregistry;bundle-version="1.0.0",
  atocc.core.util;bundle-version="1.0.0",
  org.restlet;bundle-version="2.1.0",
- atocc.translation;bundle-version="1.0.0"
+ atocc.core.translation;bundle-version="1.0.0"

@@ -1,5 +1,6 @@
 package de.hszg.atocc.core.util.internal;
 
+import de.hszg.atocc.core.translation.TranslationService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlUtilsException;
 
@@ -7,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -25,8 +27,11 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
 
     private static final String STATUS = "status";
     private static final String ERROR = "error";
+    
+    private TranslationService translator;
 
-    public Document documentFromFile(final String filename) throws XmlUtilsException {
+    @Override
+    public Document documentFromFile(String filename) throws XmlUtilsException {
         try {
             return DocumentBuilderFactory.newInstance().newDocumentBuilder()
                     .parse(new File(filename));
@@ -35,7 +40,8 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
         }
     }
 
-    public Document createResult(final Document doc) {
+    @Override
+    public Document createResult(Document doc) {
 
         final Document resultDocument = createEmptyDocument();
         final Element resultElement = createResultElement(resultDocument, "success");
@@ -47,8 +53,14 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
 
         return resultDocument;
     }
+    
+    @Override
+    public Document createResultWithError(String errorCode, Exception reason, Locale locale) {
+        return createResultWithError(errorCode, translator.translate(errorCode, locale), reason);
+    }
 
-    public Document createResultWithError(final String errorMessage, final Exception reason) {
+    @Override
+    public Document createResultWithError(String errorCode, String errorMessage, Exception reason) {
 
         final Document resultDocument = createEmptyDocument();
 
@@ -56,6 +68,9 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
 
         final Element errorElement = resultDocument.createElement(ERROR);
         resultElement.appendChild(errorElement);
+        
+        final Element errorCodeElement = createErrorCodeElement(resultDocument, errorCode);
+        errorElement.appendChild(errorCodeElement);
 
         final Element errorMessageElement = createErrorMessageElement(resultDocument, errorMessage);
         errorElement.appendChild(errorMessageElement);
@@ -88,6 +103,7 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
         }
     }
 
+    @Override
     public Document createEmptyDocument() {
         Document result = null;
 
@@ -113,8 +129,18 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
 
         return converter.stringToXml(data);
     }
+    
+    public synchronized void setTranslationService(TranslationService service) {
+        translator = service;
+    }
 
-    private Element createResultElement(final Document doc, final String status) {
+    public synchronized void unsetTranslationService(TranslationService service) {
+        if (translator == service) {
+            translator = null;
+        }
+    }
+
+    private Element createResultElement(Document doc, String status) {
         final Element resultElement = doc.createElement("result");
         resultElement.setAttribute(STATUS, status);
         doc.appendChild(resultElement);
@@ -122,14 +148,21 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
         return resultElement;
     }
 
-    private Element createErrorMessageElement(final Document doc, final String errorMessage) {
+    private Element createErrorCodeElement(Document doc, String errorCode) {
+        final Element errorCodeElement = doc.createElement("code");
+        errorCodeElement.setTextContent(errorCode);
+
+        return errorCodeElement;
+    }
+    
+    private Element createErrorMessageElement(Document doc, String errorMessage) {
         final Element errorMessageElement = doc.createElement("message");
         errorMessageElement.setTextContent(errorMessage);
 
         return errorMessageElement;
     }
 
-    private Element createErrorReasonElement(final Document doc, final Exception reason) {
+    private Element createErrorReasonElement(Document doc, Exception reason) {
 
         final StringWriter sw = new StringWriter();
         reason.printStackTrace(new PrintWriter(sw));

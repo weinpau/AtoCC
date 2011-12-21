@@ -61,18 +61,21 @@ public final class TranslationServiceImpl implements TranslationService {
 
             while (resources.hasMoreElements()) {
                 final URL resource = resources.nextElement();
-
-                if (!loadedResources.contains(resource)) {
-                    try {
-                        loadTranslationsFrom(resource);
-                        loadedResources.add(resource);
-                    } catch (IOException e) {
-                        logger.log(LogService.LOG_ERROR, COULD_NOT_LOAD_TRANSLATIONS, e);
-                    }
-                }
+                loadResourceIfNeccessary(resource);
             }
         } catch (IOException e) {
             logger.log(LogService.LOG_ERROR, COULD_NOT_LOAD_TRANSLATIONS, e);
+        }
+    }
+
+    private void loadResourceIfNeccessary(final URL resource) {
+        if (!loadedResources.contains(resource)) {
+            try {
+                loadTranslationsFrom(resource);
+                loadedResources.add(resource);
+            } catch (IOException e) {
+                logger.log(LogService.LOG_ERROR, COULD_NOT_LOAD_TRANSLATIONS, e);
+            }
         }
     }
 

@@ -23,6 +23,9 @@ import org.w3c.dom.Document;
 
 public final class Nea2Dea extends RestfulWebService {
 
+    private static final String INVALID_INPUT = "INVALID_INPUT";
+    private static final String TRANSFORM_FAILED = "TRANSFORM_FAILED";
+
     private static final String AUTOMATON = "AUTOMATON";
 
     private Automaton nea;
@@ -55,9 +58,9 @@ public final class Nea2Dea extends RestfulWebService {
 
             result = xmlUtils.createResult(deaDocument);
         } catch (final RuntimeException | InvalidTransitionException | InvalidStateException e) {
-            result = xmlUtils.createResultWithError("TRANSFORM_FAILED", e);
+            result = xmlUtils.createResultWithError(TRANSFORM_FAILED, e, getLocale());
         } catch (XmlValidationException e) {
-            result = xmlUtils.createResultWithError("INVALID_INPUT", e);
+            result = xmlUtils.createResultWithError(INVALID_INPUT, e, getLocale());
         }
 
         return result;
