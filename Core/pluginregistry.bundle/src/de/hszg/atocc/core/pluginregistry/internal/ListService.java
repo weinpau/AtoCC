@@ -1,6 +1,7 @@
 package de.hszg.atocc.core.pluginregistry.internal;
 
 import de.hszg.atocc.core.pluginregistry.PluginRegistryService;
+import de.hszg.atocc.core.translation.TranslationService;
 import de.hszg.atocc.core.util.RestfulWebService;
 import de.hszg.atocc.core.util.ServiceNotFoundException;
 import de.hszg.atocc.core.util.XmlUtilService;
@@ -21,6 +22,7 @@ import org.w3c.dom.Element;
 public final class ListService extends RestfulWebService {
 
     private XmlUtilService xmlUtils;
+    private TranslationService translationService;
 
     private Document serviceListDocument;
     private Element servicesElement;
@@ -28,6 +30,7 @@ public final class ListService extends RestfulWebService {
     @Get
     public Document listAvailableServices() {
         xmlUtils = getService(XmlUtilService.class);
+        translationService = getService(TranslationService.class);
 
         try {
             createServiceListDocument();
@@ -50,8 +53,8 @@ public final class ListService extends RestfulWebService {
     }
 
     private void createServiceElements() {
-        final Map<Class<? extends ServerResource>, String> registeredServices =
-                getService(PluginRegistryService.class).getRegisteredServices();
+        final Map<Class<? extends ServerResource>, String> registeredServices = getService(
+                PluginRegistryService.class).getRegisteredServices();
 
         for (Entry<Class<? extends ServerResource>, String> entry : registeredServices.entrySet()) {
             createServiceElement(entry.getKey(), entry.getValue());
@@ -59,18 +62,37 @@ public final class ListService extends RestfulWebService {
     }
 
     private void createServiceElement(Class<? extends ServerResource> resourceClass, String url) {
+        final String serviceName = resourceClass.getSimpleName();
+
         final Element serviceElement = serviceListDocument.createElement("service");
         servicesElement.appendChild(serviceElement);
 
         final Element nameElement = serviceListDocument.createElement("name");
-        nameElement.setTextContent(resourceClass.getSimpleName());
+        nameElement.setTextContent(serviceName);
         serviceElement.appendChild(nameElement);
 
         final Element urlElement = serviceListDocument.createElement("url");
         urlElement.setTextContent(url);
         serviceElement.appendChild(urlElement);
 
+        final Element descriptionElement = createDescriptionElement(serviceName);
+        serviceElement.appendChild(descriptionElement);
+
         createInterfaceElements(resourceClass, serviceElement);
+    }
+
+    private Element createDescriptionElement(final String serviceName) {
+        final String descriptionID = String.format("%s_DESCRIPTION", serviceName);
+        final String description = translationService.translate(descriptionID, getLocale());
+
+        final Element descriptionElement = serviceListDocument.createElement("description");
+        
+        if (description.equals(descriptionID)) {
+            descriptionElement.setTextContent("");
+        } else {
+            descriptionElement.setTextContent(description);
+        }
+        return descriptionElement;
     }
 
     private void createInterfaceElements(Class<? extends ServerResource> resourceClass,
@@ -108,7 +130,7 @@ public final class ListService extends RestfulWebService {
     private boolean isWebServiceAnnotation(Class<? extends Annotation> webServiceAnnotationType) {
         return webServiceAnnotationType != null;
     }
-    
+
     private boolean isRestletResourceAnnotation(final Class<? extends Annotation> type) {
         return type.equals(Get.class) || type.equals(Post.class) || type.equals(Put.class)
                 || type.equals(Delete.class);
