@@ -2,6 +2,7 @@ package de.hszg.atocc.core.translation.impl;
 
 import de.hszg.atocc.core.translation.TranslationService;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
@@ -33,6 +34,8 @@ public final class TranslationServiceImpl implements TranslationService {
         }
 
         if (!isTranslationsAvailableFor(key, locale)) {
+            logger.log(LogService.LOG_DEBUG,
+                    String.format("Key '%s' not translated for Locale %s", key, locale.toString()));
             return key;
         }
 
@@ -57,11 +60,14 @@ public final class TranslationServiceImpl implements TranslationService {
         final ClassLoader classLoader = getClass().getClassLoader();
 
         try {
-            final Enumeration<URL> resources = classLoader.getResources("messages.properties");
+            for (Locale locale : Locale.getAvailableLocales()) {
+                final Enumeration<URL> resources = classLoader.getResources(String.format("%s/%s",
+                        locale.getLanguage(), "messages.properties"));
 
-            while (resources.hasMoreElements()) {
-                final URL resource = resources.nextElement();
-                loadResourceIfNeccessary(resource);
+                while (resources.hasMoreElements()) {
+                    final URL resource = resources.nextElement();
+                    loadResourceIfNeccessary(resource);
+                }
             }
         } catch (IOException e) {
             logger.log(LogService.LOG_ERROR, COULD_NOT_LOAD_TRANSLATIONS, e);
@@ -85,16 +91,13 @@ public final class TranslationServiceImpl implements TranslationService {
         final Properties properties = new Properties();
         properties.load(resource.openStream());
 
-        if (!properties.containsKey(LANGUAGE)) {
-            throw new IOException(resource.toString() + " is missing 'LANGUAGE'-Definition");
-        }
+        final File resourceFile = new File(resource.getPath());
+        final String language = resourceFile.getParent().substring(1);
 
-        mergeTranslationsWith(properties);
+        mergeTranslationsWith(properties, new Locale(language));
     }
 
-    private void mergeTranslationsWith(Properties properties) {
-        final Locale locale = new Locale(properties.getProperty(LANGUAGE));
-
+    private void mergeTranslationsWith(Properties properties, Locale locale) {
         if (!translations.containsKey(locale)) {
             translations.put(locale, new Properties());
         }

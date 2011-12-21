@@ -18,7 +18,7 @@ public class RestfulWebService extends ServerResource {
         super.doInit();
 
         attributes = getContext().getAttributes();
-        
+
         final List<Preference<Language>> acceptedLanguages = getRequest().getClientInfo()
                 .getAcceptedLanguages();
 
@@ -26,7 +26,9 @@ public class RestfulWebService extends ServerResource {
             final Preference<Language> languagePreference = acceptedLanguages.get(0);
             final Language language = languagePreference.getMetadata();
 
-            locale = new Locale(language.getName());
+            if (!language.getName().equals("*")) {
+                locale = new Locale(language.getName());
+            }
         }
     }
 
@@ -38,7 +40,7 @@ public class RestfulWebService extends ServerResource {
 
         return (T) attributes.get(c.getName());
     }
-    
+
     protected final Locale getLocale() {
         return locale;
     }

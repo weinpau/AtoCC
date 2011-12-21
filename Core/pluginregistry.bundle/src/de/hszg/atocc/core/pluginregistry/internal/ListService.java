@@ -83,7 +83,7 @@ public final class ListService extends RestfulWebService {
     }
 
     private Element createDescriptionElement(final String serviceName) {
-        final String descriptionID = String.format("%s_DESCRIPTION", serviceName);
+        final String descriptionID = String.format("%s|DESCRIPTION", serviceName);
         final String description = translationService.translate(descriptionID, getLocale());
 
         final Element descriptionElement = serviceListDocument.createElement("description");

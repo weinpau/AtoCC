@@ -27,7 +27,7 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
 
     private static final String STATUS = "status";
     private static final String ERROR = "error";
-    
+
     private TranslationService translator;
 
     @Override
@@ -53,7 +53,7 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
 
         return resultDocument;
     }
-    
+
     @Override
     public Document createResultWithError(String errorCode, Exception reason, Locale locale) {
         return createResultWithError(errorCode, translator.translate(errorCode, locale), reason);
@@ -68,7 +68,7 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
 
         final Element errorElement = resultDocument.createElement(ERROR);
         resultElement.appendChild(errorElement);
-        
+
         final Element errorCodeElement = createErrorCodeElement(resultDocument, errorCode);
         errorElement.appendChild(errorCodeElement);
 
@@ -93,10 +93,10 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
         try {
             final Node contentNode = (Node) xpath.evaluate("/result/node()[1]", resultDocument,
                     XPathConstants.NODE);
-                    
+
             final Document document = createEmptyDocument();
             document.appendChild(document.adoptNode(contentNode));
-            
+
             return document;
         } catch (final XPathExpressionException e) {
             throw new RuntimeException(e);
@@ -129,7 +129,7 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
 
         return converter.stringToXml(data);
     }
-    
+
     public synchronized void setTranslationService(TranslationService service) {
         translator = service;
     }
@@ -150,11 +150,16 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
 
     private Element createErrorCodeElement(Document doc, String errorCode) {
         final Element errorCodeElement = doc.createElement("code");
-        errorCodeElement.setTextContent(errorCode);
+
+        if (errorCode.contains("|")) {
+            errorCodeElement.setTextContent((errorCode.split("\\|"))[1]);
+        } else {
+            errorCodeElement.setTextContent(errorCode);
+        }
 
         return errorCodeElement;
     }
-    
+
     private Element createErrorMessageElement(Document doc, String errorMessage) {
         final Element errorMessageElement = doc.createElement("message");
         errorMessageElement.setTextContent(errorMessage);

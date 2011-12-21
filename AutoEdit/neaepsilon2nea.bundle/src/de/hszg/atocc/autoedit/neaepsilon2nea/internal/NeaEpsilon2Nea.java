@@ -20,8 +20,8 @@ import org.w3c.dom.Document;
 
 public final class NeaEpsilon2Nea extends RestfulWebService {
 
-    private static final String TRANSFORM_FAILED = "TRANSFORM_FAILED";
-    private static final String INVALID_INPUT = "INVALID_INPUT";
+    private static final String TRANSFORM_FAILED = "NeaEpsilon2Nea|TRANSFORM_FAILED";
+    private static final String INVALID_INPUT = "NeaEpsilon2Nea|INVALID_INPUT";
     private XmlUtilService xmlUtils;
     private AutomatonService automatonUtils;
     private XmlValidatorService xmlValidator;

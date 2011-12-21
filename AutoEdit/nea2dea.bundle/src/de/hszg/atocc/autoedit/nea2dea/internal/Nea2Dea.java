@@ -23,8 +23,8 @@ import org.w3c.dom.Document;
 
 public final class Nea2Dea extends RestfulWebService {
 
-    private static final String INVALID_INPUT = "INVALID_INPUT";
-    private static final String TRANSFORM_FAILED = "TRANSFORM_FAILED";
+    private static final String INVALID_INPUT = "Nea2Dea|INVALID_INPUT";
+    private static final String TRANSFORM_FAILED = "Nea2Dea|TRANSFORM_FAILED";
 
     private static final String AUTOMATON = "AUTOMATON";
 
