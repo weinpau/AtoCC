@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: AtoCC Logging
-Bundle-SymbolicName: Core_-_Logging
+Bundle-SymbolicName: atocc.core.logging
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hszg.atocc.core.consolelog.internal.Activator
 Bundle-ActivationPolicy: lazy

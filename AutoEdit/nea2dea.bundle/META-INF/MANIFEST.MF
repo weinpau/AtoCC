@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: AtoCC Nea2Dea Bundle
-Bundle-SymbolicName: AutoEdit_-_Nea2Dea
+Bundle-SymbolicName: atocc.autoedit.nea2dea
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: de.hszg.atocc.core.pluginregistry,
