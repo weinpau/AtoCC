@@ -8,9 +8,9 @@ import org.w3c.dom.Document;
 
 public interface AutomatonService {
 
-    Automaton automatonFrom(Document document) throws DeserializationException;
+    Automaton automatonFrom(Document document) throws SerializationException;
 
-    Document automatonToXml(Automaton automaton);
+    Document automatonToXml(Automaton automaton) throws SerializationException;
 
     Set<Set<String>> getStatePowerSetFrom(Automaton automaton);
 

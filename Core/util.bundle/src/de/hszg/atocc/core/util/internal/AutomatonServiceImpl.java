@@ -1,7 +1,7 @@
 package de.hszg.atocc.core.util.internal;
 
 import de.hszg.atocc.core.util.AutomatonService;
-import de.hszg.atocc.core.util.DeserializationException;
+import de.hszg.atocc.core.util.SerializationException;
 import de.hszg.atocc.core.util.SetService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.automaton.Automaton;
@@ -17,14 +17,14 @@ public final class AutomatonServiceImpl implements AutomatonService {
     private XmlUtilService xmlUtils;
 
     @Override
-    public Automaton automatonFrom(Document document) throws DeserializationException {
+    public Automaton automatonFrom(Document document) throws SerializationException {
         final AutomatonDeserializer deserializer = new AutomatonDeserializer();
 
         return deserializer.deserialize(document);
     }
 
     @Override
-    public Document automatonToXml(Automaton automaton) {
+    public Document automatonToXml(Automaton automaton) throws SerializationException {
         final AutomatonSerializer serializer = new AutomatonSerializer(xmlUtils);
 
         return serializer.serialize(automaton);

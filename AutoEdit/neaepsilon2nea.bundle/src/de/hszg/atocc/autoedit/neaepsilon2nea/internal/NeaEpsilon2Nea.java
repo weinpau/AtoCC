@@ -1,8 +1,8 @@
 package de.hszg.atocc.autoedit.neaepsilon2nea.internal;
 
 import de.hszg.atocc.core.util.AutomatonService;
-import de.hszg.atocc.core.util.DeserializationException;
 import de.hszg.atocc.core.util.RestfulWebService;
+import de.hszg.atocc.core.util.SerializationException;
 import de.hszg.atocc.core.util.SetService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlValidationException;
@@ -47,7 +47,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
             createNewDeltaRules();
 
             result = xmlUtils.createResult(automatonUtils.automatonToXml(nea));
-        } catch (final DeserializationException | XmlValidationException e) {
+        } catch (final SerializationException | XmlValidationException e) {
             result = xmlUtils.createResultWithError(INVALID_INPUT, e, getLocale());
         } catch (final RuntimeException | InvalidTransitionException | InvalidStateException e) {
             result = xmlUtils.createResultWithError(TRANSFORM_FAILED, e, getLocale());
@@ -56,7 +56,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
         return result;
     }
 
-    private void initializeOutputAutomaton() {
+    private void initializeOutputAutomaton() throws InvalidStateException {
         nea = new Automaton(AutomatonType.NEA);
         nea.setAlphabet(neaEpsilon.getAlphabet());
         nea.setStates(neaEpsilon.getStates());

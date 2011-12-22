@@ -1,7 +1,9 @@
 package de.hszg.atocc.core.util.internal;
 
+import de.hszg.atocc.core.util.SerializationException;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.automaton.Automaton;
+import de.hszg.atocc.core.util.automaton.InvalidStateException;
 import de.hszg.atocc.core.util.automaton.Transition;
 
 import java.util.Set;
@@ -30,13 +32,18 @@ public final class AutomatonSerializer {
         document.appendChild(automatonElement);
     }
 
-    public Document serialize(Automaton anAutomaton) {
+    public Document serialize(Automaton anAutomaton) throws SerializationException {
         automaton = anAutomaton;
 
         createTypeElement();
         createAlphabetElement();
         createStateElements();
-        createInitialStateElement();
+        
+        try {
+            createInitialStateElement();
+        } catch (InvalidStateException e) {
+            throw new SerializationException(e);
+        }
 
         return document;
     }
@@ -94,7 +101,13 @@ public final class AutomatonSerializer {
         }
     }
 
-    private void createInitialStateElement() {
+    private void createInitialStateElement() throws InvalidStateException {
+        final String initialState = automaton.getInitialState();
+        
+        if (initialState == null || "".equals(initialState)) {
+            throw new InvalidStateException("INITIAL_STATE_NOT_SET");
+        }
+        
         final Element initialStateElement = document.createElement("INITIALSTATE");
         initialStateElement.setAttribute(VALUE, automaton.getInitialState());
         automatonElement.appendChild(initialStateElement);

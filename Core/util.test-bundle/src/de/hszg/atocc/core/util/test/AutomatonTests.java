@@ -2,6 +2,7 @@ package de.hszg.atocc.core.util.test;
 
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.AutomatonType;
+import de.hszg.atocc.core.util.automaton.InvalidAlphabetCharacterException;
 import de.hszg.atocc.core.util.automaton.InvalidStateException;
 import de.hszg.atocc.core.util.automaton.InvalidTransitionException;
 import de.hszg.atocc.core.util.automaton.Transition;
@@ -45,7 +46,7 @@ public final class AutomatonTests {
     }
 
     @Test
-    public void testContainsEpsilonRules() throws InvalidTransitionException {
+    public void containsEpsilonRules() throws InvalidTransitionException, InvalidStateException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addState(Q0);
         automaton.addState(Q1);
@@ -66,7 +67,7 @@ public final class AutomatonTests {
     }
 
     @Test
-    public void testGetAlphabet() {
+    public void testGetAlphabet() throws InvalidAlphabetCharacterException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addAlphabetItem(A);
         automaton.addAlphabetItem(B);
@@ -75,7 +76,7 @@ public final class AutomatonTests {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void getAlphabetShouldReturnUnmodifiableSet() {
+    public void getAlphabetShouldReturnUnmodifiableSet() throws InvalidAlphabetCharacterException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addAlphabetItem(A);
         automaton.addAlphabetItem(B);
@@ -85,7 +86,7 @@ public final class AutomatonTests {
     }
 
     @Test
-    public void testAddAlphabetItem() {
+    public void testAddAlphabetItem() throws InvalidAlphabetCharacterException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
 
         Assert.assertEquals(Collections.emptySet(), automaton.getAlphabet());
@@ -94,6 +95,18 @@ public final class AutomatonTests {
         automaton.addAlphabetItem(B);
 
         Assert.assertEquals(alphabetAB, automaton.getAlphabet());
+    }
+
+    @Test(expected = InvalidAlphabetCharacterException.class)
+    public void addAlphabetItemShouldFailForNull() throws InvalidAlphabetCharacterException {
+        final Automaton automaton = new Automaton(AutomatonType.NEA);
+        automaton.addAlphabetItem(null);
+    }
+    
+    @Test(expected = InvalidAlphabetCharacterException.class)
+    public void addAlphabetItemShouldFailForEmptyString() throws InvalidAlphabetCharacterException {
+        final Automaton automaton = new Automaton(AutomatonType.NEA);
+        automaton.addAlphabetItem("");
     }
 
     @Test
@@ -122,7 +135,7 @@ public final class AutomatonTests {
     }
 
     @Test
-    public void testAddAndGetState() {
+    public void testAddAndGetState() throws InvalidStateException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
 
         Assert.assertEquals(Collections.emptySet(), automaton.getStates());
@@ -137,10 +150,22 @@ public final class AutomatonTests {
     }
 
     @Test
-    public void addStateShouldNotFailForDuplicateState() {
+    public void addStateShouldNotFailForDuplicateState() throws InvalidStateException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addState(Q0);
         automaton.addState(Q0);
+    }
+
+    @Test(expected = InvalidStateException.class)
+    public void addStateShouldFailForNullState() throws InvalidStateException {
+        final Automaton automaton = new Automaton(AutomatonType.NEA);
+        automaton.addState(null);
+    }
+    
+    @Test(expected = InvalidStateException.class)
+    public void addStateShouldFailForEmptyString() throws InvalidStateException {
+        final Automaton automaton = new Automaton(AutomatonType.NEA);
+        automaton.addState("");
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -151,7 +176,7 @@ public final class AutomatonTests {
     }
 
     @Test
-    public void setStatesShouldCopyValues() {
+    public void setStatesShouldCopyValues() throws InvalidStateException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         Assert.assertEquals(Collections.emptySet(), automaton.getStates());
 
@@ -183,7 +208,7 @@ public final class AutomatonTests {
 
     @Test(expected = InvalidTransitionException.class)
     public void addTransitionShouldFailIfSourceStateDoesNotExists()
-            throws InvalidTransitionException {
+            throws InvalidTransitionException, InvalidStateException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addState(Q1);
         automaton.addTransition(new Transition(Q0, Q1, EPSILON));
@@ -191,7 +216,7 @@ public final class AutomatonTests {
 
     @Test(expected = InvalidTransitionException.class)
     public void addTransitionShouldFailIfTargetStateDoesNotExists()
-            throws InvalidTransitionException {
+            throws InvalidTransitionException, InvalidStateException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addState(Q0);
         automaton.addTransition(new Transition(Q0, Q1, EPSILON));
@@ -199,7 +224,7 @@ public final class AutomatonTests {
 
     @Test(expected = InvalidTransitionException.class)
     public void addTransitionShouldFailIfAlphabetCharacterIsInvalid()
-            throws InvalidTransitionException {
+            throws InvalidTransitionException, InvalidStateException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addState(Q0);
         automaton.addState(Q1);
@@ -207,7 +232,8 @@ public final class AutomatonTests {
     }
 
     @Test(expected = InvalidTransitionException.class)
-    public void addSpontaniousTransitionShouldFailForDea() throws InvalidTransitionException {
+    public void addSpontaniousTransitionShouldFailForDea() throws InvalidTransitionException,
+            InvalidStateException {
         final Automaton automaton = new Automaton(AutomatonType.DEA);
         automaton.addState(Q0);
         automaton.addState(Q1);
@@ -215,14 +241,14 @@ public final class AutomatonTests {
     }
 
     @Test
-    public void testGetInitialState() {
+    public void testGetInitialState() throws InvalidStateException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.setInitialState(Q0);
         Assert.assertEquals(Q0, automaton.getInitialState());
     }
 
     @Test
-    public void testSetInitialState() {
+    public void testSetInitialState() throws InvalidStateException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
 
         Assert.assertEquals("", automaton.getInitialState());
@@ -230,6 +256,18 @@ public final class AutomatonTests {
         automaton.setInitialState(Q0);
 
         Assert.assertEquals(Q0, automaton.getInitialState());
+    }
+    
+    @Test(expected = InvalidStateException.class)
+    public void setInitialStateShouldFailForNull() throws InvalidStateException {
+        final Automaton automaton = new Automaton(AutomatonType.NEA);
+        automaton.setInitialState(null);
+    }
+    
+    @Test(expected = InvalidStateException.class)
+    public void setInitialStateShouldFailForEmptyString() throws InvalidStateException {
+        final Automaton automaton = new Automaton(AutomatonType.NEA);
+        automaton.setInitialState("");
     }
 
     @Test
@@ -257,8 +295,7 @@ public final class AutomatonTests {
     }
 
     @Test
-    public void equalsShouldReturnTrueForEqualAutomatons() throws InvalidStateException,
-            InvalidTransitionException {
+    public void equalsShouldReturnTrueForEqualAutomatons() throws Exception {
         final Automaton a1 = new Automaton(AutomatonType.NEA);
         a1.addState(Q0);
         a1.addState(Q1);
@@ -294,7 +331,8 @@ public final class AutomatonTests {
     }
 
     @Test
-    public void equalsShouldReturnFalseIfAlphabetsAreNotEqual() {
+    public void equalsShouldReturnFalseIfAlphabetsAreNotEqual()
+            throws InvalidAlphabetCharacterException {
         final Automaton a1 = new Automaton(AutomatonType.NEA);
         a1.addAlphabetItem(A);
         a1.addAlphabetItem(B);
@@ -306,7 +344,7 @@ public final class AutomatonTests {
     }
 
     @Test
-    public void equalsShouldReturnFalseIfStatesAreNotEqual() {
+    public void equalsShouldReturnFalseIfStatesAreNotEqual() throws InvalidStateException {
         final Automaton a1 = new Automaton(AutomatonType.NEA);
         a1.addState(Q0);
         a1.addState(Q1);
@@ -318,7 +356,7 @@ public final class AutomatonTests {
     }
 
     @Test
-    public void equalsShouldFailIfTransitionsAreNotEqual() throws InvalidTransitionException {
+    public void equalsShouldFailIfTransitionsAreNotEqual() throws Exception {
         final Automaton a1 = new Automaton(AutomatonType.NEA);
         a1.addState(Q0);
         a1.addState(Q1);
@@ -331,7 +369,7 @@ public final class AutomatonTests {
     }
 
     @Test
-    public void equalsShouldReturnFalseIfInitialStatesAreNotEqual() {
+    public void equalsShouldReturnFalseIfInitialStatesAreNotEqual() throws InvalidStateException {
         final Automaton a1 = new Automaton(AutomatonType.NEA);
         a1.addState(Q0);
         a1.setInitialState(Q0);

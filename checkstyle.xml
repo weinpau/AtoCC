@@ -128,7 +128,7 @@
 		</module>
 
 		<module name="JavaNCSS">
-			<property name="classMaximum" value="200" />
+			<property name="classMaximum" value="250" />
 			<property name="fileMaximum" value="500" />
 		</module>
 
@@ -173,7 +173,7 @@
 		<module name="OuterTypeNumber" />
 
 		<module name="MethodCount">
-			<property name="maxTotal" value="35" />
+			<property name="maxTotal" value="40" />
 		</module>
 		
 		<!-- Whitespace -->

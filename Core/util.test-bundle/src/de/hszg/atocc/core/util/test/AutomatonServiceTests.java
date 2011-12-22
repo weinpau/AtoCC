@@ -1,6 +1,6 @@
 package de.hszg.atocc.core.util.test;
 
-import de.hszg.atocc.core.util.DeserializationException;
+import de.hszg.atocc.core.util.SerializationException;
 import de.hszg.atocc.core.util.XmlUtilsException;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.AutomatonType;
@@ -17,9 +17,13 @@ import org.w3c.dom.Document;
 
 public final class AutomatonServiceTests extends AbstractTestHelper {
 
+    private static final String EPSILON = "EPSILON";
+    private static final String Q5 = "q5";
+    private static final String Q4 = "q4";
+    private static final String Q3 = "q3";
+    private static final String Q2 = "q2";
     private static final String Q1 = "q1";
     private static final String Q0 = "q0";
-    private static final String EPSILON = "EPSILON";
     private static final String B = "b";
     private static final String A = "a";
 
@@ -34,7 +38,7 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
     private Set<String> z6;
 
     @Before
-    public void setUp() throws XmlUtilsException, DeserializationException {
+    public void setUp() throws XmlUtilsException, SerializationException {
         automatons = new TestAutomatons();
 
         z2 = getSetService().createSetWith(TestAutomatons.Z2);
@@ -202,12 +206,77 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
         Assert.assertEquals(emptySet, automatons.getNea1()
                 .getTargetsFor(TestAutomatons.Z6, EPSILON));
     }
+    
+    @Test(expected = SerializationException.class)
+    public void serializationShouldFailIfNoInitialStateIsSet() throws SerializationException {
+        final Automaton sourceAutomaton = new Automaton(AutomatonType.NEA);
+        getAutomatonService().automatonToXml(sourceAutomaton);
+    }
 
     @Test
-    public void testSerialization() throws Exception {
+    public void testSerializationOnlyWithType() throws Exception {
+        final Automaton sourceAutomaton = new Automaton(AutomatonType.NEA);
+        sourceAutomaton.setInitialState(Q0);
+
+        final Document document = getAutomatonService().automatonToXml(sourceAutomaton);
+        final Automaton destination = getAutomatonService().automatonFrom(document);
+
+        Assert.assertEquals(sourceAutomaton, destination);
+    }
+
+    @Test
+    public void testSerializationWithAlphabet() throws Exception {
+        final Automaton sourceAutomaton = new Automaton(AutomatonType.NEA);
+        sourceAutomaton.setInitialState(Q0);
+        sourceAutomaton.addAlphabetItem(A);
+
+        final Document document = getAutomatonService().automatonToXml(sourceAutomaton);
+        final Automaton destination = getAutomatonService().automatonFrom(document);
+
+        Assert.assertEquals(sourceAutomaton, destination);
+    }
+
+    @Test
+    public void testSerializationWithStates() throws Exception {
+        final Automaton sourceAutomaton = new Automaton(AutomatonType.NEA);
+        sourceAutomaton.setInitialState(Q0);
+        sourceAutomaton.addState(Q1);
+
+        final Document document = getAutomatonService().automatonToXml(sourceAutomaton);
+        final Automaton destination = getAutomatonService().automatonFrom(document);
+
+        Assert.assertEquals(sourceAutomaton, destination);
+    }
+
+    @Test
+    public void testSerializationWithInitialState() throws Exception {
+        final Automaton sourceAutomaton = new Automaton(AutomatonType.NEA);
+        sourceAutomaton.setInitialState(Q0);
+
+        final Document document = getAutomatonService().automatonToXml(sourceAutomaton);
+        final Automaton destination = getAutomatonService().automatonFrom(document);
+
+        Assert.assertEquals(sourceAutomaton, destination);
+    }
+
+    @Test
+    public void testSerializationWithFinalState() throws Exception {
+        final Automaton sourceAutomaton = new Automaton(AutomatonType.NEA);
+        sourceAutomaton.setInitialState(Q0);
+        sourceAutomaton.addState(Q1);
+        sourceAutomaton.addFinalState(Q1);
+
+        final Document document = getAutomatonService().automatonToXml(sourceAutomaton);
+        final Automaton destination = getAutomatonService().automatonFrom(document);
+
+        Assert.assertEquals(sourceAutomaton, destination);
+    }
+
+    @Test
+    public void testSerializationWithTransitions() throws Exception {
         final Automaton sourceAutomaton = new Automaton(AutomatonType.NEA);
         sourceAutomaton.addAlphabetItem(A);
-        sourceAutomaton.addState(Q0);
+        sourceAutomaton.setInitialState(Q0);
         sourceAutomaton.addState(Q1);
         sourceAutomaton.addFinalState(Q1);
         sourceAutomaton.addTransition(new Transition(Q0, Q1, A));
@@ -218,12 +287,34 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
         Assert.assertEquals(sourceAutomaton, destination);
     }
 
-    @Test(expected = DeserializationException.class)
+    @Test(expected = SerializationException.class)
     public void deserializationShouldFailForInvalidInput() throws XmlUtilsException,
-            DeserializationException {
+            SerializationException {
         final Document document = getXmlService().documentFromFile(
                 "automaton_with_invalid_type.xml");
 
         getAutomatonService().automatonFrom(document);
+    }
+
+    @Test
+    public void testEpsilonHull() throws Exception {
+        final Automaton automaton = new Automaton(AutomatonType.NEA);
+        automaton.setStates(getSetService().createSetWith(Q0, Q1, Q2, Q3, Q4, Q5));
+        automaton.addAlphabetItem(A);
+        automaton.addAlphabetItem(B);
+        automaton.addTransition(new Transition(Q0, Q1, EPSILON));
+        automaton.addTransition(new Transition(Q0, Q3, A));
+        automaton.addTransition(new Transition(Q1, Q2, B));
+        automaton.addTransition(new Transition(Q1, Q4, A));
+        automaton.addTransition(new Transition(Q3, Q1, EPSILON));
+        automaton.addTransition(new Transition(Q3, Q4, B));
+        automaton.addTransition(new Transition(Q4, Q5, EPSILON));
+
+        final Set<String> expected1 = getSetService().createSetWith(Q0, Q1);
+        Assert.assertEquals(expected1, getAutomatonService().getEpsilonHull(automaton, Q0));
+
+        final Set<String> expected2 = getSetService().createSetWith(Q2);
+        Assert.assertEquals(expected2,
+                getAutomatonService().getEpsilonHull(automaton, getSetService().createSetWith(Q2)));
     }
 }

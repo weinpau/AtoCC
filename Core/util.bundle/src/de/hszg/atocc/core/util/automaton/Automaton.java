@@ -36,7 +36,12 @@ public final class Automaton {
         return Collections.unmodifiableSet(alphabet);
     }
 
-    public void addAlphabetItem(String alphabetCharacter) {
+    public void addAlphabetItem(String alphabetCharacter) throws InvalidAlphabetCharacterException {
+        if (alphabetCharacter == null || "".equals(alphabetCharacter)) {
+            throw new InvalidAlphabetCharacterException(
+                    "null or empty string not allowed as alphabet item");
+        }
+
         alphabet.add(alphabetCharacter);
     }
 
@@ -49,7 +54,11 @@ public final class Automaton {
         return Collections.unmodifiableSet(states);
     }
 
-    public void addState(String state) {
+    public void addState(String state) throws InvalidStateException {
+        if (state == null || "".equals(state)) {
+            throw new InvalidStateException("null or empty string");
+        }
+
         states.add(state);
 
         if (!transitions.containsKey(state)) {
@@ -57,7 +66,7 @@ public final class Automaton {
         }
     }
 
-    public void setStates(Set<String> stateNames) {
+    public void setStates(Set<String> stateNames) throws InvalidStateException {
         states.clear();
 
         for (String state : stateNames) {
@@ -107,9 +116,9 @@ public final class Automaton {
         return initialState;
     }
 
-    public void setInitialState(String state) {
+    public void setInitialState(String state) throws InvalidStateException {
         initialState = state;
-        states.add(state);
+        addState(state);
     }
 
     public Set<String> getFinalStates() {
@@ -148,12 +157,18 @@ public final class Automaton {
 
         final Automaton other = (Automaton) obj;
 
-        return type.equals(other.type) && alphabet.equals(other.alphabet)
+        return type == other.type && alphabet.equals(other.alphabet)
                 && finalStates.equals(other.finalStates) && initialState.equals(other.initialState)
                 && states.equals(other.states) && transitions.equals(other.transitions);
     }
 
     // CHECKSTYLE:ON
+
+    @Override
+    public String toString() {
+        return String.format("%s = (%s, %s, %s, %s, %s)", type.name(), states, alphabet,
+                transitions, initialState, finalStates);
+    }
 
     private void verifyStateExists(String state) throws InvalidStateException {
         if (!states.contains(state)) {

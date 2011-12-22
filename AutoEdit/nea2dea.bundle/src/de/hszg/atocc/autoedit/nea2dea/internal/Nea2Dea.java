@@ -1,8 +1,8 @@
 package de.hszg.atocc.autoedit.nea2dea.internal;
 
 import de.hszg.atocc.core.util.AutomatonService;
-import de.hszg.atocc.core.util.DeserializationException;
 import de.hszg.atocc.core.util.RestfulWebService;
+import de.hszg.atocc.core.util.SerializationException;
 import de.hszg.atocc.core.util.WebUtilService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlValidationException;
@@ -60,7 +60,7 @@ public final class Nea2Dea extends RestfulWebService {
             result = xmlUtils.createResult(deaDocument);
         } catch (final RuntimeException | InvalidTransitionException | InvalidStateException e) {
             result = xmlUtils.createResultWithError(TRANSFORM_FAILED, e, getLocale());
-        } catch (final DeserializationException | XmlValidationException e) {
+        } catch (final SerializationException | XmlValidationException e) {
             result = xmlUtils.createResultWithError(INVALID_INPUT, e, getLocale());
         }
 
@@ -68,7 +68,7 @@ public final class Nea2Dea extends RestfulWebService {
     }
 
     private void initialize(final Document neaDocument) throws XmlValidationException,
-            DeserializationException {
+            SerializationException {
         xmlValidator.validate(neaDocument, AUTOMATON);
         nea = automatonUtils.automatonFrom(neaDocument);
         dea = new Automaton(AutomatonType.DEA);
@@ -79,8 +79,7 @@ public final class Nea2Dea extends RestfulWebService {
         removeEpsilonRulesIfNeeded();
     }
 
-    private void removeEpsilonRulesIfNeeded() throws DeserializationException {
-        System.out.println("EPSILON: " + nea.containsEpsilonRules());
+    private void removeEpsilonRulesIfNeeded() throws SerializationException {
         if (nea.containsEpsilonRules()) {
             final Document neaDocument = automatonUtils.automatonToXml(nea);
 
@@ -93,7 +92,8 @@ public final class Nea2Dea extends RestfulWebService {
         }
     }
 
-    private void transformAutomaton() throws InvalidTransitionException, InvalidStateException {
+    private void transformAutomaton() throws InvalidTransitionException, InvalidStateException,
+            SerializationException {
         generateNewStatesFrom(automatonUtils.getStatePowerSetFrom(nea));
 
         generateNewInitialState();
@@ -140,7 +140,7 @@ public final class Nea2Dea extends RestfulWebService {
         }
     }
 
-    private void generateNewInitialState() {
+    private void generateNewInitialState() throws InvalidStateException {
         final Set<String> setToSearch = new HashSet<>();
         setToSearch.add(nea.getInitialState());
 
@@ -153,7 +153,7 @@ public final class Nea2Dea extends RestfulWebService {
         }
     }
 
-    private void createNewTransitions() throws InvalidTransitionException {
+    private void createNewTransitions() throws InvalidTransitionException, InvalidStateException {
         processedStates = new HashSet<>();
 
         currentState = dea.getInitialState();

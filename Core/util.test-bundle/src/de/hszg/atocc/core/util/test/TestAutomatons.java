@@ -1,6 +1,6 @@
 package de.hszg.atocc.core.util.test;
 
-import de.hszg.atocc.core.util.DeserializationException;
+import de.hszg.atocc.core.util.SerializationException;
 import de.hszg.atocc.core.util.XmlUtilsException;
 import de.hszg.atocc.core.util.automaton.Automaton;
 
@@ -59,7 +59,7 @@ public final class TestAutomatons extends AbstractTestHelper {
     private Set<String> alphabetOfNea2;
     private Set<String> alphabetOfNea3;
 
-    public TestAutomatons() throws XmlUtilsException, DeserializationException {
+    public TestAutomatons() throws XmlUtilsException, SerializationException {
         initializeNea1();
         initializeNea2();
         initializeNea3();
@@ -133,7 +133,7 @@ public final class TestAutomatons extends AbstractTestHelper {
         return alphabetOfNea3;
     }
 
-    private void initializeNea1() throws XmlUtilsException, DeserializationException {
+    private void initializeNea1() throws XmlUtilsException, SerializationException {
         final Document doc = getXmlService().documentFromFile("nea1.xml");
         nea1 = getAutomatonService().automatonFrom(doc);
 
@@ -146,7 +146,7 @@ public final class TestAutomatons extends AbstractTestHelper {
         alphabetOfNea1 = getSetService().createSetWith(A, B);
     }
 
-    private void initializeNea2() throws XmlUtilsException, DeserializationException {
+    private void initializeNea2() throws XmlUtilsException, SerializationException {
         final Document doc = getXmlService().documentFromFile("nea2.xml");
         nea2 = getAutomatonService().automatonFrom(doc);
 
@@ -160,7 +160,7 @@ public final class TestAutomatons extends AbstractTestHelper {
         alphabetOfNea2 = getSetService().createSetWith(A, B, C);
     }
 
-    private void initializeNea3() throws XmlUtilsException, DeserializationException {
+    private void initializeNea3() throws XmlUtilsException, SerializationException {
         final Document doc = getXmlService().documentFromFile("nea3.xml");
         nea3 = getAutomatonService().automatonFrom(doc);
 

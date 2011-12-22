@@ -1,8 +1,9 @@
 package de.hszg.atocc.core.util.internal;
 
-import de.hszg.atocc.core.util.DeserializationException;
+import de.hszg.atocc.core.util.SerializationException;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.AutomatonType;
+import de.hszg.atocc.core.util.automaton.InvalidAlphabetCharacterException;
 import de.hszg.atocc.core.util.automaton.InvalidStateException;
 import de.hszg.atocc.core.util.automaton.InvalidTransitionException;
 import de.hszg.atocc.core.util.automaton.Transition;
@@ -28,7 +29,7 @@ public final class AutomatonDeserializer {
     private Document document;
     private Automaton automaton;
 
-    public Automaton deserialize(Document aDocument) throws DeserializationException {
+    public Automaton deserialize(Document aDocument) throws SerializationException {
         document = aDocument;
 
         try {
@@ -39,8 +40,9 @@ public final class AutomatonDeserializer {
             setFinalStates();
             setInitialState();
         } catch (final InvalidTransitionException | IllegalArgumentException
-                | XPathExpressionException | InvalidStateException e) {
-            throw new DeserializationException(e);
+                | XPathExpressionException | InvalidStateException
+                | InvalidAlphabetCharacterException e) {
+            throw new SerializationException(e);
         }
 
         return automaton;
@@ -55,7 +57,7 @@ public final class AutomatonDeserializer {
         automaton = new Automaton(AutomatonType.valueOf(type));
     }
 
-    private void setAlphabet() {
+    private void setAlphabet() throws InvalidAlphabetCharacterException {
         final Element alphabetElement = (Element) document.getDocumentElement()
                 .getElementsByTagName("ALPHABET").item(0);
 
@@ -67,7 +69,7 @@ public final class AutomatonDeserializer {
         }
     }
 
-    private void setStates() {
+    private void setStates() throws InvalidStateException {
         final NodeList states = document.getElementsByTagName("STATE");
 
         for (int i = 0; i < states.getLength(); ++i) {
@@ -97,7 +99,7 @@ public final class AutomatonDeserializer {
         }
     }
 
-    private void setInitialState() throws XPathExpressionException {
+    private void setInitialState() throws XPathExpressionException, InvalidStateException {
         final XPath xpath = XPathFactory.newInstance().newXPath();
 
         final String state = (String) xpath.evaluate("//INITIALSTATE/@value", document,
