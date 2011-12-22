@@ -19,8 +19,6 @@ public final class TranslationServiceImpl implements TranslationService {
 
     private static final String COULD_NOT_LOAD_TRANSLATIONS = "Could not load translations";
 
-    private static final String LANGUAGE = "LANGUAGE";
-
     private LogService logger;
 
     private Set<URL> loadedResources = new HashSet<URL>();

@@ -6,7 +6,7 @@
 	<property name="severity" value="warning"/>
 	
 	<module name="StrictDuplicateCode">
-		<property name="min" value="7" />
+		<property name="min" value="10" />
 	</module>
 
 	<module name="NewlineAtEndOfFile" />
@@ -36,7 +36,9 @@
 		<module name="HideUtilityClassConstructor" />
 		<module name="DesignForExtension" />
 		<module name="MutableException" />
-		<module name="ThrowsCount" />
+		<module name="ThrowsCount">
+		    <property name="max" value="2"/>
+		</module>
 		<module name="InnerTypeLast" />
 
 		<!-- Coding -->
@@ -107,7 +109,7 @@
 		</module>
 
 		<module name="ClassFanOutComplexity">
-			<property name="max" value="15" />
+			<property name="max" value="20" />
 		</module>
 
 		<module name="CyclomaticComplexity">
@@ -124,9 +126,6 @@
 		</module>
 
 		<!-- Miscellaneous -->
-		<module name="TodoComment">
-		  <property name="severity" value="warning"/>
-		</module>
 		<module name="UncommentedMain" />
 		<module name="UpperEll" />
 		<module name="ArrayTypeStyle" />

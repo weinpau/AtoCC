@@ -1,5 +1,6 @@
 package de.hszg.atocc.core.util.test;
 
+import de.hszg.atocc.core.util.DeserializationException;
 import de.hszg.atocc.core.util.XmlUtilsException;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.AutomatonType;
@@ -31,7 +32,7 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
     private Set<String> z6;
 
     @Before
-    public void setUp() throws XmlUtilsException {
+    public void setUp() throws XmlUtilsException, DeserializationException {
         automatons = new TestAutomatons();
         
 //        z1 = setService.createSetFrom(TestAutomatons.Z1);
@@ -202,7 +203,7 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
     }
 
     @Test
-    public void testSerialization() {
+    public void testSerialization() throws DeserializationException {
         final Automaton sourceAutomaton = new Automaton(AutomatonType.NEA);
         
         final Document document = getAutomatonService().automatonToXml(sourceAutomaton);

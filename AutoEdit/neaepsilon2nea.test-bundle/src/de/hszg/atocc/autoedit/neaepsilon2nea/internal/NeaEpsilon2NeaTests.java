@@ -1,6 +1,7 @@
 package de.hszg.atocc.autoedit.neaepsilon2nea.internal;
 
 import de.hszg.atocc.core.util.AutomatonService;
+import de.hszg.atocc.core.util.DeserializationException;
 import de.hszg.atocc.core.util.WebUtilService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlUtilsException;
@@ -44,7 +45,7 @@ public final class NeaEpsilon2NeaTests {
     }
 
     @BeforeClass
-    public static void initialize() throws XmlUtilsException {
+    public static void initialize() throws XmlUtilsException, DeserializationException {
         neaEpsilonDocument1 = xmlUtils.documentFromFile("Nea_Epsilon_1.xml");
         neaEpsilon1 = automatonService.automatonFrom(neaEpsilonDocument1);
 

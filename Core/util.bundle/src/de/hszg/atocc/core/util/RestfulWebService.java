@@ -26,7 +26,7 @@ public class RestfulWebService extends ServerResource {
             final Preference<Language> languagePreference = acceptedLanguages.get(0);
             final Language language = languagePreference.getMetadata();
 
-            if (!language.getName().equals("*")) {
+            if (!"*".equals(language.getName())) {
                 locale = new Locale(language.getName());
             }
         }

@@ -4,7 +4,6 @@
    <service>
       <provide interface="de.hszg.atocc.core.starter.StarterService"/>
    </service>
-   <reference bind="setServiceRegistration" cardinality="1..1" interface="org.osgi.framework.ServiceRegistration" name="ServiceRegistration" policy="static"/>
    <reference bind="setLogService" cardinality="1..1" interface="org.osgi.service.log.LogService" name="LogService" policy="static" unbind="unsetLogService"/>
    <reference bind="setXmlUtilService" cardinality="1..1" interface="de.hszg.atocc.core.util.XmlUtilService" name="XmlUtilService" policy="static" unbind="unsetXmlUtilService"/>
    <reference bind="setAutomatonUtilService" cardinality="1..1" interface="de.hszg.atocc.core.util.AutomatonService" name="AutomatonService" policy="static" unbind="unsetAutomatonUtilService"/>

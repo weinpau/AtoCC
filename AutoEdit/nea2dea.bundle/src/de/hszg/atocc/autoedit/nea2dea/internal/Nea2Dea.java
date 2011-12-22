@@ -1,6 +1,7 @@
 package de.hszg.atocc.autoedit.nea2dea.internal;
 
 import de.hszg.atocc.core.util.AutomatonService;
+import de.hszg.atocc.core.util.DeserializationException;
 import de.hszg.atocc.core.util.RestfulWebService;
 import de.hszg.atocc.core.util.WebUtilService;
 import de.hszg.atocc.core.util.XmlUtilService;
@@ -59,14 +60,15 @@ public final class Nea2Dea extends RestfulWebService {
             result = xmlUtils.createResult(deaDocument);
         } catch (final RuntimeException | InvalidTransitionException | InvalidStateException e) {
             result = xmlUtils.createResultWithError(TRANSFORM_FAILED, e, getLocale());
-        } catch (XmlValidationException e) {
+        } catch (final DeserializationException | XmlValidationException e) {
             result = xmlUtils.createResultWithError(INVALID_INPUT, e, getLocale());
         }
 
         return result;
     }
 
-    private void initialize(final Document neaDocument) throws XmlValidationException {
+    private void initialize(final Document neaDocument) 
+        throws XmlValidationException, DeserializationException {
         xmlValidator.validate(neaDocument, AUTOMATON);
         nea = automatonUtils.automatonFrom(neaDocument);
         dea = new Automaton(AutomatonType.DEA);
@@ -77,7 +79,7 @@ public final class Nea2Dea extends RestfulWebService {
         removeEpsilonRulesIfNeeded();
     }
 
-    private void removeEpsilonRulesIfNeeded() {
+    private void removeEpsilonRulesIfNeeded() throws DeserializationException {
         System.out.println("EPSILON: " + nea.containsEpsilonRules());
         if (nea.containsEpsilonRules()) {
             final Document neaDocument = automatonUtils.automatonToXml(nea);

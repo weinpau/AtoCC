@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public final class AutomatonTests {
@@ -24,6 +25,15 @@ public final class AutomatonTests {
     private static final String Q0 = "q0";
     private static final String Q1 = "q1";
     private static final String Q2 = "q2";
+    
+    private static Set<String> alphabetAB;
+    
+    @BeforeClass
+    public static void init() {
+        alphabetAB = new HashSet<String>();
+        alphabetAB.add(A);
+        alphabetAB.add(B);
+    }
 
     @Test
     public void constructorShouldSetType() {
@@ -61,11 +71,7 @@ public final class AutomatonTests {
         automaton.addAlphabetItem(A);
         automaton.addAlphabetItem(B);
 
-        final Set<String> expected = new HashSet<String>();
-        expected.add(A);
-        expected.add(B);
-
-        Assert.assertEquals(expected, automaton.getAlphabet());
+        Assert.assertEquals(alphabetAB, automaton.getAlphabet());
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -73,10 +79,6 @@ public final class AutomatonTests {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addAlphabetItem(A);
         automaton.addAlphabetItem(B);
-
-        final Set<String> expected = new HashSet<String>();
-        expected.add(A);
-        expected.add(B);
 
         final Set<String> alphabet = automaton.getAlphabet();
         alphabet.add(C);
@@ -91,11 +93,7 @@ public final class AutomatonTests {
         automaton.addAlphabetItem(A);
         automaton.addAlphabetItem(B);
 
-        final Set<String> expected = new HashSet<String>();
-        expected.add(A);
-        expected.add(B);
-
-        Assert.assertEquals(expected, automaton.getAlphabet());
+        Assert.assertEquals(alphabetAB, automaton.getAlphabet());
     }
 
     @Test
@@ -103,13 +101,9 @@ public final class AutomatonTests {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         Assert.assertEquals(Collections.emptySet(), automaton.getAlphabet());
 
-        final Set<String> expected = new HashSet<String>();
-        expected.add(A);
-        expected.add(B);
+        automaton.setAlphabet(alphabetAB);
 
-        automaton.setAlphabet(expected);
-
-        Assert.assertEquals(expected, automaton.getAlphabet());
+        Assert.assertEquals(alphabetAB, automaton.getAlphabet());
     }
 
     @Test
@@ -118,8 +112,7 @@ public final class AutomatonTests {
         Assert.assertEquals(Collections.emptySet(), automaton.getAlphabet());
 
         final Set<String> expected = new HashSet<String>();
-        expected.add(A);
-        expected.add(B);
+        expected.addAll(alphabetAB);
 
         automaton.setAlphabet(expected);
 
@@ -289,7 +282,7 @@ public final class AutomatonTests {
     public void equalsShouldReturnFalseIfOtherObjectIsNoAutomaton() {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
 
-        Assert.assertFalse(automaton.equals("other"));
+        Assert.assertFalse(automaton.equals(0));
     }
 
     @Test

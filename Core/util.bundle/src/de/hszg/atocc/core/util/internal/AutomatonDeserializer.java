@@ -1,5 +1,6 @@
 package de.hszg.atocc.core.util.internal;
 
+import de.hszg.atocc.core.util.DeserializationException;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.AutomatonType;
 import de.hszg.atocc.core.util.automaton.InvalidStateException;
@@ -27,7 +28,7 @@ public final class AutomatonDeserializer {
     private Document document;
     private Automaton automaton;
 
-    public Automaton deserialize(Document aDocument) {
+    public Automaton deserialize(Document aDocument) throws DeserializationException {
         document = aDocument;
 
         try {
@@ -38,7 +39,7 @@ public final class AutomatonDeserializer {
             setFinalStates();
             setInitialState();
         } catch (final InvalidTransitionException e) {
-            // TODO: throw DeserializationException
+            throw new DeserializationException(e);
         }
 
         return automaton;

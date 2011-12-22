@@ -8,7 +8,7 @@ import org.w3c.dom.Document;
 
 public interface AutomatonService {
 
-    Automaton automatonFrom(Document document);
+    Automaton automatonFrom(Document document) throws DeserializationException;
 
     Document automatonToXml(Automaton automaton);
 
