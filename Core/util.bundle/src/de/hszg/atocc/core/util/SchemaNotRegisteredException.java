@@ -7,5 +7,5 @@ public final class SchemaNotRegisteredException extends Exception {
     public SchemaNotRegisteredException(String schemaName) {
         super(schemaName);
     }
-    
+
 }

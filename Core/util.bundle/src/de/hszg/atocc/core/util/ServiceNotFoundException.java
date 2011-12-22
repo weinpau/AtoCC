@@ -7,5 +7,5 @@ public final class ServiceNotFoundException extends RuntimeException {
     public ServiceNotFoundException(String serviceName) {
         super(serviceName);
     }
-    
+
 }

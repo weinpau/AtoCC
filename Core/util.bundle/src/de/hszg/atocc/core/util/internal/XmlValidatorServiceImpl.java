@@ -53,10 +53,10 @@ public final class XmlValidatorServiceImpl implements XmlValidatorService {
     public void unregisterSchema(String name) {
         schemas.remove(name);
     }
-    
+
     @Override
     public boolean isSchemaRegistered(String name) {
-        return schemas.containsKey(name); 
+        return schemas.containsKey(name);
     }
 
     @Override
@@ -73,7 +73,7 @@ public final class XmlValidatorServiceImpl implements XmlValidatorService {
     }
 
     private void verifySchemaIsNotRegistered(Schema schema, String name)
-        throws SchemaAlreadyRegisteredException {
+            throws SchemaAlreadyRegisteredException {
         if (schemas.containsValue(schema)) {
             throw new SchemaAlreadyRegisteredException(name);
         }

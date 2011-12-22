@@ -87,7 +87,7 @@ public final class ListService extends RestfulWebService {
         final String description = translationService.translate(descriptionID, getLocale());
 
         final Element descriptionElement = serviceListDocument.createElement("description");
-        
+
         if (description.equals(descriptionID)) {
             descriptionElement.setTextContent("");
         } else {

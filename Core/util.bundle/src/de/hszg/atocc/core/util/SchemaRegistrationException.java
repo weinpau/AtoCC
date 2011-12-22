@@ -7,5 +7,5 @@ public final class SchemaRegistrationException extends Exception {
     public SchemaRegistrationException(Throwable cause) {
         super(cause);
     }
-    
+
 }

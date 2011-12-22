@@ -15,18 +15,18 @@ public final class AutomatonServiceImpl implements AutomatonService {
 
     private SetService setService;
     private XmlUtilService xmlUtils;
-    
+
     @Override
     public Automaton automatonFrom(Document document) throws DeserializationException {
         final AutomatonDeserializer deserializer = new AutomatonDeserializer();
 
         return deserializer.deserialize(document);
     }
-    
+
     @Override
     public Document automatonToXml(Automaton automaton) {
         final AutomatonSerializer serializer = new AutomatonSerializer(xmlUtils);
-        
+
         return serializer.serialize(automaton);
     }
 
@@ -68,7 +68,7 @@ public final class AutomatonServiceImpl implements AutomatonService {
             setService = null;
         }
     }
-    
+
     public synchronized void setXmlUtilService(XmlUtilService service) {
         xmlUtils = service;
     }

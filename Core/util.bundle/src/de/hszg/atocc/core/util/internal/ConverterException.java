@@ -7,5 +7,5 @@ public final class ConverterException extends Exception {
     public ConverterException(final Throwable cause) {
         super(cause);
     }
-    
+
 }

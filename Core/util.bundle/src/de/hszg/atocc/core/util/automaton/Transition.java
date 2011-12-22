@@ -36,7 +36,7 @@ public final class Transition {
         result = prime * result + characterToRead.hashCode();
         result = prime * result + source.hashCode();
         result = prime * result + target.hashCode();
-        
+
         return result;
     }
 
@@ -51,5 +51,5 @@ public final class Transition {
         return source.equals(transition.source) && target.equals(transition.target)
                 && characterToRead.equals(transition.characterToRead);
     }
-    
+
 }

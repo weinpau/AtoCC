@@ -25,9 +25,9 @@ public final class AutomatonTests {
     private static final String Q0 = "q0";
     private static final String Q1 = "q1";
     private static final String Q2 = "q2";
-    
+
     private static Set<String> alphabetAB;
-    
+
     @BeforeClass
     public static void init() {
         alphabetAB = new HashSet<String>();
@@ -183,7 +183,7 @@ public final class AutomatonTests {
 
     @Test(expected = InvalidTransitionException.class)
     public void addTransitionShouldFailIfSourceStateDoesNotExists()
-        throws InvalidTransitionException {
+            throws InvalidTransitionException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addState(Q1);
         automaton.addTransition(new Transition(Q0, Q1, EPSILON));
@@ -191,7 +191,7 @@ public final class AutomatonTests {
 
     @Test(expected = InvalidTransitionException.class)
     public void addTransitionShouldFailIfTargetStateDoesNotExists()
-        throws InvalidTransitionException {
+            throws InvalidTransitionException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addState(Q0);
         automaton.addTransition(new Transition(Q0, Q1, EPSILON));
@@ -199,7 +199,7 @@ public final class AutomatonTests {
 
     @Test(expected = InvalidTransitionException.class)
     public void addTransitionShouldFailIfAlphabetCharacterIsInvalid()
-        throws InvalidTransitionException {
+            throws InvalidTransitionException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addState(Q0);
         automaton.addState(Q1);
@@ -318,8 +318,7 @@ public final class AutomatonTests {
     }
 
     @Test
-    public void equalsShouldReturnFalseIfTransitionsAreNotEqual() 
-        throws InvalidTransitionException {
+    public void equalsShouldFailIfTransitionsAreNotEqual() throws InvalidTransitionException {
         final Automaton a1 = new Automaton(AutomatonType.NEA);
         a1.addState(Q0);
         a1.addState(Q1);

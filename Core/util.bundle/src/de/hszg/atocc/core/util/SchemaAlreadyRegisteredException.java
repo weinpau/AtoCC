@@ -7,5 +7,5 @@ public final class SchemaAlreadyRegisteredException extends Exception {
     public SchemaAlreadyRegisteredException(String schemaName) {
         super(schemaName);
     }
-    
+
 }

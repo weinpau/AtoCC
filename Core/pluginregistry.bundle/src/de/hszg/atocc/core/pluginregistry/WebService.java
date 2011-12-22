@@ -12,6 +12,7 @@ import org.restlet.resource.ServerResource;
 public @interface WebService {
 
     String url();
+
     Class<? extends ServerResource> resource();
-    
+
 }

@@ -1,5 +1,7 @@
 package de.hszg.atocc.core.util.test;
 
+import de.hszg.atocc.core.util.automaton.Automaton;
+import de.hszg.atocc.core.util.automaton.AutomatonType;
 import de.hszg.atocc.core.util.automaton.Transition;
 
 import org.junit.Assert;
@@ -64,7 +66,7 @@ public final class TransitionTests {
     public void equalsShouldReturnFalseIfOtherObjectIsNoTransition() {
         final Transition transition = new Transition(Q0, Q1, A);
 
-        Assert.assertFalse(transition.equals(new Transition(Q0, Q1, A)));
+        Assert.assertFalse(transition.equals(new Automaton(AutomatonType.DEA)));
     }
 
 }

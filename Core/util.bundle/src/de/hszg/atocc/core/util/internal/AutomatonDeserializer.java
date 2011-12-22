@@ -38,24 +38,21 @@ public final class AutomatonDeserializer {
             setTransitions();
             setFinalStates();
             setInitialState();
-        } catch (final InvalidTransitionException e) {
+        } catch (final InvalidTransitionException | IllegalArgumentException
+                | XPathExpressionException | InvalidStateException e) {
             throw new DeserializationException(e);
         }
 
         return automaton;
     }
 
-    private void setType() {
+    private void setType() throws XPathExpressionException {
         final XPath xpath = XPathFactory.newInstance().newXPath();
 
-        try {
-            final String type = (String) xpath.evaluate("//TYPE/@value", document,
-                    XPathConstants.STRING);
+        final String type = (String) xpath.evaluate("//TYPE/@value", document,
+                XPathConstants.STRING);
 
-            automaton = new Automaton(AutomatonType.valueOf(type));
-        } catch (XPathExpressionException e) {
-            throw new RuntimeException(e);
-        }
+        automaton = new Automaton(AutomatonType.valueOf(type));
     }
 
     private void setAlphabet() {
@@ -79,7 +76,7 @@ public final class AutomatonDeserializer {
         }
     }
 
-    private void setTransitions() throws InvalidTransitionException {
+    private void setTransitions() throws InvalidTransitionException, XPathExpressionException {
         final Set<Transition> transitions = new HashSet<>();
 
         for (String state : automaton.getStates()) {
@@ -89,41 +86,34 @@ public final class AutomatonDeserializer {
         automaton.setTransitions(transitions);
     }
 
-    private void setFinalStates() {
+    private void setFinalStates() throws XPathExpressionException, InvalidStateException {
         final XPath xpath = XPathFactory.newInstance().newXPath();
 
-        try {
-            final NodeList finalStates = (NodeList) xpath.evaluate("//STATE[@finalstate='true']",
-                    document, XPathConstants.NODESET);
+        final NodeList finalStates = (NodeList) xpath.evaluate("//STATE[@finalstate='true']",
+                document, XPathConstants.NODESET);
 
-            for (String state : getStateNamesFrom(finalStates)) {
-                automaton.addFinalState(state);
-            }
-        } catch (final XPathExpressionException | InvalidStateException e) {
-            throw new RuntimeException(e);
+        for (String state : getStateNamesFrom(finalStates)) {
+            automaton.addFinalState(state);
         }
     }
 
-    private void setInitialState() {
+    private void setInitialState() throws XPathExpressionException {
         final XPath xpath = XPathFactory.newInstance().newXPath();
 
-        try {
-            final String state = (String) xpath.evaluate("//INITIALSTATE/@value", document,
-                    XPathConstants.STRING);
+        final String state = (String) xpath.evaluate("//INITIALSTATE/@value", document,
+                XPathConstants.STRING);
 
-            automaton.setInitialState(state);
-        } catch (final XPathExpressionException e) {
-            throw new RuntimeException(e);
-        }
+        automaton.setInitialState(state);
     }
 
-    private Set<Transition> getTransitionsFromDocumentFor(String state) {
+    private Set<Transition> getTransitionsFromDocumentFor(String state)
+            throws XPathExpressionException {
         final Set<Transition> transitions = new HashSet<>();
-        
+
         final Set<String> alphabet = new HashSet<>();
         alphabet.addAll(automaton.getAlphabet());
         alphabet.add(EPSILON);
-        
+
         for (String alphabetCharacter : alphabet) {
             final Set<String> targets = getTargetsOf(state, alphabetCharacter);
 
@@ -135,25 +125,21 @@ public final class AutomatonDeserializer {
         return transitions;
     }
 
-    private Set<String> getTargetsOf(String stateName, String alphabetCharacter) {
+    private Set<String> getTargetsOf(String stateName, String alphabetCharacter)
+            throws XPathExpressionException {
         final XPath xpath = XPathFactory.newInstance().newXPath();
 
-        try {
-            final Set<String> targets = new HashSet<>();
+        final Set<String> targets = new HashSet<>();
 
-            final NodeList targetNodes = (NodeList) xpath.evaluate(String.format(
-                    "//STATE[@name='%s']/TRANSITION/LABEL[@read='%s']/../@target", stateName,
-                    alphabetCharacter), document, XPathConstants.NODESET);
+        final NodeList targetNodes = (NodeList) xpath.evaluate(String.format(
+                "//STATE[@name='%s']/TRANSITION/LABEL[@read='%s']/../@target", stateName,
+                alphabetCharacter), document, XPathConstants.NODESET);
 
-            for (int i = 0; i < targetNodes.getLength(); ++i) {
-                targets.add(targetNodes.item(i).getTextContent());
-            }
-
-            return targets;
-
-        } catch (final XPathExpressionException e) {
-            throw new RuntimeException(e);
+        for (int i = 0; i < targetNodes.getLength(); ++i) {
+            targets.add(targetNodes.item(i).getTextContent());
         }
+
+        return targets;
     }
 
     private Set<String> getStateNamesFrom(NodeList states) {

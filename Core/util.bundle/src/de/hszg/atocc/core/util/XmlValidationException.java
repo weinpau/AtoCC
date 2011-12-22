@@ -7,5 +7,5 @@ public class XmlValidationException extends Exception {
     public XmlValidationException(Throwable cause) {
         super(cause);
     }
-    
+
 }

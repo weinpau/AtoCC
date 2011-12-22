@@ -162,7 +162,7 @@ public final class Automaton {
     }
 
     private void verifyAlphabetCharacterExists(String character)
-        throws InvalidAlphabetCharacterException {
+            throws InvalidAlphabetCharacterException {
         if (EPSILON.equals(character) && type == AutomatonType.NEA) {
             return;
         }

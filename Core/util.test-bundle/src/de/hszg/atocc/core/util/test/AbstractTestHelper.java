@@ -11,7 +11,7 @@ public abstract class AbstractTestHelper {
     private static AutomatonService automatonService;
     private static SetService setService;
     private static XmlValidatorService validator;
-    
+
     public static void setXmlService(XmlUtilService service) {
         xmlService = service;
     }
@@ -23,7 +23,7 @@ public abstract class AbstractTestHelper {
     public static void setSetService(SetService service) {
         setService = service;
     }
-    
+
     public static void setXmlValidatorService(XmlValidatorService service) {
         validator = service;
     }
@@ -39,7 +39,7 @@ public abstract class AbstractTestHelper {
     public static SetService getSetService() {
         return setService;
     }
-    
+
     public static XmlValidatorService getValidatorService() {
         return validator;
     }

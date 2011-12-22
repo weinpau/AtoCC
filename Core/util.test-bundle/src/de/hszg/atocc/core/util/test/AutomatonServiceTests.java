@@ -4,6 +4,7 @@ import de.hszg.atocc.core.util.DeserializationException;
 import de.hszg.atocc.core.util.XmlUtilsException;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.AutomatonType;
+import de.hszg.atocc.core.util.automaton.Transition;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,15 +17,16 @@ import org.w3c.dom.Document;
 
 public final class AutomatonServiceTests extends AbstractTestHelper {
 
+    private static final String Q1 = "q1";
+    private static final String Q0 = "q0";
     private static final String EPSILON = "EPSILON";
     private static final String B = "b";
     private static final String A = "a";
 
     private TestAutomatons automatons;
-    
+
     private final Set<String> emptySet = new HashSet<>();
 
-//    private Set<String> z1;
     private Set<String> z2;
     private Set<String> z3;
     private Set<String> z4;
@@ -34,8 +36,7 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
     @Before
     public void setUp() throws XmlUtilsException, DeserializationException {
         automatons = new TestAutomatons();
-        
-//        z1 = setService.createSetFrom(TestAutomatons.Z1);
+
         z2 = getSetService().createSetWith(TestAutomatons.Z2);
         z3 = getSetService().createSetWith(TestAutomatons.Z3);
         z4 = getSetService().createSetWith(TestAutomatons.Z4);
@@ -120,16 +121,16 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
 
     @Test
     public void testGetStatePowerSetFrom2() {
-        final Set<Set<String>> actualPowerset =
-                getAutomatonService().getStatePowerSetFrom(automatons.getNea2());
+        final Set<Set<String>> actualPowerset = getAutomatonService().getStatePowerSetFrom(
+                automatons.getNea2());
 
         Assert.assertEquals(automatons.getPowerSetOfStatesFromNea2(), actualPowerset);
     }
 
     @Test
     public void testGetStatePowerSetFrom3() {
-        final Set<Set<String>> actualPowerset =
-                getAutomatonService().getStatePowerSetFrom(automatons.getNea3());
+        final Set<Set<String>> actualPowerset = getAutomatonService().getStatePowerSetFrom(
+                automatons.getNea3());
 
         Assert.assertEquals(automatons.getPowerSetOfStatesFromNea3(), actualPowerset);
     }
@@ -161,7 +162,7 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
         Assert.assertEquals(emptySet, automatons.getNea1().getTargetsFor(TestAutomatons.Z1, B));
         Assert.assertEquals(z2, automatons.getNea1().getTargetsFor(TestAutomatons.Z1, EPSILON));
     }
-    
+
     @Test
     public void testGetTargetsOfNea1ForZ2() {
         Assert.assertEquals(z5, automatons.getNea1().getTargetsFor(TestAutomatons.Z2, A));
@@ -169,7 +170,7 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
         Assert.assertEquals(emptySet, automatons.getNea1()
                 .getTargetsFor(TestAutomatons.Z2, EPSILON));
     }
-    
+
     @Test
     public void testGetTargetsOfNea1ForZ3() {
         Assert.assertEquals(new HashSet<String>(),
@@ -179,14 +180,14 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
         Assert.assertEquals(new HashSet<String>(),
                 automatons.getNea1().getTargetsFor(TestAutomatons.Z3, EPSILON));
     }
-    
+
     @Test
     public void testGetTargetsOfNea1ForZ4() {
         Assert.assertEquals(emptySet, automatons.getNea1().getTargetsFor(TestAutomatons.Z4, A));
         Assert.assertEquals(z5, automatons.getNea1().getTargetsFor(TestAutomatons.Z4, B));
         Assert.assertEquals(z2, automatons.getNea1().getTargetsFor(TestAutomatons.Z4, EPSILON));
     }
-    
+
     @Test
     public void testGetTargetsOfNea1ForZ5() {
         Assert.assertEquals(emptySet, automatons.getNea1().getTargetsFor(TestAutomatons.Z5, A));
@@ -203,12 +204,26 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
     }
 
     @Test
-    public void testSerialization() throws DeserializationException {
+    public void testSerialization() throws Exception {
         final Automaton sourceAutomaton = new Automaton(AutomatonType.NEA);
-        
+        sourceAutomaton.addAlphabetItem(A);
+        sourceAutomaton.addState(Q0);
+        sourceAutomaton.addState(Q1);
+        sourceAutomaton.addFinalState(Q1);
+        sourceAutomaton.addTransition(new Transition(Q0, Q1, A));
+
         final Document document = getAutomatonService().automatonToXml(sourceAutomaton);
         final Automaton destination = getAutomatonService().automatonFrom(document);
-        
+
         Assert.assertEquals(sourceAutomaton, destination);
+    }
+
+    @Test(expected = DeserializationException.class)
+    public void deserializationShouldFailForInvalidInput() throws XmlUtilsException,
+            DeserializationException {
+        final Document document = getXmlService().documentFromFile(
+                "automaton_with_invalid_type.xml");
+
+        getAutomatonService().automatonFrom(document);
     }
 }

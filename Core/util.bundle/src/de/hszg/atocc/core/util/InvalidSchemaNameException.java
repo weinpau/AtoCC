@@ -7,5 +7,5 @@ public final class InvalidSchemaNameException extends Exception {
     public InvalidSchemaNameException(String schemaName) {
         super(schemaName);
     }
-    
+
 }

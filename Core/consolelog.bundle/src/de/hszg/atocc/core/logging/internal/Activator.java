@@ -9,19 +9,19 @@ public final class Activator implements BundleActivator {
 
     private LogListenerService logListener;
     private LogReaderService logReader;
-    
+
     public void start(BundleContext context) throws Exception {
         final ServiceReference<LogReaderService> serviceReference = context
                 .getServiceReference(LogReaderService.class);
 
         logReader = context.getService(serviceReference);
-        
+
         logListener = new LogListenerService();
         logReader.addLogListener(logListener);
     }
 
     public void stop(BundleContext context) throws Exception {
-        if(logReader != null) {
+        if (logReader != null) {
             logReader.removeLogListener(logListener);
         }
     }

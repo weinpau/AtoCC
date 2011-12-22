@@ -17,7 +17,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public final class Converter {
-    
+
     public String xmlToString(final Document doc) throws TransformerException {
         final StringWriter sw = new StringWriter();
 
@@ -36,5 +36,4 @@ public final class Converter {
         }
     }
 
-    
 }

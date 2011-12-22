@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public final class SetServiceTests extends AbstractTestHelper {
-    
+
     @Test
     public void testPowerSetFrom() {
         Assert.fail("Not yet implemented");

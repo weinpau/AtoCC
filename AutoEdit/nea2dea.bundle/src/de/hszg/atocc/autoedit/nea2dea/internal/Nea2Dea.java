@@ -43,7 +43,7 @@ public final class Nea2Dea extends RestfulWebService {
     private Document result;
 
     private Map<String, Set<String>> deaToNeaStateMap;
-    
+
     private String currentState;
 
     @Post
@@ -67,8 +67,8 @@ public final class Nea2Dea extends RestfulWebService {
         return result;
     }
 
-    private void initialize(final Document neaDocument) 
-        throws XmlValidationException, DeserializationException {
+    private void initialize(final Document neaDocument) throws XmlValidationException,
+            DeserializationException {
         xmlValidator.validate(neaDocument, AUTOMATON);
         nea = automatonUtils.automatonFrom(neaDocument);
         dea = new Automaton(AutomatonType.DEA);
@@ -130,8 +130,8 @@ public final class Nea2Dea extends RestfulWebService {
         }
     }
 
-    private void addToFinalStatesIfNeeded(Entry<String, Set<String>> newState) 
-        throws InvalidStateException {
+    private void addToFinalStatesIfNeeded(Entry<String, Set<String>> newState)
+            throws InvalidStateException {
         for (String neaFinalState : nea.getFinalStates()) {
             if (newState.getValue().contains(neaFinalState)
                     && dea.getStates().contains(newState.getKey())) {
@@ -181,13 +181,13 @@ public final class Nea2Dea extends RestfulWebService {
     private boolean getNextUnprocessedState() {
         boolean finished = false;
         boolean foundNext = false;
-        
+
         for (String s : dea.getStates()) {
 
             if (!processedStates.contains(s)) {
                 currentState = s;
                 foundNext = true;
-                
+
                 break;
             }
         }
@@ -195,7 +195,7 @@ public final class Nea2Dea extends RestfulWebService {
         if (!foundNext) {
             finished = true;
         }
-        
+
         return finished;
     }
 

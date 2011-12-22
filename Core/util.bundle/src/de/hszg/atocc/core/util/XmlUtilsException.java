@@ -7,5 +7,5 @@ public class XmlUtilsException extends Exception {
     public XmlUtilsException(final Throwable cause) {
         super(cause);
     }
-    
+
 }

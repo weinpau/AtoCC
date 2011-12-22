@@ -85,7 +85,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
     }
 
     private void createNewDeltaRuleFor(String stateName, String character)
-        throws InvalidTransitionException, InvalidStateException {
+            throws InvalidTransitionException, InvalidStateException {
         final Set<String> epsilonHull = automatonUtils.getEpsilonHull(neaEpsilon, stateName);
 
         if (setService.containsAnyOf(epsilonHull, neaEpsilon.getFinalStates())) {
@@ -102,7 +102,7 @@ public final class NeaEpsilon2Nea extends RestfulWebService {
     }
 
     private void createTransitions(String stateName, String character, Set<String> d)
-        throws InvalidTransitionException {
+            throws InvalidTransitionException {
         for (String stateForNewRule : automatonUtils.getEpsilonHull(neaEpsilon, d)) {
             final Transition transition = new Transition(stateName, stateForNewRule, character);
 

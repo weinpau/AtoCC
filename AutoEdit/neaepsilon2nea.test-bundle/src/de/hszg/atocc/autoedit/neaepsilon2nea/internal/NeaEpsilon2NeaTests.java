@@ -125,7 +125,7 @@ public final class NeaEpsilon2NeaTests {
         expectedTransitions.add(new Transition("q_1", "q_4", "a"));
         expectedTransitions.add(new Transition("q_1", "q_5", "a"));
         expectedTransitions.add(new Transition("q_1", "q_2", "b"));
-        
+
         Assert.assertEquals(expectedTransitions, actualTransitions);
     }
 
@@ -134,7 +134,7 @@ public final class NeaEpsilon2NeaTests {
         final Set<Transition> actualTransitions = nea1.getTransitionsFor("q_2");
 
         final Set<Transition> expectedTransitions = new HashSet<>();
-        
+
         Assert.assertEquals(expectedTransitions, actualTransitions);
     }
 
@@ -148,7 +148,7 @@ public final class NeaEpsilon2NeaTests {
         expectedTransitions.add(new Transition("q_3", "q_4", "b"));
         expectedTransitions.add(new Transition("q_3", "q_5", "a"));
         expectedTransitions.add(new Transition("q_3", "q_5", "b"));
-        
+
         Assert.assertEquals(expectedTransitions, actualTransitions);
     }
 
@@ -157,7 +157,7 @@ public final class NeaEpsilon2NeaTests {
         final Set<Transition> actualTransitions = nea1.getTransitionsFor("q_4");
 
         final Set<Transition> expectedTransitions = new HashSet<>();
-        
+
         Assert.assertEquals(expectedTransitions, actualTransitions);
     }
 
@@ -166,7 +166,7 @@ public final class NeaEpsilon2NeaTests {
         final Set<Transition> actualTransitions = nea1.getTransitionsFor("q_5");
 
         final Set<Transition> expectedTransitions = new HashSet<>();
-        
+
         Assert.assertEquals(expectedTransitions, actualTransitions);
     }
 

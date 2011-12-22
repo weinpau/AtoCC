@@ -16,7 +16,7 @@ public final class Activator implements BundleActivator {
 
         final ServiceReference<XmlUtilService> xmlServiceReference = context
                 .getServiceReference(XmlUtilService.class);
-        
+
         final ServiceReference<AutomatonService> automatonServiceReference = context
                 .getServiceReference(AutomatonService.class);
 

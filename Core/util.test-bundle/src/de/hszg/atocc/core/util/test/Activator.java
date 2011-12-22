@@ -15,7 +15,7 @@ public final class Activator implements BundleActivator {
     private ServiceReference<XmlUtilService> xmlServiceReference;
     private ServiceReference<SetService> setServiceReference;
     private ServiceReference<XmlValidatorService> validatorServiceReference;
-    
+
     private AutomatonService automatonService;
     private XmlUtilService xmlService;
     private SetService setService;
@@ -27,7 +27,7 @@ public final class Activator implements BundleActivator {
         getServices(context);
         passServicesToTests();
     }
-    
+
     @Override
     public void stop(BundleContext context) throws Exception {
     }
@@ -38,7 +38,7 @@ public final class Activator implements BundleActivator {
         setServiceReference = context.getServiceReference(SetService.class);
         validatorServiceReference = context.getServiceReference(XmlValidatorService.class);
     }
-    
+
     private void getServices(BundleContext context) {
         automatonService = context.getService(automatonServiceReference);
         xmlService = context.getService(xmlServiceReference);

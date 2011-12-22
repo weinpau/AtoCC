@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public final class XmlValidatorServiceTests extends AbstractTestHelper {
-    
+
     private static final String AUTOMATON = "AUTOMATON";
 
     @Test(expected = SchemaRegistrationException.class)
@@ -17,12 +17,12 @@ public final class XmlValidatorServiceTests extends AbstractTestHelper {
         Assert.assertFalse(getValidatorService().isSchemaRegistered(AUTOMATON));
         getValidatorService().registerSchema(null, AUTOMATON);
     }
-    
+
     @Test(expected = SchemaRegistrationException.class)
     public void registerSchemaShouldFailIfSchemaAlreadyExists() {
         Assert.fail("Not yet implemented");
     }
-    
+
     @Test
     public void testRegisterSchema() {
         Assert.fail("Not yet implemented");
@@ -32,7 +32,7 @@ public final class XmlValidatorServiceTests extends AbstractTestHelper {
     public void unregisterSchemaShouldFailIfNameDoesNotExists() {
         Assert.fail("Not yet implemented");
     }
-    
+
     @Test(expected = SchemaNotRegisteredException.class)
     public void validateShoulsFailIfSchemaIsNotRegistered() {
         Assert.fail("Not yet implemented");
