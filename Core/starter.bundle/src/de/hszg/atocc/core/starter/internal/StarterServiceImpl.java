@@ -131,14 +131,13 @@ public final class StarterServiceImpl implements StarterService, ManagedService 
     
     @Override
     public void updated(Dictionary properties) throws ConfigurationException {
-        
-        Dictionary config = properties == null ? getDefaultConfig() : properties;
+        final Dictionary config = properties == null ? getDefaultConfig() : properties;
         
         System.out.println("Switched to port: " + config.get("atocc.port"));
     }
     
     private Properties getDefaultConfig() {
-        Properties properties = new Properties();
+        final Properties properties = new Properties();
         properties.setProperty("atocc.port", "8081");
         
         return properties;

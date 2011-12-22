@@ -9,7 +9,7 @@ import java.util.Set;
 public final class Automaton {
 
     private static final String EPSILON = "EPSILON";
-    
+
     private AutomatonType type = AutomatonType.DEA;
     private Set<String> alphabet = new HashSet<>();
     private Set<String> states = new HashSet<>();
@@ -102,6 +102,7 @@ public final class Automaton {
             throw new InvalidTransitionException(e);
         }
     }
+
     public String getInitialState() {
         return initialState;
     }
@@ -146,9 +147,9 @@ public final class Automaton {
 
         final Automaton other = (Automaton) obj;
 
-        return alphabet.equals(other.alphabet) && finalStates.equals(other.finalStates)
-                && initialState.equals(other.initialState) && states.equals(other.states)
-                && transitions.equals(other.transitions);
+        return type.equals(other.type) && alphabet.equals(other.alphabet)
+                && finalStates.equals(other.finalStates) && initialState.equals(other.initialState)
+                && states.equals(other.states) && transitions.equals(other.transitions);
     }
 
     private void verifyStateExists(String state) throws InvalidStateException {
@@ -156,13 +157,13 @@ public final class Automaton {
             throw new InvalidStateException(state);
         }
     }
-    
+
     private void verifyAlphabetCharacterExists(String character)
         throws InvalidAlphabetCharacterException {
         if (EPSILON.equals(character) && type == AutomatonType.NEA) {
             return;
         }
-        
+
         if (!alphabet.contains(character)) {
             throw new InvalidAlphabetCharacterException(character);
         }

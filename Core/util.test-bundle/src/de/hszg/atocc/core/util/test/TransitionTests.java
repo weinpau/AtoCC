@@ -7,58 +7,63 @@ import org.junit.Test;
 
 public final class TransitionTests {
 
+    private static final String Q2 = "q2";
+    private static final String A = "a";
+    private static final String Q1 = "q1";
+    private static final String Q0 = "q0";
+
     @Test
     public void testConstructor() {
-        Transition transition = new Transition("q0", "q1", "a");
-        
-        Assert.assertEquals("q0", transition.getSource());
-        Assert.assertEquals("q1", transition.getTarget());
-        Assert.assertEquals("a", transition.getCharacterToRead());
+        final Transition transition = new Transition(Q0, Q1, A);
+
+        Assert.assertEquals(Q0, transition.getSource());
+        Assert.assertEquals(Q1, transition.getTarget());
+        Assert.assertEquals(A, transition.getCharacterToRead());
     }
 
     @Test
     public void testToString() {
-        Transition transition = new Transition("q0", "q1", "a");
-        
+        final Transition transition = new Transition(Q0, Q1, A);
+
         Assert.assertEquals("(q0, a) = q1", transition.toString());
     }
 
     @Test
     public void equalsShouldReturnTrueIfAllPropertiesAreEqual() {
-        Transition t1 = new Transition("q0", "q1", "a");
-        Transition t2 = new Transition("q0", "q1", "a");
-        
+        final Transition t1 = new Transition(Q0, Q1, A);
+        final Transition t2 = new Transition(Q0, Q1, A);
+
         Assert.assertTrue(t1.equals(t2));
     }
-    
+
     @Test
     public void equalsShouldReturnFalsIsSourceStatesAreNotEqual() {
-        Transition t1 = new Transition("q0", "q1", "a");
-        Transition t2 = new Transition("q2", "q1", "a");
-        
+        final Transition t1 = new Transition(Q0, Q1, A);
+        final Transition t2 = new Transition(Q2, Q1, A);
+
         Assert.assertFalse(t1.equals(t2));
     }
-    
+
     @Test
     public void equalsShouldReturnFalsIsTargetStatesAreNotEqual() {
-        Transition t1 = new Transition("q0", "q1", "a");
-        Transition t2 = new Transition("q0", "q2", "a");
-        
+        final Transition t1 = new Transition(Q0, Q1, A);
+        final Transition t2 = new Transition(Q0, Q2, A);
+
         Assert.assertFalse(t1.equals(t2));
     }
-    
+
     @Test
     public void equalsShouldReturnFalsIsCharactersToReadAreNotEqual() {
-        Transition t1 = new Transition("q0", "q1", "a");
-        Transition t2 = new Transition("q0", "q1", "b");
-        
+        final Transition t1 = new Transition(Q0, Q1, A);
+        final Transition t2 = new Transition(Q0, Q1, "b");
+
         Assert.assertFalse(t1.equals(t2));
     }
-    
+
     @Test
     public void equalsShouldReturnFalseIfOtherObjectIsNoTransition() {
-        Transition transition = new Transition("q0", "q1", "a");
-        
+        final Transition transition = new Transition(Q0, Q1, A);
+
         Assert.assertFalse(transition.equals("other"));
     }
 

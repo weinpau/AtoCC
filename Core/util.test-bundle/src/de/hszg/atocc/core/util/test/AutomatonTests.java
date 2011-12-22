@@ -14,13 +14,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public final class AutomatonTests {
-    
+
     private static final String EPSILON = "EPSILON";
-    
+
     private static final String A = "a";
     private static final String B = "b";
     private static final String C = "c";
-    
+
     private static final String Q0 = "q0";
     private static final String Q1 = "q1";
     private static final String Q2 = "q2";
@@ -102,58 +102,58 @@ public final class AutomatonTests {
     public void testSetAlphabet() {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         Assert.assertEquals(Collections.emptySet(), automaton.getAlphabet());
-        
+
         final Set<String> expected = new HashSet<String>();
         expected.add(A);
         expected.add(B);
-        
+
         automaton.setAlphabet(expected);
-        
+
         Assert.assertEquals(expected, automaton.getAlphabet());
     }
-    
+
     @Test
     public void setAlphabetShouldCopyValues() {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         Assert.assertEquals(Collections.emptySet(), automaton.getAlphabet());
-        
+
         final Set<String> expected = new HashSet<String>();
         expected.add(A);
         expected.add(B);
-        
+
         automaton.setAlphabet(expected);
-        
+
         expected.add(C);
-        
+
         Assert.assertFalse(automaton.getAlphabet().contains(C));
     }
 
     @Test
     public void testAddAndGetState() {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
-        
+
         Assert.assertEquals(Collections.emptySet(), automaton.getStates());
         automaton.addState(Q0);
         automaton.addState(Q1);
-        
+
         final Set<String> expected = new HashSet<String>();
         expected.add(Q0);
         expected.add(Q1);
-        
+
         Assert.assertEquals(expected, automaton.getStates());
     }
-    
+
     @Test
     public void addStateShouldNotFailForDuplicateState() {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addState(Q0);
         automaton.addState(Q0);
     }
-    
+
     @Test(expected = UnsupportedOperationException.class)
     public void getStatesShouldReturnUnmodifiableSet() {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
-        
+
         automaton.getStates().add("q3");
     }
 
@@ -161,18 +161,18 @@ public final class AutomatonTests {
     public void setStatesShouldCopyValues() {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         Assert.assertEquals(Collections.emptySet(), automaton.getStates());
-        
+
         final Set<String> expected = new HashSet<String>();
         expected.add(Q0);
         expected.add(Q1);
-        
+
         automaton.setStates(expected);
-        
+
         expected.add(Q2);
-        
+
         Assert.assertFalse(automaton.getStates().contains(Q2));
     }
-    
+
     @Test
     public void testGetTransitionsFor() {
         Assert.fail("Not yet implemented");
@@ -212,7 +212,7 @@ public final class AutomatonTests {
         automaton.addState(Q1);
         automaton.addTransition(new Transition(Q0, Q1, "invalid"));
     }
-    
+
     @Test(expected = InvalidTransitionException.class)
     public void addSpontaniousTransitionShouldFailForDea() throws InvalidTransitionException {
         final Automaton automaton = new Automaton(AutomatonType.DEA);
@@ -231,9 +231,9 @@ public final class AutomatonTests {
     @Test
     public void testSetInitialState() {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
-        
+
         Assert.assertEquals("", automaton.getInitialState());
-        
+
         automaton.setInitialState(Q0);
 
         Assert.assertEquals(Q0, automaton.getInitialState());
@@ -242,21 +242,21 @@ public final class AutomatonTests {
     @Test
     public void testAddAndGetFinalStates() throws InvalidStateException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
-        
+
         Assert.assertEquals(Collections.emptySet(), automaton.getFinalStates());
         automaton.addState(Q0);
         automaton.addState(Q1);
-        
+
         automaton.addFinalState(Q0);
         automaton.addFinalState(Q1);
-        
+
         final Set<String> expected = new HashSet<String>();
         expected.add(Q0);
         expected.add(Q1);
-        
+
         Assert.assertEquals(expected, automaton.getFinalStates());
     }
-    
+
     @Test(expected = InvalidStateException.class)
     public void addFinalStateShouldFailIfStateDoesNotExist() throws InvalidStateException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
@@ -264,8 +264,102 @@ public final class AutomatonTests {
     }
 
     @Test
-    public void testEquals() {
-        Assert.fail("Not yet implemented");
+    public void equalsShouldReturnTrueForEqualAutomatons() throws InvalidStateException,
+            InvalidTransitionException {
+        final Automaton a1 = new Automaton(AutomatonType.NEA);
+        a1.addState(Q0);
+        a1.addState(Q1);
+        a1.addFinalState(Q1);
+        a1.addAlphabetItem(A);
+        a1.setInitialState(Q0);
+        a1.addTransition(new Transition(Q0, Q1, A));
+
+        final Automaton a2 = new Automaton(AutomatonType.NEA);
+        a2.addState(Q0);
+        a2.addState(Q1);
+        a2.addFinalState(Q1);
+        a2.addAlphabetItem(A);
+        a2.setInitialState(Q0);
+        a2.addTransition(new Transition(Q0, Q1, A));
+
+        Assert.assertTrue(a1.equals(a2));
+    }
+
+    @Test
+    public void equalsShouldReturnFalseIfOtherObjectIsNoAutomaton() {
+        final Automaton automaton = new Automaton(AutomatonType.NEA);
+
+        Assert.assertFalse(automaton.equals("other"));
+    }
+
+    @Test
+    public void equalsShouldReturnFalseIfTypesAreNotEqual() {
+        final Automaton a1 = new Automaton(AutomatonType.NEA);
+        final Automaton a2 = new Automaton(AutomatonType.DEA);
+
+        Assert.assertFalse(a1.equals(a2));
+    }
+
+    @Test
+    public void equalsShouldReturnFalseIfAlphabetsAreNotEqual() {
+        final Automaton a1 = new Automaton(AutomatonType.NEA);
+        a1.addAlphabetItem(A);
+        a1.addAlphabetItem(B);
+
+        final Automaton a2 = new Automaton(AutomatonType.NEA);
+        a2.addAlphabetItem(B);
+
+        Assert.assertFalse(a1.equals(a2));
+    }
+
+    @Test
+    public void equalsShouldReturnFalseIfStatesAreNotEqual() {
+        final Automaton a1 = new Automaton(AutomatonType.NEA);
+        a1.addState(Q0);
+        a1.addState(Q1);
+
+        final Automaton a2 = new Automaton(AutomatonType.NEA);
+        a2.addState(Q0);
+
+        Assert.assertFalse(a1.equals(a2));
+    }
+
+    @Test
+    public void equalsShouldReturnFalseIfTransitionsAreNotEqual() 
+        throws InvalidTransitionException {
+        final Automaton a1 = new Automaton(AutomatonType.NEA);
+        a1.addState(Q0);
+        a1.addState(Q1);
+        a1.addAlphabetItem(A);
+        a1.addTransition(new Transition(Q0, Q1, A));
+
+        final Automaton a2 = new Automaton(AutomatonType.NEA);
+
+        Assert.assertFalse(a1.equals(a2));
+    }
+
+    @Test
+    public void equalsShouldReturnFalseIfInitialStatesAreNotEqual() {
+        final Automaton a1 = new Automaton(AutomatonType.NEA);
+        a1.addState(Q0);
+        a1.setInitialState(Q0);
+
+        final Automaton a2 = new Automaton(AutomatonType.NEA);
+        a2.addState(Q0);
+
+        Assert.assertFalse(a1.equals(a2));
+    }
+
+    @Test
+    public void equalsShouldReturnFalseIfFinalStatesAreNotEqual() throws InvalidStateException {
+        final Automaton a1 = new Automaton(AutomatonType.NEA);
+        a1.addState(Q0);
+        a1.addState(Q1);
+        a1.addFinalState(Q1);
+
+        final Automaton a2 = new Automaton(AutomatonType.DEA);
+
+        Assert.assertFalse(a1.equals(a2));
     }
 
 }
