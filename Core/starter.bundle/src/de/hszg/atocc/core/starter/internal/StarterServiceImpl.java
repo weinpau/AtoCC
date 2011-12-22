@@ -9,17 +9,24 @@ import de.hszg.atocc.core.util.WebUtilService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlValidatorService;
 
+import java.util.Dictionary;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentMap;
 
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.cm.ConfigurationException;
+import org.osgi.service.cm.ManagedService;
 import org.osgi.service.log.LogService;
 import org.restlet.Component;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
 
-public final class StarterServiceImpl implements StarterService {
+public final class StarterServiceImpl implements StarterService, ManagedService {
 
     private static final int PORT = 8081;
+    
+    private ServiceRegistration registration;
 
     private Component component;
     private Router router;
@@ -33,6 +40,7 @@ public final class StarterServiceImpl implements StarterService {
     private WebUtilService webUtils;
     private SetService setService;
     private TranslationService translationService;
+   
     
     public synchronized void setLogService(LogService service) {
         logger = service;
@@ -115,6 +123,25 @@ public final class StarterServiceImpl implements StarterService {
         if (pluginRegistry == service) {
             pluginRegistry = null;
         }
+    }
+    
+    public synchronized void setServiceRegistration(ServiceRegistration serviceRegistration) {
+        registration = serviceRegistration;
+    }
+    
+    @Override
+    public void updated(Dictionary properties) throws ConfigurationException {
+        
+        Dictionary config = properties == null ? getDefaultConfig() : properties;
+        
+        System.out.println("Switched to port: " + config.get("atocc.port"));
+    }
+    
+    private Properties getDefaultConfig() {
+        Properties properties = new Properties();
+        properties.setProperty("atocc.port", "8081");
+        
+        return properties;
     }
 
     private void initializeComponent() {

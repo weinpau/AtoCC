@@ -3,5 +3,5 @@ Bundle-ManifestVersion: 2
 Bundle-Name: AutoEdit - NeaEpsilon2Nea - Translations
 Bundle-SymbolicName: atocc.autoedit.neaepsilon2nea.translations
 Bundle-Version: 1.0.0.qualifier
-Fragment-Host: atocc.core.translation;bundle-version="1.0.0.qualifier"
+Fragment-Host: atocc.core.translation;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
