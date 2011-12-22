@@ -8,12 +8,19 @@
 	<module name="StrictDuplicateCode">
 		<property name="min" value="10" />
 	</module>
+	
+	<module name="SuppressionCommentFilter">
+	  <property name="checkFormat" value="CyclomaticComplexity" />
+	</module>
 
 	<module name="NewlineAtEndOfFile" />
 	<module name="Translation" />
 	<module name="FileTabCharacter"/>
 
 	<module name="TreeWalker">
+	      <module name="FileContentsHolder"/>
+	      
+	      
 		<!-- Annotations -->
 		<module name="MissingDeprecated" />
 		<module name="MissingOverride">

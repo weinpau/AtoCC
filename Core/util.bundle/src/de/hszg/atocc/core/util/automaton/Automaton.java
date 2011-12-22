@@ -139,6 +139,7 @@ public final class Automaton {
         return result;
     }
 
+    // CHECKSTYLE:OFF
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Automaton)) {
@@ -151,6 +152,8 @@ public final class Automaton {
                 && finalStates.equals(other.finalStates) && initialState.equals(other.initialState)
                 && states.equals(other.states) && transitions.equals(other.transitions);
     }
+
+    // CHECKSTYLE:ON
 
     private void verifyStateExists(String state) throws InvalidStateException {
         if (!states.contains(state)) {

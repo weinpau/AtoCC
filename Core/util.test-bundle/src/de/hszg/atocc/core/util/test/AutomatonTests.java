@@ -282,7 +282,7 @@ public final class AutomatonTests {
     public void equalsShouldReturnFalseIfOtherObjectIsNoAutomaton() {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
 
-        Assert.assertFalse(automaton.equals(0));
+        Assert.assertFalse(automaton.equals(new Transition(Q0, Q1, A)));
     }
 
     @Test

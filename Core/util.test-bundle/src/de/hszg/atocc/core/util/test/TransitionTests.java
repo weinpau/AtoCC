@@ -64,7 +64,7 @@ public final class TransitionTests {
     public void equalsShouldReturnFalseIfOtherObjectIsNoTransition() {
         final Transition transition = new Transition(Q0, Q1, A);
 
-        Assert.assertFalse(transition.equals(0));
+        Assert.assertFalse(transition.equals(new Transition(Q0, Q1, A)));
     }
 
 }
