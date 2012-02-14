@@ -103,7 +103,6 @@ public final class Nea2Dea extends RestfulWebService {
         deaDocument = automatonUtils.automatonToXml(dea);
     }
     
-    // test
 
     private void checkAutomatonType() {
         if (nea.getType() != AutomatonType.NEA) {
