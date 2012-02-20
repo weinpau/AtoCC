@@ -26,7 +26,6 @@ import org.xml.sax.SAXException;
 public final class XmlUtilServiceImpl implements XmlUtilService {
 
     private static final String STATUS = "status";
-    private static final String ERROR = "error";
 
     private TranslationService translator;
 
@@ -44,7 +43,7 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
     public Document createResult(Document doc) {
 
         final Document resultDocument = createEmptyDocument();
-        final Element resultElement = createResultElement(resultDocument, "success");
+        final Element resultElement = createResultElement(resultDocument, SUCCESS);
 
         final Node domRootNode = doc.getDocumentElement();
 

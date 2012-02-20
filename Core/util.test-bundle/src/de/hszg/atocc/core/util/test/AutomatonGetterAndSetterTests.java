@@ -84,21 +84,6 @@ public final class AutomatonGetterAndSetterTests extends AbstractAutomatonTest {
     }
     
     @Test
-    public void testGetTransitionsFor() {
-        Assert.fail(NOT_YET_IMPLEMENTED);
-    }
-
-    @Test
-    public void testGetTargetsFor() {
-        Assert.fail(NOT_YET_IMPLEMENTED);
-    }
-
-    @Test
-    public void testSetTransitions() {
-        Assert.fail(NOT_YET_IMPLEMENTED);
-    }
-    
-    @Test
     public void testGetInitialState() throws InvalidStateException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.setInitialState(Q0);

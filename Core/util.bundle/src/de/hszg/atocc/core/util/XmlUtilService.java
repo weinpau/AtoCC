@@ -9,6 +9,9 @@ import javax.xml.transform.TransformerException;
 import org.w3c.dom.Document;
 
 public interface XmlUtilService {
+    
+    String SUCCESS = "success";
+    String ERROR = "error";
 
     Document documentFromFile(String filename) throws XmlUtilsException;
 
