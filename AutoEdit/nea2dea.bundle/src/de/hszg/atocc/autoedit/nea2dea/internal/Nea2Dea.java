@@ -9,6 +9,7 @@ import de.hszg.atocc.core.util.XmlValidationException;
 import de.hszg.atocc.core.util.XmlValidatorService;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.AutomatonType;
+import de.hszg.atocc.core.util.automaton.InvalidAutomatonException;
 import de.hszg.atocc.core.util.automaton.InvalidStateException;
 import de.hszg.atocc.core.util.automaton.InvalidTransitionException;
 import de.hszg.atocc.core.util.automaton.Transition;
@@ -58,7 +59,7 @@ public final class Nea2Dea extends RestfulWebService {
             xmlValidator.validate(deaDocument, AUTOMATON);
 
             result = xmlUtils.createResult(deaDocument);
-        } catch (final RuntimeException | InvalidTransitionException | InvalidStateException e) {
+        } catch (final RuntimeException | InvalidAutomatonException e) {
             result = xmlUtils.createResultWithError(TRANSFORM_FAILED, e, getLocale());
         } catch (final SerializationException | XmlValidationException e) {
             result = xmlUtils.createResultWithError(INVALID_INPUT, e, getLocale());
@@ -92,13 +93,17 @@ public final class Nea2Dea extends RestfulWebService {
         }
     }
 
-    private void transformAutomaton() throws InvalidTransitionException, InvalidStateException,
+    private void transformAutomaton() throws InvalidAutomatonException,
             SerializationException {
         generateNewStatesFrom(automatonUtils.getStatePowerSetFrom(nea));
 
-        generateNewInitialState();
-        createNewTransitions();
-        generateNewFinalStates();
+        try {
+            generateNewInitialState();
+            createNewTransitions();
+            generateNewFinalStates();
+        } catch (final InvalidStateException | InvalidTransitionException ex) {
+            throw new InvalidAutomatonException(ex);
+        }
 
         deaDocument = automatonUtils.automatonToXml(dea);
     }
