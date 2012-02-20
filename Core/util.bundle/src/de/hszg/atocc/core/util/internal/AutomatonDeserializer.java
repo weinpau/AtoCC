@@ -30,6 +30,8 @@ public final class AutomatonDeserializer {
     private Automaton automaton;
 
     public Automaton deserialize(Document aDocument) throws SerializationException {
+        assert aDocument != null;
+        
         document = aDocument;
 
         try {

@@ -22,6 +22,8 @@ public interface XmlUtilService {
     Document createResultWithError(String errorCode, Exception reason, Locale locale);
 
     String getResultStatus(Document resultDocument);
+    String getErrorMessage(Document resultDocument);
+    String getErrorCause(Document resultDocument);
 
     Document getContent(Document resultDocument);
 

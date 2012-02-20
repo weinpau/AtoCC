@@ -1,15 +1,15 @@
 package de.hszg.atocc.autoedit.neaepsilon2nea.internal;
 
 import de.hszg.atocc.core.util.AutomatonService;
-import de.hszg.atocc.core.util.SerializationException;
 import de.hszg.atocc.core.util.WebUtilService;
 import de.hszg.atocc.core.util.XmlUtilService;
-import de.hszg.atocc.core.util.XmlUtilsException;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.Transition;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.xml.xpath.XPathExpressionException;
 
 import junit.framework.Assert;
 
@@ -45,12 +45,18 @@ public final class NeaEpsilon2NeaTests {
     }
 
     @BeforeClass
-    public static void initialize() throws XmlUtilsException, SerializationException {
+    public static void initialize() throws XPathExpressionException, Exception {
         neaEpsilonDocument1 = xmlUtils.documentFromFile("Nea_Epsilon_1.xml");
         neaEpsilon1 = automatonService.automatonFrom(neaEpsilonDocument1);
-
+        
+        // FIXME: when testing the document seems to be not beeing sent correctly
         neaDocument1 = webService.post("http://localhost:8081/autoedit/neaepsilon2nea",
                 neaEpsilonDocument1);
+        
+        if(XmlUtilService.ERROR.equals(xmlUtils.getResultStatus(neaDocument1))) {
+            throw new Exception(xmlUtils.getErrorMessage(neaDocument1) + "\n" + xmlUtils.getErrorCause(neaDocument1));
+        }
+        
         nea1 = automatonService.automatonFrom(neaDocument1);
 
         invalidTypeDocument = xmlUtils.documentFromFile("Nea_Epsilon_1.xml");

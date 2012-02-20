@@ -25,6 +25,8 @@ import org.xml.sax.SAXException;
 
 public final class XmlUtilServiceImpl implements XmlUtilService {
 
+    private static final String UNKNOWN = "UNKNOWN";
+
     private static final String STATUS = "status";
 
     private TranslationService translator;
@@ -83,6 +85,28 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
     @Override
     public String getResultStatus(Document resultDocument) {
         return resultDocument.getDocumentElement().getAttribute(STATUS);
+    }
+
+    @Override
+    public String getErrorMessage(Document resultDocument) {
+        try {
+            final XPath xpath = XPathFactory.newInstance().newXPath();
+            return (String) xpath.evaluate("//error/message/text()", resultDocument,
+                    XPathConstants.STRING);
+        } catch (XPathExpressionException ex) {
+            return UNKNOWN;
+        }
+    }
+
+    @Override
+    public String getErrorCause(Document resultDocument) {
+        try {
+            final XPath xpath = XPathFactory.newInstance().newXPath();
+            return (String) xpath.evaluate("//error/reason/text()", resultDocument,
+                    XPathConstants.STRING);
+        } catch (XPathExpressionException ex) {
+            return UNKNOWN;
+        }
     }
 
     @Override
