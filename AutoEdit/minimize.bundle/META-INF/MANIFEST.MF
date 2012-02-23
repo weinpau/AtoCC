@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: AtoCC Minimize Bundle
+Bundle-SymbolicName: atocc.autoedit.minimize
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: atocc.core.util;bundle-version="1.0.0",
+ atocc.core.starter;bundle-version="1.0.0",
+ atocc.core.pluginregistry;bundle-version="1.0.0",
+ atocc.core.translation;bundle-version="1.0.0"
+Import-Package: org.restlet,
+ org.restlet.resource
+Service-Component: OSGI-INF/component.xml
