@@ -87,7 +87,7 @@ public final class AutomatonSerializer {
     }
 
     private void createTransitionElements(String state, final Element stateElement) {
-        final Set<Transition> transitions = automaton.getTransitionsFor(state);
+        final Set<Transition> transitions = automaton.getTransitionsFrom(state);
 
         for (Transition transition : transitions) {
             final Element transitionElement = document.createElement("TRANSITION");

@@ -1,8 +1,10 @@
 package de.hszg.atocc.core.util.automaton;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -24,6 +26,24 @@ public final class Automaton {
 
     public Automaton(AutomatonType automatonType) {
         type = automatonType;
+    }
+
+    public Automaton(Automaton other) throws InvalidStateException, InvalidTransitionException {
+        type = other.getType();
+        setAlphabet(other.getAlphabet());
+        setStates(other.getStates());
+
+        for (String s : states) {
+            for (Transition transition : other.getTransitionsFrom(s)) {
+                addTransition(transition);
+            }
+        }
+
+        initialState = other.getInitialState();
+
+        for (String s : other.getFinalStates()) {
+            addFinalState(s);
+        }
     }
 
     public boolean containsEpsilonRules() {
@@ -55,7 +75,7 @@ public final class Automaton {
     public Set<String> getStates() {
         return Collections.unmodifiableSet(states);
     }
-    
+
     public SortedSet<String> getSortedStates() {
         return new TreeSet<String>(states);
     }
@@ -79,20 +99,24 @@ public final class Automaton {
             addState(state);
         }
     }
-    
+
     public void removeState(String state) {
         states.remove(state);
-        
-        for (Transition transition : getTransitionsFrom(state)) {
+
+        final Collection<Transition> transitionsFrom = new LinkedList<>(); 
+        transitionsFrom.addAll(getTransitionsFrom(state));
+        for (Transition transition : transitionsFrom) {
             transitions.get(state).remove(transition);
         }
-        
-        for (Transition transition : getTransitionsTo(state)) {
+
+        final Collection<Transition> transitionsTo = new LinkedList<>();
+        transitionsTo.addAll(getTransitionsTo(state));
+        for (Transition transition : transitionsTo) {
             transitions.get(transition.getSource()).remove(transition);
         }
-        
+
         finalStates.remove(state);
-        
+
         if (initialState.equals(state)) {
             initialState = "";
         }
@@ -101,10 +125,10 @@ public final class Automaton {
     public Set<Transition> getTransitionsFrom(String state) {
         return transitions.get(state);
     }
-    
+
     public Set<Transition> getTransitionsTo(String state) {
         final Set<Transition> transitionsToState = new HashSet<>();
-        
+
         for (String s : states) {
             for (Transition t : transitions.get(s)) {
                 if (t.getTarget().equals(state)) {
@@ -112,7 +136,7 @@ public final class Automaton {
                 }
             }
         }
-        
+
         return transitionsToState;
     }
 
