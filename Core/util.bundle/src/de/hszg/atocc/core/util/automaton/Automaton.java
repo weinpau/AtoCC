@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public final class Automaton {
 
@@ -53,6 +55,10 @@ public final class Automaton {
     public Set<String> getStates() {
         return Collections.unmodifiableSet(states);
     }
+    
+    public SortedSet<String> getSortedStates() {
+        return new TreeSet<String>(states);
+    }
 
     public void addState(String state) throws InvalidStateException {
         if (state == null || "".equals(state)) {
@@ -73,15 +79,47 @@ public final class Automaton {
             addState(state);
         }
     }
+    
+    public void removeState(String state) {
+        states.remove(state);
+        
+        for (Transition transition : getTransitionsFrom(state)) {
+            transitions.get(state).remove(transition);
+        }
+        
+        for (Transition transition : getTransitionsTo(state)) {
+            transitions.get(transition.getSource()).remove(transition);
+        }
+        
+        finalStates.remove(state);
+        
+        if (initialState.equals(state)) {
+            initialState = "";
+        }
+    }
 
-    public Set<Transition> getTransitionsFor(String state) {
+    public Set<Transition> getTransitionsFrom(String state) {
         return transitions.get(state);
+    }
+    
+    public Set<Transition> getTransitionsTo(String state) {
+        final Set<Transition> transitionsToState = new HashSet<>();
+        
+        for (String s : states) {
+            for (Transition t : transitions.get(s)) {
+                if (t.getTarget().equals(state)) {
+                    transitionsToState.add(t);
+                }
+            }
+        }
+        
+        return transitionsToState;
     }
 
     public Set<String> getTargetsFor(String state, String read) {
         final Set<String> targets = new HashSet<>();
 
-        for (Transition transition : getTransitionsFor(state)) {
+        for (Transition transition : getTransitionsFrom(state)) {
             if (transition.getCharacterToRead().equals(read)) {
                 targets.add(transition.getTarget());
             }

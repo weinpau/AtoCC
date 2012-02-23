@@ -8,6 +8,7 @@ import de.hszg.atocc.core.util.automaton.InvalidTransitionException;
 import de.hszg.atocc.core.util.automaton.Transition;
 
 import java.util.Collections;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -104,4 +105,60 @@ public final class AutomatonModifyTests extends AbstractAutomatonTest {
         automaton.addFinalState(Q0);
     }
 
+    @Test
+    public void removeStateShouldRemoveStateFromStates() throws Exception {
+        final Automaton automaton = createTestAutomaton1();
+
+        Assert.assertTrue(automaton.getStates().contains(Q0));
+        automaton.removeState(Q0);
+        Assert.assertFalse(automaton.getStates().contains(Q0));
+    }
+
+    @Test
+    public void removeStateShouldDeleteTransitionsFromState() throws Exception {
+        final Automaton automaton = createTestAutomaton1();
+
+        final Set<Transition> transitions1 = automaton.getTransitionsFrom(Q0);
+        Assert.assertFalse(transitions1.isEmpty());
+
+        automaton.removeState(Q0);
+
+        final Set<Transition> transitions2 = automaton.getTransitionsFrom(Q0);
+        Assert.assertTrue(transitions2.isEmpty());
+    }
+
+    @Test
+    public void removeStateShouldDeleteTransitionsToState() throws Exception {
+        final Automaton automaton = createTestAutomaton1();
+
+        final Set<Transition> transitions1 = automaton.getTransitionsTo(Q1);
+        Assert.assertFalse(transitions1.isEmpty());
+
+        automaton.removeState(Q1);
+
+        final Set<Transition> transitions2 = automaton.getTransitionsTo(Q1);
+        Assert.assertTrue(transitions2.isEmpty());
+    }
+
+    @Test
+    public void removeStateShouldRemoveStateFromFinalStates() throws Exception {
+        final Automaton automaton = createTestAutomaton1();
+
+        Assert.assertTrue(automaton.getFinalStates().contains(Q1));
+
+        automaton.removeState(Q1);
+
+        Assert.assertFalse(automaton.getFinalStates().contains(Q1));
+    }
+
+    @Test
+    public void removeStateShouldUnsetInitialState() throws Exception {
+        final Automaton automaton = createTestAutomaton1();
+
+        Assert.assertTrue(automaton.getInitialState().equals(Q0));
+
+        automaton.removeState(Q0);
+
+        Assert.assertFalse(automaton.getInitialState().equals(Q0));
+    }
 }
