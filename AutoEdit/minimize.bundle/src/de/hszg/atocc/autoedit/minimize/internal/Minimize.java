@@ -1,5 +1,6 @@
 package de.hszg.atocc.autoedit.minimize.internal;
 
+import de.hszg.atocc.core.util.Pair;
 import de.hszg.atocc.core.util.AutomatonService;
 import de.hszg.atocc.core.util.RestfulWebService;
 import de.hszg.atocc.core.util.SerializationException;
@@ -13,6 +14,8 @@ import de.hszg.atocc.core.util.automaton.InvalidTransitionException;
 import de.hszg.atocc.core.util.automaton.Transition;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.SortedSet;
@@ -156,66 +159,117 @@ public final class Minimize extends RestfulWebService {
         }
     }
 
-    // private void printStateMatrix() {
-    // System.out.println("StateMatrix");
-    // for (int i = 0; i < states.length; ++i) {
-    // for (int j = 0; j < states.length; ++j) {
-    // String s = " ";
-    //
-    // if (stateMatrix[i][j] == INVALID) {
-    // s = "!";
-    // } else if (stateMatrix[i][j] == UNMERGABLE) {
-    // s = "X";
-    // }
-    //
-    // System.out.print(" " + s + " |");
-    // }
-    //
-    // System.out.println();
-    // }
-    // }
+    // TODO: log in debug mode
+//    private void printStateMatrix() {
+//        System.out.println("StateMatrix");
+//        for (int i = 0; i < states.length; ++i) {
+//            for (int j = 0; j < states.length; ++j) {
+//                String s = " ";
+//
+//                if (stateMatrix[i][j] == INVALID) {
+//                    s = "!";
+//                } else if (stateMatrix[i][j] == UNMERGABLE) {
+//                    s = "X";
+//                }
+//
+//                System.out.print(" " + s + " |");
+//            }
+//
+//            System.out.println();
+//        }
+//    }
 
     private void mergeStates() throws InvalidStateException, InvalidTransitionException {
+
+        final Collection<Pair<Integer, Integer>> mergableStates = findMergableStates();
+
+        for (Pair<Integer, Integer> statePair : mergableStates) {
+            final int i = statePair.getFirst();
+            final int j = statePair.getSecond();
+            
+            final Collection<Transition> influencedTransitions = getInfluencedTransitions(
+                    i, j);
+
+            final boolean newStateIsFinalState = newStateIsFinalState(i, j);
+
+            removeOldStates(i, j);
+
+            String newStateName = generateNewStateNameFor(i, j);
+            minimalDea.addState(newStateName);
+
+            if (newStateIsFinalState) {
+                minimalDea.addFinalState(newStateName);
+            }
+
+            modifyTransitions(i, j, influencedTransitions, newStateName);
+        }
+
+        System.out.println(minimalDea);
+    }
+
+    private void modifyTransitions(final int i, final int j,
+            final Collection<Transition> influencedTransitions, String newStateName)
+            throws InvalidTransitionException {
+        for (Transition currentTransition : influencedTransitions) {
+            String sourceName = currentTransition.getSource();
+            String targetName = currentTransition.getTarget();
+
+            if (sourceName.equals(states[i]) || sourceName.equals(states[j])) {
+                sourceName = newStateName;
+            }
+            
+            
+            if(targetName.equals(states[i]) || targetName.equals(states[j])) {
+                targetName = newStateName;
+            }
+            
+            final Transition newTransition = new Transition(sourceName, targetName, currentTransition.getCharacterToRead());
+            minimalDea.addTransition(newTransition);
+        }
+    }
+
+    private Collection<Pair<Integer, Integer>> findMergableStates() {
+        final Collection<Pair<Integer, Integer>> mergableStates = new LinkedList<>();
 
         for (int i = 0; i < states.length; ++i) {
             for (int j = i; j < states.length; ++j) {
                 if (stateMatrix[i][j] == MERGABLE) {
-                    final Set<Transition> transitionsTo1 = dea.getTransitionsTo(states[i]);
-                    final Set<Transition> transitionsTo2 = dea.getTransitionsTo(states[j]);
-
-                    Collection<Transition> transitions = new LinkedList<>();
-                    transitions.addAll(transitionsTo1);
-                    transitions.addAll(transitionsTo2);
-
-                    final boolean newStateIsFinalState = dea.getFinalStates().contains(states[i])
-                            && dea.getFinalStates().contains(states[j]);
-
-                    minimalDea.removeState(states[i]);
-                    minimalDea.removeState(states[j]);
-
-                    String newStateName = states[i] + states[j];
-                    minimalDea.addState(newStateName);
-
-                    if (newStateIsFinalState) {
-                        minimalDea.addFinalState(newStateName);
-                    }
-
-                    for (Transition currentTransition : transitions) {
-                        String sourceName = currentTransition.getSource();
-
-                        if (sourceName.equals(states[i]) || sourceName.equals(states[j])) {
-                            sourceName = newStateName;
-                        }
-
-                        final Transition newTransition = new Transition(sourceName, newStateName,
-                                currentTransition.getCharacterToRead());
-                        minimalDea.addTransition(newTransition);
-                    }
+                    mergableStates.add(new Pair<Integer, Integer>(i, j));
                 }
             }
         }
 
-        System.out.println(minimalDea);
+        return Collections.unmodifiableCollection(mergableStates);
+    }
+
+    private String generateNewStateNameFor(int firstState, int secondState) {
+        return states[firstState] + states[secondState];
+    }
+
+    private void removeOldStates(int firstState, int secondState) {
+        minimalDea.removeState(states[firstState]);
+        minimalDea.removeState(states[secondState]);
+    }
+
+    private Set<Transition> getInfluencedTransitions(int firstState, int secondState) {
+        final Set<Transition> transitionsToFirstState = dea.getTransitionsTo(states[firstState]);
+        final Set<Transition> transitionsToSecondState = dea.getTransitionsTo(states[secondState]);
+        
+        final Set<Transition> transitionsFromFirstState = dea.getTransitionsFrom(states[firstState]);
+        final Set<Transition> transitionsFromSecondState = dea.getTransitionsFrom(states[secondState]);
+
+        final Set<Transition> influencedTransitions = new HashSet<>();
+        influencedTransitions.addAll(transitionsToFirstState);
+        influencedTransitions.addAll(transitionsToSecondState);
+        influencedTransitions.addAll(transitionsFromFirstState);
+        influencedTransitions.addAll(transitionsFromSecondState);
+
+        return influencedTransitions;
+    }
+
+    private boolean newStateIsFinalState(int firstState, int secondState) {
+        return dea.getFinalStates().contains(states[firstState])
+                && dea.getFinalStates().contains(states[secondState]);
     }
 
     private boolean isUnmergable(String state1, String state2) {

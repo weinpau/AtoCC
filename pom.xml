@@ -9,7 +9,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <restlet.version>2.1-RC2</restlet.version>
+    <restlet.version>2.1-RC3</restlet.version>
     <equinoxLog.version>1.0.100-v20070226</equinoxLog.version>
   </properties>
 

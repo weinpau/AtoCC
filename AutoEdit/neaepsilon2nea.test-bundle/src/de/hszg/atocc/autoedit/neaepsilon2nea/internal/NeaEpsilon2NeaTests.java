@@ -1,10 +1,9 @@
 package de.hszg.atocc.autoedit.neaepsilon2nea.internal;
 
-import de.hszg.atocc.core.util.AutomatonService;
-import de.hszg.atocc.core.util.WebUtilService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.Transition;
+import de.hszg.atocc.core.util.test.AbstractServiceTest;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,11 +17,7 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public final class NeaEpsilon2NeaTests {
-
-    private static WebUtilService webService;
-    private static XmlUtilService xmlUtils;
-    private static AutomatonService automatonService;
+public final class NeaEpsilon2NeaTests extends AbstractServiceTest {
 
     private static Document neaEpsilonDocument1;
     private static Automaton neaEpsilon1;
@@ -32,34 +27,25 @@ public final class NeaEpsilon2NeaTests {
 
     private static Document invalidTypeDocument;
 
-    public static void setWebService(WebUtilService service) {
-        webService = service;
-    }
-
-    public static void setXmlUtils(XmlUtilService service) {
-        xmlUtils = service;
-    }
-
-    public static void setAutomatonService(AutomatonService service) {
-        automatonService = service;
-    }
-
     @BeforeClass
     public static void initialize() throws XPathExpressionException, Exception {
-        neaEpsilonDocument1 = xmlUtils.documentFromFile("Nea_Epsilon_1.xml");
-        neaEpsilon1 = automatonService.automatonFrom(neaEpsilonDocument1);
+        neaEpsilonDocument1 = getXmlUtilService().documentFromFile("Nea_Epsilon_1.xml");
         
-        // FIXME: when testing the document seems to be not beeing sent correctly
-        neaDocument1 = webService.post("http://localhost:8081/autoedit/neaepsilon2nea",
-                neaEpsilonDocument1);
-        
-        if(XmlUtilService.ERROR.equals(xmlUtils.getResultStatus(neaDocument1))) {
-            throw new Exception(xmlUtils.getErrorMessage(neaDocument1) + "\n" + xmlUtils.getErrorCause(neaDocument1));
-        }
-        
-        nea1 = automatonService.automatonFrom(neaDocument1);
+        System.out.println("Doc: " + getXmlUtilService().xmlToString(neaEpsilonDocument1));
+        neaEpsilon1 = getAutomatonService().automatonFrom(neaEpsilonDocument1);
 
-        invalidTypeDocument = xmlUtils.documentFromFile("Nea_Epsilon_1.xml");
+        // FIXME: when testing the document seems to be not being sent correctly
+        neaDocument1 = getWebUtilService().post("http://localhost:8081/autoedit/neaepsilon2nea",
+                neaEpsilonDocument1);
+
+        if (XmlUtilService.ERROR.equals(getXmlUtilService().getResultStatus(neaDocument1))) {
+            throw new Exception(getXmlUtilService().getErrorMessage(neaDocument1) + "\n"
+                    + getXmlUtilService().getErrorCause(neaDocument1));
+        }
+
+        nea1 = getAutomatonService().automatonFrom(neaDocument1);
+
+        invalidTypeDocument = getXmlUtilService().documentFromFile("Nea_Epsilon_1.xml");
         final Element typeElement = (Element) invalidTypeDocument.getElementsByTagName("TYPE")
                 .item(0);
         typeElement.setAttribute("value", "DEA");
@@ -67,24 +53,24 @@ public final class NeaEpsilon2NeaTests {
 
     @Test
     public void verifyInvalidNeaEpsilonProducesError() {
-        Document invalid = xmlUtils.createEmptyDocument();
+        Document invalid = getXmlUtilService().createEmptyDocument();
         final Element automatonElement = invalid.createElement("AUTOMATON");
         invalid.appendChild(automatonElement);
 
-        final Document resultDocument = webService.post(
+        final Document resultDocument = getWebUtilService().post(
                 "http://localhost:8081/autoedit/neaepsilon2nea", invalid);
 
-        final String result = xmlUtils.getResultStatus(resultDocument);
+        final String result = getXmlUtilService().getResultStatus(resultDocument);
 
         Assert.assertEquals("error", result);
     }
 
     @Test
     public void verifyInvalidAutomatonTypeProducesError() {
-        final Document resultDocument = webService.post(
+        final Document resultDocument = getWebUtilService().post(
                 "http://localhost:8081/autoedit/neaepsilon2nea", invalidTypeDocument);
 
-        final String result = xmlUtils.getResultStatus(resultDocument);
+        final String result = getXmlUtilService().getResultStatus(resultDocument);
 
         Assert.assertEquals("error", result);
     }

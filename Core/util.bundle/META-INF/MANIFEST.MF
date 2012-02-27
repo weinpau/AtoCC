@@ -10,5 +10,6 @@ Import-Package: de.hszg.atocc.core.translation,
  org.restlet.data,
  org.restlet.resource
 Export-Package: de.hszg.atocc.core.util,
- de.hszg.atocc.core.util.automaton
+ de.hszg.atocc.core.util.automaton,
+ de.hszg.atocc.core.util.test
 Service-Component: OSGI-INF/automaton_component.xml, OSGI-INF/set_component.xml, OSGI-INF/webutil_component.xml, OSGI-INF/xmlutil_component.xml, OSGI-INF/xmlvalidator_component.xml
