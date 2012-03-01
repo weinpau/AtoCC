@@ -194,6 +194,10 @@ public final class Automaton {
 
         finalStates.add(state);
     }
+    
+    public boolean isFinalState(String state) {
+        return finalStates.contains(state);
+    }
 
     @Override
     public int hashCode() {
