@@ -2,7 +2,7 @@ package de.hszg.atocc.core.pluginregistry.internal;
 
 import de.hszg.atocc.core.pluginregistry.PluginRegistryService;
 import de.hszg.atocc.core.translation.TranslationService;
-import de.hszg.atocc.core.util.RestfulWebService;
+import de.hszg.atocc.core.util.AbstractRestfulWebService;
 import de.hszg.atocc.core.util.ServiceNotFoundException;
 import de.hszg.atocc.core.util.XmlUtilService;
 
@@ -19,7 +19,7 @@ import org.restlet.resource.ServerResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public final class ListService extends RestfulWebService {
+public final class ListService extends AbstractRestfulWebService {
 
     private XmlUtilService xmlUtils;
     private TranslationService translationService;

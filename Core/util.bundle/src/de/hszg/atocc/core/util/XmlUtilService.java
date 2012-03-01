@@ -17,9 +17,9 @@ public interface XmlUtilService {
 
     Document createResult(Document doc);
 
-    Document createResultWithError(String errorCode, String errorMessage, Exception reason);
+    Document createResultWithError(String errorCode, String errorMessage, Throwable reason);
 
-    Document createResultWithError(String errorCode, Exception reason, Locale locale);
+    Document createResultWithError(String errorCode, Throwable reason, Locale locale);
 
     String getResultStatus(Document resultDocument);
     String getErrorMessage(Document resultDocument);

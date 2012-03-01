@@ -1,7 +1,7 @@
 package de.hszg.atocc.autoedit.neaepsilon2nea.internal;
 
+import de.hszg.atocc.core.util.AbstractRestfulWebService;
 import de.hszg.atocc.core.util.AutomatonService;
-import de.hszg.atocc.core.util.RestfulWebService;
 import de.hszg.atocc.core.util.SerializationException;
 import de.hszg.atocc.core.util.SetService;
 import de.hszg.atocc.core.util.XmlUtilService;
@@ -19,7 +19,7 @@ import java.util.TreeSet;
 import org.restlet.resource.Post;
 import org.w3c.dom.Document;
 
-public final class NeaEpsilon2Nea extends RestfulWebService {
+public final class NeaEpsilon2Nea extends AbstractRestfulWebService {
 
     private static final String TRANSFORM_FAILED = "NeaEpsilon2Nea|TRANSFORM_FAILED";
     private static final String INVALID_INPUT = "NeaEpsilon2Nea|INVALID_INPUT";

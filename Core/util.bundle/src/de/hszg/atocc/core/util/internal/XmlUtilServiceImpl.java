@@ -56,12 +56,12 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
     }
 
     @Override
-    public Document createResultWithError(String errorCode, Exception reason, Locale locale) {
+    public Document createResultWithError(String errorCode, Throwable reason, Locale locale) {
         return createResultWithError(errorCode, translator.translate(errorCode, locale), reason);
     }
 
     @Override
-    public Document createResultWithError(String errorCode, String errorMessage, Exception reason) {
+    public Document createResultWithError(String errorCode, String errorMessage, Throwable reason) {
 
         final Document resultDocument = createEmptyDocument();
 
@@ -190,7 +190,7 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
         return errorMessageElement;
     }
 
-    private Element createErrorReasonElement(Document doc, Exception reason) {
+    private Element createErrorReasonElement(Document doc, Throwable reason) {
 
         final StringWriter sw = new StringWriter();
         reason.printStackTrace(new PrintWriter(sw));

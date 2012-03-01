@@ -1,12 +1,11 @@
 package de.hszg.atocc.autoedit.minimize.internal;
 
-import de.hszg.atocc.core.util.Pair;
+import de.hszg.atocc.core.util.AbstractXmlTransformationService;
 import de.hszg.atocc.core.util.AutomatonService;
-import de.hszg.atocc.core.util.RestfulWebService;
+import de.hszg.atocc.core.util.Pair;
 import de.hszg.atocc.core.util.SerializationException;
-import de.hszg.atocc.core.util.XmlUtilService;
+import de.hszg.atocc.core.util.XmlTransormationException;
 import de.hszg.atocc.core.util.XmlValidationException;
-import de.hszg.atocc.core.util.XmlValidatorService;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.AutomatonType;
 import de.hszg.atocc.core.util.automaton.InvalidStateException;
@@ -20,23 +19,12 @@ import java.util.LinkedList;
 import java.util.Set;
 import java.util.SortedSet;
 
-import org.restlet.resource.Post;
-import org.w3c.dom.Document;
+public final class Minimize extends AbstractXmlTransformationService {
 
-public final class Minimize extends RestfulWebService {
-
-    private static final String INVALID_INPUT = "Minimize|INVALID_INPUT";
-    private static final String TRANSFORM_FAILED = "Minimize|TRANSFORM_FAILED";
-
-    private XmlUtilService xmlUtils;
     private AutomatonService automatonUtils;
-    private XmlValidatorService xmlValidator;
 
-    private Document minimalDeaDocument;
     private Automaton dea;
     private Automaton minimalDea;
-
-    private Document result;
 
     private String[] states;
     private int[][] stateMatrix;
@@ -45,31 +33,27 @@ public final class Minimize extends RestfulWebService {
     private static final int MERGABLE = 0;
     private static final int UNMERGABLE = 1;
 
-    @Post
-    public Document minimize(Document deaDocument) {
+    @Override
+    protected void transform() throws XmlTransormationException {
         tryToGetRequiredServices();
 
         try {
-            initialize(deaDocument);
+            initialize();
 
-            minimalDea = minimize();
+            minimize();
 
-            minimalDeaDocument = automatonUtils.automatonToXml(minimalDea);
+            setOutput(automatonUtils.automatonToXml(minimalDea));
 
-            xmlValidator.validate(minimalDeaDocument, "AUTOMATON");
-
-            result = xmlUtils.createResult(minimalDeaDocument);
+            validateOutput("AUTOMATON");
         } catch (final RuntimeException e) {
-            result = xmlUtils.createResultWithError(TRANSFORM_FAILED, e, getLocale());
+            throw new XmlTransormationException("Minimize|TRANSFORM_FAILED", e);
         } catch (final SerializationException | XmlValidationException | InvalidStateException
                 | InvalidTransitionException e) {
-            result = xmlUtils.createResultWithError(INVALID_INPUT, e, getLocale());
+            throw new XmlTransormationException("Minimize|INVALID_INPUT", e);
         }
-
-        return result;
     }
 
-    public Automaton minimize() throws InvalidStateException, InvalidTransitionException {
+    public void minimize() throws InvalidStateException, InvalidTransitionException {
         minimalDea = new Automaton(dea);
 
         step1();
@@ -78,15 +62,12 @@ public final class Minimize extends RestfulWebService {
         step4();
 
         mergeStates();
-
-        return minimalDea;
     }
 
-    private void initialize(final Document deaDocument) throws XmlValidationException,
-            SerializationException {
-        xmlValidator.validate(deaDocument, "AUTOMATON");
+    private void initialize() throws XmlValidationException, SerializationException {
+        validateInput("AUTOMATON");
 
-        dea = automatonUtils.automatonFrom(deaDocument);
+        dea = automatonUtils.automatonFrom(getInput());
         checkAutomatonType();
     }
 
@@ -160,24 +141,24 @@ public final class Minimize extends RestfulWebService {
     }
 
     // TODO: log in debug mode
-//    private void printStateMatrix() {
-//        System.out.println("StateMatrix");
-//        for (int i = 0; i < states.length; ++i) {
-//            for (int j = 0; j < states.length; ++j) {
-//                String s = " ";
-//
-//                if (stateMatrix[i][j] == INVALID) {
-//                    s = "!";
-//                } else if (stateMatrix[i][j] == UNMERGABLE) {
-//                    s = "X";
-//                }
-//
-//                System.out.print(" " + s + " |");
-//            }
-//
-//            System.out.println();
-//        }
-//    }
+    // private void printStateMatrix() {
+    // System.out.println("StateMatrix");
+    // for (int i = 0; i < states.length; ++i) {
+    // for (int j = 0; j < states.length; ++j) {
+    // String s = " ";
+    //
+    // if (stateMatrix[i][j] == INVALID) {
+    // s = "!";
+    // } else if (stateMatrix[i][j] == UNMERGABLE) {
+    // s = "X";
+    // }
+    //
+    // System.out.print(" " + s + " |");
+    // }
+    //
+    // System.out.println();
+    // }
+    // }
 
     private void mergeStates() throws InvalidStateException, InvalidTransitionException {
 
@@ -186,9 +167,8 @@ public final class Minimize extends RestfulWebService {
         for (Pair<Integer, Integer> statePair : mergableStates) {
             final int i = statePair.getFirst();
             final int j = statePair.getSecond();
-            
-            final Collection<Transition> influencedTransitions = getInfluencedTransitions(
-                    i, j);
+
+            final Collection<Transition> influencedTransitions = getInfluencedTransitions(i, j);
 
             final boolean newStateIsFinalState = newStateIsFinalState(i, j);
 
@@ -203,8 +183,7 @@ public final class Minimize extends RestfulWebService {
 
             modifyTransitions(i, j, influencedTransitions, newStateName);
         }
-
-        System.out.println(minimalDea);
+        
     }
 
     private void modifyTransitions(final int i, final int j,
@@ -217,13 +196,13 @@ public final class Minimize extends RestfulWebService {
             if (sourceName.equals(states[i]) || sourceName.equals(states[j])) {
                 sourceName = newStateName;
             }
-            
-            
-            if(targetName.equals(states[i]) || targetName.equals(states[j])) {
+
+            if (targetName.equals(states[i]) || targetName.equals(states[j])) {
                 targetName = newStateName;
             }
-            
-            final Transition newTransition = new Transition(sourceName, targetName, currentTransition.getCharacterToRead());
+
+            final Transition newTransition = new Transition(sourceName, targetName,
+                    currentTransition.getCharacterToRead());
             minimalDea.addTransition(newTransition);
         }
     }
@@ -254,9 +233,11 @@ public final class Minimize extends RestfulWebService {
     private Set<Transition> getInfluencedTransitions(int firstState, int secondState) {
         final Set<Transition> transitionsToFirstState = dea.getTransitionsTo(states[firstState]);
         final Set<Transition> transitionsToSecondState = dea.getTransitionsTo(states[secondState]);
-        
-        final Set<Transition> transitionsFromFirstState = dea.getTransitionsFrom(states[firstState]);
-        final Set<Transition> transitionsFromSecondState = dea.getTransitionsFrom(states[secondState]);
+
+        final Set<Transition> transitionsFromFirstState = dea
+                .getTransitionsFrom(states[firstState]);
+        final Set<Transition> transitionsFromSecondState = dea
+                .getTransitionsFrom(states[secondState]);
 
         final Set<Transition> influencedTransitions = new HashSet<>();
         influencedTransitions.addAll(transitionsToFirstState);
@@ -300,8 +281,6 @@ public final class Minimize extends RestfulWebService {
     }
 
     private void tryToGetRequiredServices() {
-        xmlUtils = getService(XmlUtilService.class);
         automatonUtils = getService(AutomatonService.class);
-        xmlValidator = getService(XmlValidatorService.class);
     }
 }

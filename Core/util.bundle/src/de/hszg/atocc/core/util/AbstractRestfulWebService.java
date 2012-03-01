@@ -8,7 +8,7 @@ import org.restlet.data.Language;
 import org.restlet.data.Preference;
 import org.restlet.resource.ServerResource;
 
-public class RestfulWebService extends ServerResource {
+public abstract class AbstractRestfulWebService extends ServerResource {
 
     private ConcurrentMap<String, Object> attributes;
     private Locale locale = new Locale("en");
@@ -19,17 +19,7 @@ public class RestfulWebService extends ServerResource {
 
         attributes = getContext().getAttributes();
 
-        final List<Preference<Language>> acceptedLanguages = getRequest().getClientInfo()
-                .getAcceptedLanguages();
-
-        if (!acceptedLanguages.isEmpty()) {
-            final Preference<Language> languagePreference = acceptedLanguages.get(0);
-            final Language language = languagePreference.getMetadata();
-
-            if (!"*".equals(language.getName())) {
-                locale = new Locale(language.getName());
-            }
-        }
+        detectLocale();
     }
 
     @SuppressWarnings("unchecked")
@@ -43,6 +33,20 @@ public class RestfulWebService extends ServerResource {
 
     protected final Locale getLocale() {
         return locale;
+    }
+    
+    private void detectLocale() {
+        final List<Preference<Language>> acceptedLanguages = getRequest().getClientInfo()
+                .getAcceptedLanguages();
+
+        if (!acceptedLanguages.isEmpty()) {
+            final Preference<Language> languagePreference = acceptedLanguages.get(0);
+            final Language language = languagePreference.getMetadata();
+
+            if (!"*".equals(language.getName())) {
+                locale = new Locale(language.getName());
+            }
+        }
     }
 
 }

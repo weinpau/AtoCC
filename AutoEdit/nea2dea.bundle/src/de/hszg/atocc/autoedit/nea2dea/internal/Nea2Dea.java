@@ -1,7 +1,7 @@
 package de.hszg.atocc.autoedit.nea2dea.internal;
 
+import de.hszg.atocc.core.util.AbstractRestfulWebService;
 import de.hszg.atocc.core.util.AutomatonService;
-import de.hszg.atocc.core.util.RestfulWebService;
 import de.hszg.atocc.core.util.SerializationException;
 import de.hszg.atocc.core.util.WebUtilService;
 import de.hszg.atocc.core.util.XmlUtilService;
@@ -23,7 +23,7 @@ import java.util.Set;
 import org.restlet.resource.Post;
 import org.w3c.dom.Document;
 
-public final class Nea2Dea extends RestfulWebService {
+public final class Nea2Dea extends AbstractRestfulWebService {
 
     private static final String INVALID_INPUT = "Nea2Dea|INVALID_INPUT";
     private static final String TRANSFORM_FAILED = "Nea2Dea|TRANSFORM_FAILED";
