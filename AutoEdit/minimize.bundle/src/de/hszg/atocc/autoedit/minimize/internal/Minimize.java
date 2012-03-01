@@ -53,7 +53,14 @@ public final class Minimize extends AbstractXmlTransformationService {
         }
     }
 
-    public void minimize() throws InvalidStateException, InvalidTransitionException {
+    private void initialize() throws XmlValidationException, SerializationException {
+        validateInput("AUTOMATON");
+
+        dea = automatonUtils.automatonFrom(getInput());
+        checkAutomatonType();
+    }
+    
+    private void minimize() throws InvalidStateException, InvalidTransitionException {
         minimalDea = new Automaton(dea);
 
         step1();
@@ -62,13 +69,6 @@ public final class Minimize extends AbstractXmlTransformationService {
         step4();
 
         mergeStates();
-    }
-
-    private void initialize() throws XmlValidationException, SerializationException {
-        validateInput("AUTOMATON");
-
-        dea = automatonUtils.automatonFrom(getInput());
-        checkAutomatonType();
     }
 
     private void step1() {
