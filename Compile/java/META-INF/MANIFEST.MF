@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Compile - Java Support
+Bundle-SymbolicName: atocc.compile.java
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: atocc.compile;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

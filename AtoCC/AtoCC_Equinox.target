@@ -7,27 +7,28 @@
 <location path="${eclipse_home}" type="Directory"/>
 </locations>
 <includeBundles>
+<plugin id="org.eclipse.core.runtime.compatibility.registry"/>
+<plugin id="org.eclipse.equinox.app"/>
+<plugin id="org.apache.commons.codec" version="1.6.0"/>
+<plugin id="org.eclipse.core.runtime.compatibility.auth"/>
+<plugin id="org.eclipse.jdt.junit4.runtime" version="1.1.200.v20110928-1453"/>
+<plugin id="org.restlet"/>
+<plugin id="org.eclipse.equinox.preferences" version="3.4.2.v20120111-2020"/>
+<plugin id="org.eclipse.core.runtime"/>
+<plugin id="org.eclipse.core.contenttype"/>
+<plugin id="org.eclipse.equinox.ds"/>
 <plugin id="org.hamcrest.core"/>
-<plugin id="org.eclipse.jdt.junit4.runtime"/>
+<plugin id="org.junit" version="4.8.2.v4_8_2_v20110321-1705"/>
 <plugin id="org.eclipse.equinox.common"/>
 <plugin id="javax.servlet"/>
-<plugin id="org.eclipse.equinox.app"/>
-<plugin id="org.eclipse.core.contenttype"/>
-<plugin id="org.eclipse.equinox.registry"/>
-<plugin id="org.eclipse.core.jobs"/>
-<plugin id="org.eclipse.equinox.log"/>
-<plugin id="org.eclipse.osgi"/>
-<plugin id="org.eclipse.equinox.preferences"/>
-<plugin id="org.eclipse.core.runtime.compatibility.auth"/>
-<plugin id="org.restlet.ext.xml"/>
-<plugin id="org.junit" version="4.8.2.v4_8_2_v20110321-1705"/>
 <plugin id="org.eclipse.osgi.services"/>
-<plugin id="org.eclipse.core.runtime.compatibility.registry"/>
-<plugin id="org.eclipse.jdt.junit.runtime"/>
+<plugin id="org.eclipse.equinox.registry"/>
+<plugin id="org.eclipse.jdt.junit.runtime" version="3.4.300.v20110928-1453"/>
+<plugin id="org.eclipse.osgi" version="3.7.2.v20120110-1415"/>
+<plugin id="org.restlet.ext.xml"/>
+<plugin id="org.eclipse.core.jobs" version="3.5.101.v20120113-1953"/>
 <plugin id="org.eclipse.equinox.util"/>
-<plugin id="org.eclipse.core.runtime"/>
-<plugin id="org.eclipse.equinox.ds"/>
-<plugin id="org.restlet"/>
+<plugin id="org.eclipse.equinox.log"/>
 </includeBundles>
 <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 </target>
