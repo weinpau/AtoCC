@@ -9,5 +9,6 @@ Require-Bundle: atocc.core.util;bundle-version="1.0.0",
  atocc.core.pluginregistry;bundle-version="1.0.0",
  atocc.core.translation;bundle-version="1.0.0"
 Import-Package: org.restlet,
+ org.restlet.engine.util,
  org.restlet.resource
 Service-Component: OSGI-INF/component.xml

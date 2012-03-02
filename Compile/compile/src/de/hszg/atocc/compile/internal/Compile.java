@@ -1,11 +1,13 @@
 package de.hszg.atocc.compile.internal;
 
+import de.hszg.atocc.compile.CompilationException;
 import de.hszg.atocc.compile.LanguageNotSupportedException;
 import de.hszg.atocc.compile.internal.task.Executor;
 import de.hszg.atocc.compile.internal.task.TaskDefinition;
 import de.hszg.atocc.compile.internal.util.Base64Utils;
 import de.hszg.atocc.compile.internal.util.ExecutorFactory;
 import de.hszg.atocc.core.util.AbstractXmlTransformationService;
+import de.hszg.atocc.core.util.SerializationException;
 import de.hszg.atocc.core.util.XmlTransormationException;
 import de.hszg.atocc.core.util.XmlUtilService;
 
@@ -23,7 +25,7 @@ public class Compile extends AbstractXmlTransformationService {
     private XmlUtilService xmlUtils;
 
     private TaskDefinition task;
-    private byte[] base64EncodedData;
+    private String base64EncodedData;
 
     @Override
     protected void transform() throws XmlTransormationException {
@@ -38,20 +40,22 @@ public class Compile extends AbstractXmlTransformationService {
 
             prepareOutputDocument();
 
-//        } catch (XmlValidationException e) {
-//            throw new XmlTransormationException("Compile|INVALID_INPUT", e);
+        } catch (SerializationException e) {
+            throw new XmlTransormationException("Compile|INVALID_INPUT", e);
         } catch (IOException e) {
             throw new XmlTransormationException("Compile|EXECUTE_TASK_FAILED", e);
         } catch (LanguageNotSupportedException e) {
             throw new XmlTransormationException("Compile|UNSUPPORTED_LANGUAGE", e);
+        } catch (CompilationException e) {
+            throw new XmlTransormationException("Compile|COMPILATION_FAILED", e);
         }
     }
 
-    private void parseTaskDefinition() {
+    private void parseTaskDefinition() throws SerializationException {
         task = TaskDefinition.from(getInput());
     }
 
-    private void executeTask() throws IOException, LanguageNotSupportedException {
+    private void executeTask() throws IOException, LanguageNotSupportedException, CompilationException {
         File zipFile = File.createTempFile("atocc.compile_result", ".zip");
 
         try (ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(zipFile))) {
@@ -69,7 +73,7 @@ public class Compile extends AbstractXmlTransformationService {
         Document document = xmlUtils.createEmptyDocument();
 
         Element binaryElement = document.createElement("binary");
-        binaryElement.setTextContent(new String(base64EncodedData));
+        binaryElement.setTextContent(base64EncodedData);
         document.appendChild(binaryElement);
 
         setOutput(document);
