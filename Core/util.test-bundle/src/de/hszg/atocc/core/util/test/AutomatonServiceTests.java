@@ -217,10 +217,7 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
     public void testSerializationOnlyWithType() throws Exception {
         final Automaton sourceAutomaton = new Automaton(AutomatonType.NEA);
 
-        final Document document = getAutomatonService().automatonToXml(sourceAutomaton);
-        final Automaton destination = getAutomatonService().automatonFrom(document);
-
-        Assert.assertEquals(sourceAutomaton, destination);
+        assertSerializationYieldsSameAutomaton(sourceAutomaton);
     }
 
     @Test
@@ -229,6 +226,11 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
         sourceAutomaton.setInitialState(Q0);
         sourceAutomaton.addAlphabetItem(A);
 
+        assertSerializationYieldsSameAutomaton(sourceAutomaton);
+    }
+
+    private void assertSerializationYieldsSameAutomaton(final Automaton sourceAutomaton)
+            throws SerializationException {
         final Document document = getAutomatonService().automatonToXml(sourceAutomaton);
         final Automaton destination = getAutomatonService().automatonFrom(document);
 
@@ -241,10 +243,7 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
         sourceAutomaton.setInitialState(Q0);
         sourceAutomaton.addState(Q1);
 
-        final Document document = getAutomatonService().automatonToXml(sourceAutomaton);
-        final Automaton destination = getAutomatonService().automatonFrom(document);
-
-        Assert.assertEquals(sourceAutomaton, destination);
+        assertSerializationYieldsSameAutomaton(sourceAutomaton);
     }
 
     @Test
@@ -252,10 +251,7 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
         final Automaton sourceAutomaton = new Automaton(AutomatonType.NEA);
         sourceAutomaton.setInitialState(Q0);
 
-        final Document document = getAutomatonService().automatonToXml(sourceAutomaton);
-        final Automaton destination = getAutomatonService().automatonFrom(document);
-
-        Assert.assertEquals(sourceAutomaton, destination);
+        assertSerializationYieldsSameAutomaton(sourceAutomaton);
     }
 
     @Test
@@ -265,10 +261,7 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
         sourceAutomaton.addState(Q1);
         sourceAutomaton.addFinalState(Q1);
 
-        final Document document = getAutomatonService().automatonToXml(sourceAutomaton);
-        final Automaton destination = getAutomatonService().automatonFrom(document);
-
-        Assert.assertEquals(sourceAutomaton, destination);
+        assertSerializationYieldsSameAutomaton(sourceAutomaton);
     }
 
     @Test
@@ -280,10 +273,7 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
         sourceAutomaton.addFinalState(Q1);
         sourceAutomaton.addTransition(new Transition(Q0, Q1, A));
 
-        final Document document = getAutomatonService().automatonToXml(sourceAutomaton);
-        final Automaton destination = getAutomatonService().automatonFrom(document);
-
-        Assert.assertEquals(sourceAutomaton, destination);
+        assertSerializationYieldsSameAutomaton(sourceAutomaton);
     }
 
     @Test(expected = SerializationException.class)

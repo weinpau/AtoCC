@@ -2,6 +2,7 @@ package de.hszg.atocc.core.util.internal;
 
 import de.hszg.atocc.core.util.InvalidSchemaNameException;
 import de.hszg.atocc.core.util.SchemaAlreadyRegisteredException;
+import de.hszg.atocc.core.util.SchemaNotRegisteredException;
 import de.hszg.atocc.core.util.SchemaRegistrationException;
 import de.hszg.atocc.core.util.XmlValidationException;
 import de.hszg.atocc.core.util.XmlValidatorService;
@@ -50,7 +51,11 @@ public final class XmlValidatorServiceImpl implements XmlValidatorService {
     }
 
     @Override
-    public void unregisterSchema(String name) {
+    public void unregisterSchema(String name) throws SchemaNotRegisteredException {
+        if (!isSchemaRegistered(name)) {
+            throw new SchemaNotRegisteredException(name);
+        }
+
         schemas.remove(name);
     }
 

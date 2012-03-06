@@ -11,6 +11,10 @@ import org.junit.Test;
 public final class XmlValidatorServiceTests extends AbstractTestHelper {
 
     private static final String AUTOMATON = "AUTOMATON";
+    private static final String AUTOMATON2 = "AUTOMATON2";
+    private static final String AUTOMATON3 = "AUTOMATON3";
+    private static final String AUTOMATON4 = "AUTOMATON4";
+    private static final String AUTOMATON5 = "AUTOMATON5";
 
     @Test(expected = SchemaRegistrationException.class)
     public void registerSchemaShouldFailIfNameAlreadyExists() throws SchemaRegistrationException {
@@ -19,18 +23,23 @@ public final class XmlValidatorServiceTests extends AbstractTestHelper {
     }
 
     @Test(expected = SchemaRegistrationException.class)
-    public void registerSchemaShouldFailIfSchemaAlreadyExists() {
-        Assert.fail("Not yet implemented");
+    public void registerSchemaShouldFailIfSchemaAlreadyExists() throws SchemaRegistrationException {
+        Assert.assertFalse(getValidatorService().isSchemaRegistered(AUTOMATON2));
+        getValidatorService().registerSchema(null, AUTOMATON2);
+        getValidatorService().registerSchema(null, AUTOMATON3);
     }
 
     @Test
-    public void testRegisterSchema() {
-        Assert.fail("Not yet implemented");
+    public void testRegisterSchema() throws SchemaRegistrationException {
+        Assert.assertFalse(getValidatorService().isSchemaRegistered(AUTOMATON5));
+        getValidatorService().registerSchema(null, AUTOMATON5);
+        Assert.assertTrue(getValidatorService().isSchemaRegistered(AUTOMATON5));
     }
 
     @Test(expected = SchemaNotRegisteredException.class)
-    public void unregisterSchemaShouldFailIfNameDoesNotExists() {
-        Assert.fail("Not yet implemented");
+    public void unregisterSchemaShouldFailIfNameDoesNotExist() throws SchemaNotRegisteredException {
+        Assert.assertFalse(getValidatorService().isSchemaRegistered(AUTOMATON4));
+        getValidatorService().unregisterSchema(AUTOMATON4);
     }
 
     @Test(expected = SchemaNotRegisteredException.class)
