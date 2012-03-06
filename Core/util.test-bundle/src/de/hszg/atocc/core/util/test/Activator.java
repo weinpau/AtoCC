@@ -6,6 +6,7 @@ import de.hszg.atocc.core.util.SetService;
 import de.hszg.atocc.core.util.WebUtilService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlValidatorService;
+import de.hszg.atocc.core.util.test.services.GetTestService;
 import de.hszg.atocc.core.util.test.services.PostTestService;
 
 import org.osgi.framework.BundleActivator;
@@ -40,6 +41,7 @@ public final class Activator implements BundleActivator {
     @Override
     public void stop(BundleContext context) throws Exception {
         pluginRegistryService.unregister(PostTestService.class);
+        pluginRegistryService.unregister(GetTestService.class);
     }
 
     private void getServiceReferences(BundleContext context) {
@@ -70,7 +72,7 @@ public final class Activator implements BundleActivator {
     
     private void startTestServices() {
        pluginRegistryService.register("/utiltest/post", PostTestService.class);
-        
+       pluginRegistryService.register("/utiltest/get", GetTestService.class);
     }
 
 }

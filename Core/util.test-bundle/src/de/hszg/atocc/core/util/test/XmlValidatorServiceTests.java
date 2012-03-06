@@ -4,7 +4,9 @@ import de.hszg.atocc.core.util.SchemaNotRegisteredException;
 import de.hszg.atocc.core.util.SchemaRegistrationException;
 import de.hszg.atocc.core.util.XmlValidationException;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 
 import org.junit.Test;
 
@@ -12,9 +14,20 @@ public final class XmlValidatorServiceTests extends AbstractTestHelper {
 
     private static final String AUTOMATON = "AUTOMATON";
     private static final String AUTOMATON2 = "AUTOMATON2";
-    private static final String AUTOMATON3 = "AUTOMATON3";
-    private static final String AUTOMATON4 = "AUTOMATON4";
-    private static final String AUTOMATON5 = "AUTOMATON5";
+    
+    @Before
+    public void setUp() {
+        
+    }
+    
+    @After
+    public void tearDown() {
+        try {
+            getValidatorService().unregisterSchema(AUTOMATON);
+        } catch (SchemaNotRegisteredException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test(expected = SchemaRegistrationException.class)
     public void registerSchemaShouldFailIfNameAlreadyExists() throws SchemaRegistrationException {
@@ -24,22 +37,23 @@ public final class XmlValidatorServiceTests extends AbstractTestHelper {
 
     @Test(expected = SchemaRegistrationException.class)
     public void registerSchemaShouldFailIfSchemaAlreadyExists() throws SchemaRegistrationException {
-        Assert.assertFalse(getValidatorService().isSchemaRegistered(AUTOMATON2));
+        Assert.assertFalse(getValidatorService().isSchemaRegistered(AUTOMATON));
+        getValidatorService().registerSchema(null, AUTOMATON);
+        Assert.assertTrue(getValidatorService().isSchemaRegistered(AUTOMATON));
         getValidatorService().registerSchema(null, AUTOMATON2);
-        getValidatorService().registerSchema(null, AUTOMATON3);
     }
 
     @Test
     public void testRegisterSchema() throws SchemaRegistrationException {
-        Assert.assertFalse(getValidatorService().isSchemaRegistered(AUTOMATON5));
-        getValidatorService().registerSchema(null, AUTOMATON5);
-        Assert.assertTrue(getValidatorService().isSchemaRegistered(AUTOMATON5));
+        Assert.assertFalse(getValidatorService().isSchemaRegistered(AUTOMATON));
+        getValidatorService().registerSchema(null, AUTOMATON);
+        Assert.assertTrue(getValidatorService().isSchemaRegistered(AUTOMATON));
     }
 
     @Test(expected = SchemaNotRegisteredException.class)
     public void unregisterSchemaShouldFailIfNameDoesNotExist() throws SchemaNotRegisteredException {
-        Assert.assertFalse(getValidatorService().isSchemaRegistered(AUTOMATON4));
-        getValidatorService().unregisterSchema(AUTOMATON4);
+        Assert.assertFalse(getValidatorService().isSchemaRegistered(AUTOMATON));
+        getValidatorService().unregisterSchema(AUTOMATON);
     }
 
     @Test(expected = SchemaNotRegisteredException.class)

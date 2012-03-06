@@ -10,23 +10,25 @@ import org.w3c.dom.NodeList;
 
 public final class WebUtilServiceTests extends AbstractTestHelper {
 
-    private static final String LISTSERVICE_URL = "http://localhost:8081/services/list";
+    private static final int THREE = 3;
+    private static final String TEST_GET_SERVICE_URL = "http://localhost:8081/utiltest/get";
     private static final String TEST_POST_SERVICE_URL = "http://localhost:8081/utiltest/post";
 
     @Test
     public void testGetShouldReturnSuccess() {
-        final Document resultDocument = getWebUtils().get(LISTSERVICE_URL);
+        final Document resultDocument = getWebUtils().get(TEST_GET_SERVICE_URL);
         Assert.assertEquals(WebServiceResultStatus.SUCCESS,
                 getXmlService().getResultStatus(resultDocument));
     }
 
     @Test
     public void testGetShouldReturnXmlContent() {
-        final Document resultDocument = getWebUtils().get(LISTSERVICE_URL);
+        final Document resultDocument = getWebUtils().get(TEST_GET_SERVICE_URL);
+        final Element rootElement = resultDocument.getDocumentElement();
 
-        final NodeList serviceElements = resultDocument.getElementsByTagName("service");
+        final NodeList serviceElements = rootElement.getElementsByTagName("testElement");
 
-        Assert.assertTrue(serviceElements.getLength() > 0);
+        Assert.assertEquals(THREE, serviceElements.getLength());
     }
 
     @Test
