@@ -2,6 +2,7 @@ package de.hszg.atocc.core.util.test;
 
 import de.hszg.atocc.core.util.AutomatonService;
 import de.hszg.atocc.core.util.SetService;
+import de.hszg.atocc.core.util.WebUtilService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlValidatorService;
 
@@ -11,6 +12,7 @@ public abstract class AbstractTestHelper {
     private static AutomatonService automatonService;
     private static SetService setService;
     private static XmlValidatorService validator;
+    private static WebUtilService webUtils;
 
     public static void setXmlService(XmlUtilService service) {
         xmlService = service;
@@ -28,6 +30,10 @@ public abstract class AbstractTestHelper {
         validator = service;
     }
 
+    public static void setWebUtils(WebUtilService service) {
+        webUtils = service;
+    }
+
     public static XmlUtilService getXmlService() {
         return xmlService;
     }
@@ -43,4 +49,9 @@ public abstract class AbstractTestHelper {
     public static XmlValidatorService getValidatorService() {
         return validator;
     }
+
+    public static WebUtilService getWebUtils() {
+        return webUtils;
+    }
+
 }

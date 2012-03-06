@@ -2,6 +2,7 @@ package de.hszg.atocc.core.util.test;
 
 import de.hszg.atocc.core.util.AutomatonService;
 import de.hszg.atocc.core.util.SetService;
+import de.hszg.atocc.core.util.WebUtilService;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlValidatorService;
 
@@ -15,11 +16,14 @@ public final class Activator implements BundleActivator {
     private ServiceReference<XmlUtilService> xmlServiceReference;
     private ServiceReference<SetService> setServiceReference;
     private ServiceReference<XmlValidatorService> validatorServiceReference;
-
+    private ServiceReference<WebUtilService> webUtilServiceReference;
+    
     private AutomatonService automatonService;
     private XmlUtilService xmlService;
     private SetService setService;
     private XmlValidatorService validatorService;
+    private WebUtilService webUtilService;
+    
 
     @Override
     public void start(BundleContext context) throws Exception {
@@ -37,6 +41,7 @@ public final class Activator implements BundleActivator {
         xmlServiceReference = context.getServiceReference(XmlUtilService.class);
         setServiceReference = context.getServiceReference(SetService.class);
         validatorServiceReference = context.getServiceReference(XmlValidatorService.class);
+        webUtilServiceReference = context.getServiceReference(WebUtilService.class);
     }
 
     private void getServices(BundleContext context) {
@@ -44,6 +49,7 @@ public final class Activator implements BundleActivator {
         xmlService = context.getService(xmlServiceReference);
         setService = context.getService(setServiceReference);
         validatorService = context.getService(validatorServiceReference);
+        webUtilService = context.getService(webUtilServiceReference);
     }
 
     private void passServicesToTests() {
@@ -51,6 +57,7 @@ public final class Activator implements BundleActivator {
         AbstractTestHelper.setXmlService(xmlService);
         AbstractTestHelper.setSetService(setService);
         AbstractTestHelper.setXmlValidatorService(validatorService);
+        AbstractTestHelper.setWebUtils(webUtilService);
     }
 
 }

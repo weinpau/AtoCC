@@ -1,6 +1,6 @@
 package de.hszg.atocc.autoedit.neaepsilon2nea.internal;
 
-import de.hszg.atocc.core.util.XmlUtilService;
+import de.hszg.atocc.core.util.WebServiceResultStatus;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.Transition;
 import de.hszg.atocc.core.util.test.AbstractServiceTest;
@@ -38,7 +38,7 @@ public final class NeaEpsilon2NeaTests extends AbstractServiceTest {
         neaDocument1 = getWebUtilService().post("http://localhost:8081/autoedit/neaepsilon2nea",
                 neaEpsilonDocument1);
 
-        if (XmlUtilService.ERROR.equals(getXmlUtilService().getResultStatus(neaDocument1))) {
+        if (WebServiceResultStatus.ERROR == getXmlUtilService().getResultStatus(neaDocument1)) {
             throw new Exception(getXmlUtilService().getErrorMessage(neaDocument1) + "\n"
                     + getXmlUtilService().getErrorCause(neaDocument1));
         }
@@ -60,9 +60,9 @@ public final class NeaEpsilon2NeaTests extends AbstractServiceTest {
         final Document resultDocument = getWebUtilService().post(
                 "http://localhost:8081/autoedit/neaepsilon2nea", invalid);
 
-        final String result = getXmlUtilService().getResultStatus(resultDocument);
+        final WebServiceResultStatus result = getXmlUtilService().getResultStatus(resultDocument);
 
-        Assert.assertEquals("error", result);
+        Assert.assertEquals(WebServiceResultStatus.ERROR, result);
     }
 
     @Test
@@ -70,9 +70,9 @@ public final class NeaEpsilon2NeaTests extends AbstractServiceTest {
         final Document resultDocument = getWebUtilService().post(
                 "http://localhost:8081/autoedit/neaepsilon2nea", invalidTypeDocument);
 
-        final String result = getXmlUtilService().getResultStatus(resultDocument);
+        final WebServiceResultStatus result = getXmlUtilService().getResultStatus(resultDocument);
 
-        Assert.assertEquals("error", result);
+        Assert.assertEquals(WebServiceResultStatus.ERROR, result);
     }
 
     @Test

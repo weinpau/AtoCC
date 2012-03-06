@@ -213,10 +213,9 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
         getAutomatonService().automatonToXml(sourceAutomaton);
     }
 
-    @Test
+    @Test(expected = SerializationException.class)
     public void testSerializationOnlyWithType() throws Exception {
         final Automaton sourceAutomaton = new Automaton(AutomatonType.NEA);
-        sourceAutomaton.setInitialState(Q0);
 
         final Document document = getAutomatonService().automatonToXml(sourceAutomaton);
         final Automaton destination = getAutomatonService().automatonFrom(document);

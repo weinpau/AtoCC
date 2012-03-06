@@ -1,6 +1,7 @@
 package de.hszg.atocc.core.util.internal;
 
 import de.hszg.atocc.core.translation.TranslationService;
+import de.hszg.atocc.core.util.WebServiceResultStatus;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlUtilsException;
 
@@ -45,7 +46,8 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
     public Document createResult(Document doc) {
 
         final Document resultDocument = createEmptyDocument();
-        final Element resultElement = createResultElement(resultDocument, SUCCESS);
+        final Element resultElement = createResultElement(resultDocument,
+                WebServiceResultStatus.SUCCESS);
 
         final Node domRootNode = doc.getDocumentElement();
 
@@ -65,9 +67,12 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
 
         final Document resultDocument = createEmptyDocument();
 
-        final Element resultElement = createResultElement(resultDocument, ERROR);
+        final Element resultElement = createResultElement(resultDocument,
+                WebServiceResultStatus.ERROR);
 
-        final Element errorElement = resultDocument.createElement(ERROR);
+        final Element errorElement = resultDocument.createElement(WebServiceResultStatus.ERROR
+                .name());
+        
         resultElement.appendChild(errorElement);
 
         final Element errorCodeElement = createErrorCodeElement(resultDocument, errorCode);
@@ -83,8 +88,9 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
     }
 
     @Override
-    public String getResultStatus(Document resultDocument) {
-        return resultDocument.getDocumentElement().getAttribute(STATUS);
+    public WebServiceResultStatus getResultStatus(Document resultDocument) {
+        return WebServiceResultStatus.valueOf(resultDocument.getDocumentElement().getAttribute(
+                STATUS));
     }
 
     @Override
@@ -163,9 +169,9 @@ public final class XmlUtilServiceImpl implements XmlUtilService {
         }
     }
 
-    private Element createResultElement(Document doc, String status) {
+    private Element createResultElement(Document doc, WebServiceResultStatus status) {
         final Element resultElement = doc.createElement("result");
-        resultElement.setAttribute(STATUS, status);
+        resultElement.setAttribute(STATUS, status.name());
         doc.appendChild(resultElement);
 
         return resultElement;

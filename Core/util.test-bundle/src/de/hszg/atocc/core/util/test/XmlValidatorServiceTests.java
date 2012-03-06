@@ -14,7 +14,7 @@ public final class XmlValidatorServiceTests extends AbstractTestHelper {
 
     @Test(expected = SchemaRegistrationException.class)
     public void registerSchemaShouldFailIfNameAlreadyExists() throws SchemaRegistrationException {
-        Assert.assertFalse(getValidatorService().isSchemaRegistered(AUTOMATON));
+        Assert.assertTrue(getValidatorService().isSchemaRegistered(AUTOMATON));
         getValidatorService().registerSchema(null, AUTOMATON);
     }
 
