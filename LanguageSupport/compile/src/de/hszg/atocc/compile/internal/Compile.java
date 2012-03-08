@@ -32,7 +32,7 @@ public class Compile extends AbstractXmlTransformationService {
         tryToGetRequiredServices();
 
         try {
-//            validateInput("COMPILE_TASK");
+            // validateInput("COMPILE_TASK");
 
             parseTaskDefinition();
 
@@ -55,8 +55,9 @@ public class Compile extends AbstractXmlTransformationService {
         task = TaskDefinition.from(getInput());
     }
 
-    private void executeTask() throws IOException, LanguageNotSupportedException, CompilationException {
-        File zipFile = File.createTempFile("atocc.compile_result", ".zip");
+    private void executeTask() throws IOException, LanguageNotSupportedException,
+            CompilationException {
+        final File zipFile = File.createTempFile("atocc.compile_result", ".zip");
 
         try (ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(zipFile))) {
             final Executor executor = ExecutorFactory.createExecutorFor(task.getLanguage());
@@ -65,8 +66,10 @@ public class Compile extends AbstractXmlTransformationService {
         } catch (FileNotFoundException e) {
             throw new RuntimeException("FATAL ERROR: Could not find temp file");
         }
-        
+
         base64EncodedData = Base64Utils.encode(zipFile);
+        
+        zipFile.delete();
     }
 
     private void prepareOutputDocument() {
