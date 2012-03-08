@@ -4,6 +4,10 @@ import de.hszg.atocc.core.util.SchemaNotRegisteredException;
 import de.hszg.atocc.core.util.SchemaRegistrationException;
 import de.hszg.atocc.core.util.XmlValidationException;
 
+import javax.xml.validation.Schema;
+import javax.xml.validation.Validator;
+import javax.xml.validation.ValidatorHandler;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,7 +21,11 @@ public final class XmlValidatorServiceTests extends AbstractTestHelper {
     
     @Before
     public void setUp() {
-        
+        try {
+            getValidatorService().unregisterSchema(AUTOMATON);
+        } catch (SchemaNotRegisteredException e) {
+            e.printStackTrace();
+        }
     }
     
     @After
@@ -31,8 +39,23 @@ public final class XmlValidatorServiceTests extends AbstractTestHelper {
 
     @Test(expected = SchemaRegistrationException.class)
     public void registerSchemaShouldFailIfNameAlreadyExists() throws SchemaRegistrationException {
-        Assert.assertTrue(getValidatorService().isSchemaRegistered(AUTOMATON));
+        Assert.assertFalse(getValidatorService().isSchemaRegistered(AUTOMATON));
         getValidatorService().registerSchema(null, AUTOMATON);
+        Assert.assertTrue(getValidatorService().isSchemaRegistered(AUTOMATON));
+        getValidatorService().registerSchema(new Schema() {
+            
+            @Override
+            public ValidatorHandler newValidatorHandler() {
+                // TODO Auto-generated method stub
+                return null;
+            }
+            
+            @Override
+            public Validator newValidator() {
+                // TODO Auto-generated method stub
+                return null;
+            }
+        }, AUTOMATON);
     }
 
     @Test(expected = SchemaRegistrationException.class)
