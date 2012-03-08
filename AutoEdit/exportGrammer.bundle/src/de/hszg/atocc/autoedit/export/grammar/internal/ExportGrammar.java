@@ -1,20 +1,14 @@
 package de.hszg.atocc.autoedit.export.grammar.internal;
 
+import de.hszg.atocc.autoedit.export.grammar.internal.exporters.Exporter;
+import de.hszg.atocc.autoedit.export.grammar.internal.exporters.ExporterFactory;
 import de.hszg.atocc.core.util.AbstractXmlTransformationService;
 import de.hszg.atocc.core.util.AutomatonService;
-import de.hszg.atocc.core.util.CollectionHelper;
 import de.hszg.atocc.core.util.SerializationException;
 import de.hszg.atocc.core.util.XmlTransormationException;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.XmlValidationException;
 import de.hszg.atocc.core.util.automaton.Automaton;
-import de.hszg.atocc.core.util.automaton.AutomatonType;
-import de.hszg.atocc.core.util.automaton.Transition;
-
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -25,7 +19,8 @@ public class ExportGrammar extends AbstractXmlTransformationService {
     private XmlUtilService xmlUtils;
 
     private Automaton automaton;
-    private StringBuilder grammar = new StringBuilder();
+    private Exporter exporter;
+    private Grammar grammar;
 
     @Override
     protected void transform() throws XmlTransormationException {
@@ -35,7 +30,7 @@ public class ExportGrammar extends AbstractXmlTransformationService {
             validateInput("AUTOMATON");
             
             automaton = automatonUtils.automatonFrom(getInput());
-            checkAutomatonType();
+            createExporter();
 
             automatonToGrammar();
 
@@ -51,36 +46,12 @@ public class ExportGrammar extends AbstractXmlTransformationService {
         xmlUtils = getService(XmlUtilService.class);
     }
     
-    private void checkAutomatonType() {
-        if(automaton.getType() != AutomatonType.DEA && automaton.getType() != AutomatonType.NEA) {
-            throw new RuntimeException("INVALID_AUTOMATON_TYPE");
-        }
+    private void createExporter() {
+        exporter = ExporterFactory.create(automaton.getType());
     }
 
     private void automatonToGrammar() {
-        for (String state : automaton.getStates()) {
-            final Set<Transition> transitions = automaton.getTransitionsFrom(state);
-
-            final List<String> righthandSides = new LinkedList<>();
-
-            for (Transition transition : transitions) {
-                String target = transition.getTarget();
-
-                righthandSides.add(transition.getCharacterToRead() + " " + target);
-
-                if (automaton.isFinalState(target)) {
-                    righthandSides.add(transition.getCharacterToRead());
-                }
-            }
-            
-            Collections.sort(righthandSides);
-            
-            grammar.append(String.format("%s -> %s\n", state, CollectionHelper.makeString(righthandSides, " | ")));
-        }
-        
-        if (automaton.isFinalState(automaton.getInitialState())) {
-            grammar.append(String.format("%s -> EPSILON", automaton.getInitialState()));
-        }
+        grammar = exporter.export(automaton);
     }
 
     private void createGrammarDocument() {
@@ -89,8 +60,6 @@ public class ExportGrammar extends AbstractXmlTransformationService {
         Element grammarElement = document.createElement("grammar");
         grammarElement.setTextContent(grammar.toString());
         document.appendChild(grammarElement);
-        
-        System.out.println(grammar.toString());
 
         setOutput(document);
     }
