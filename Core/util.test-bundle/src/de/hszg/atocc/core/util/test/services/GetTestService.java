@@ -7,30 +7,31 @@ import org.restlet.resource.Get;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class GetTestService extends AbstractRestfulWebService {
+public final class GetTestService extends AbstractRestfulWebService {
 
     private static final String TEST_ROOT = "testRoot";
     private static final String TEST_ELEMENT = "testElement";
     
+    private Document document;
+    
     @Get
-    public final Document represent() {
+    public Document represent() {
         final XmlUtilService xmlUtils = getService(XmlUtilService.class);
 
-        final Document document = xmlUtils.createEmptyDocument();
+        document = xmlUtils.createEmptyDocument();
 
         final Element root = document.createElement(TEST_ROOT);
         document.appendChild(root);
-
-        Element element = document.createElement(TEST_ELEMENT);
-        root.appendChild(element);
-
-        element = document.createElement(TEST_ELEMENT);
-        root.appendChild(element);
-
-        element = document.createElement(TEST_ELEMENT);
-        root.appendChild(element);
+        
+        appendTestElementTo(root);
+        appendTestElementTo(root);
+        appendTestElementTo(root);
 
         return xmlUtils.createResult(document);
     }
 
+    private void appendTestElementTo(Element root) {
+        final Element element = document.createElement(TEST_ELEMENT);
+        root.appendChild(element);
+    }
 }
