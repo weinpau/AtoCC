@@ -146,10 +146,6 @@ public final class AutomatonDeserializer {
             throws XPathExpressionException {
         final Set<Transition> transitions = new HashSet<>();
 
-        final Set<String> alphabet = new HashSet<>();
-        alphabet.addAll(automaton.getAlphabet());
-        alphabet.add(EPSILON);
-
         final XPath xpath = XPathFactory.newInstance().newXPath();
         final NodeList transitionNodes = (NodeList) xpath.evaluate(
                 String.format("//STATE[@name='%s']/TRANSITION", state), document,

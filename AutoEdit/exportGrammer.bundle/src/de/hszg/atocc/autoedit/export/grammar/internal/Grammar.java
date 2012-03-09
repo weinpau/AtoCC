@@ -12,6 +12,10 @@ public final class Grammar {
         grammar.append(String.format("%s -> %s\n", lhs, CollectionHelper.makeString(rhs, " | ")));
     }
     
+    public void appendRule(String lhs, String rhs) {
+        grammar.append(String.format("%s -> %s\n", lhs, rhs));
+    }
+    
     public void appendEpsilonRule(String lhs) {
         grammar.append(String.format("%s -> EPSILON", lhs));
     }
