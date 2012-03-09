@@ -22,6 +22,10 @@ import org.w3c.dom.NodeList;
 
 public final class AutomatonDeserializer {
 
+    private static final String VALUE = "value";
+
+    private static final String ITEM = "ITEM";
+
     private static final String EPSILON = "EPSILON";
 
     private static final String NAME = "name";
@@ -31,7 +35,7 @@ public final class AutomatonDeserializer {
 
     public Automaton deserialize(Document aDocument) throws SerializationException {
         assert aDocument != null;
-        
+
         document = aDocument;
 
         try {
@@ -42,6 +46,7 @@ public final class AutomatonDeserializer {
             setTransitions();
             setFinalStates();
             setInitialState();
+            setInitialStackSymbol();
         } catch (final InvalidTransitionException | IllegalArgumentException
                 | XPathExpressionException | InvalidStateException
                 | InvalidAlphabetCharacterException e) {
@@ -64,18 +69,26 @@ public final class AutomatonDeserializer {
         final Element alphabetElement = (Element) document.getDocumentElement()
                 .getElementsByTagName("ALPHABET").item(0);
 
-        final NodeList itemElements = alphabetElement.getElementsByTagName("ITEM");
+        final NodeList itemElements = alphabetElement.getElementsByTagName(ITEM);
 
         for (int i = 0; i < itemElements.getLength(); ++i) {
             final Element itemElement = (Element) itemElements.item(i);
-            automaton.addAlphabetItem(itemElement.getAttribute("value"));
+            automaton.addAlphabetItem(itemElement.getAttribute(VALUE));
         }
     }
-    
-    private void setStackAlphabet() {
-//        if (automaton.getType() == AutomatonType.NKA) {
-//            
-//        }
+
+    private void setStackAlphabet() throws InvalidAlphabetCharacterException {
+        if (automaton.getType() == AutomatonType.NKA) {
+            final Element alphabetElement = (Element) document.getDocumentElement()
+                    .getElementsByTagName("STACKALPHABET").item(0);
+
+            final NodeList itemElements = alphabetElement.getElementsByTagName(ITEM);
+
+            for (int i = 0; i < itemElements.getLength(); ++i) {
+                final Element itemElement = (Element) itemElements.item(i);
+                automaton.addStackAlphabetItem(itemElement.getAttribute(VALUE));
+            }
+        }
     }
 
     private void setStates() throws InvalidStateException {
@@ -117,6 +130,18 @@ public final class AutomatonDeserializer {
         automaton.setInitialState(state);
     }
 
+    private void setInitialStackSymbol() throws XPathExpressionException,
+            InvalidAlphabetCharacterException {
+        if (automaton.getType() == AutomatonType.NKA) {
+            final XPath xpath = XPathFactory.newInstance().newXPath();
+
+            final String state = (String) xpath.evaluate("//STACKINITIALCHAR/@value", document,
+                    XPathConstants.STRING);
+
+            automaton.setInitialStackSymbol(state);
+        }
+    }
+
     private Set<Transition> getTransitionsFromDocumentFor(String state)
             throws XPathExpressionException {
         final Set<Transition> transitions = new HashSet<>();
@@ -125,32 +150,35 @@ public final class AutomatonDeserializer {
         alphabet.addAll(automaton.getAlphabet());
         alphabet.add(EPSILON);
 
-        for (String alphabetCharacter : alphabet) {
-            final Set<String> targets = getTargetsOf(state, alphabetCharacter);
+        final XPath xpath = XPathFactory.newInstance().newXPath();
+        final NodeList transitionNodes = (NodeList) xpath.evaluate(
+                String.format("//STATE[@name='%s']/TRANSITION", state), document,
+                XPathConstants.NODESET);
 
-            for (String target : targets) {
-                transitions.add(new Transition(state, target, alphabetCharacter));
+        for (int i = 0; i < transitionNodes.getLength(); ++i) {
+            final Element transition = (Element) transitionNodes.item(i);
+
+            final String target = transition.getAttribute("target");
+
+            final NodeList labelNodes = transition.getElementsByTagName("LABEL");
+
+            for (int j = 0; j < labelNodes.getLength(); ++j) {
+                final Element label = (Element) labelNodes.item(j);
+
+                final String read = label.getAttribute("read");
+
+                if (automaton.getType() == AutomatonType.NKA) {
+                    final String topOfStack = label.getAttribute("topofstack");
+                    final String write = label.getAttribute("write");
+
+                    transitions.add(new Transition(state, target, read, topOfStack, write));
+                } else {
+                    transitions.add(new Transition(state, target, read));
+                }
             }
         }
 
         return transitions;
-    }
-
-    private Set<String> getTargetsOf(String stateName, String alphabetCharacter)
-            throws XPathExpressionException {
-        final XPath xpath = XPathFactory.newInstance().newXPath();
-
-        final Set<String> targets = new HashSet<>();
-
-        final NodeList targetNodes = (NodeList) xpath.evaluate(String.format(
-                "//STATE[@name='%s']/TRANSITION/LABEL[@read='%s']/../@target", stateName,
-                alphabetCharacter), document, XPathConstants.NODESET);
-
-        for (int i = 0; i < targetNodes.getLength(); ++i) {
-            targets.add(targetNodes.item(i).getTextContent());
-        }
-
-        return targets;
     }
 
     private Set<String> getStateNamesFrom(NodeList states) {

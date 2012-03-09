@@ -14,6 +14,9 @@ public final class ExporterFactory {
         case NEA:
             return new FiniteAutomatonToRegularGrammar();
 
+        case NKA:
+            return new PushDownAutomatonToContextFreeGrammar();
+
         default:
             throw new RuntimeException("INVALID_AUTOMATON_TYPE");
         }

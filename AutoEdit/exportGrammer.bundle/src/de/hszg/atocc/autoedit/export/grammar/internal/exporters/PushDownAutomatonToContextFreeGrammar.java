@@ -27,10 +27,8 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
         List<String> rhs = new ArrayList<>(states.size());
 
         for (String state : states) {
-            rhs.add(String.format("[%s,%s,%s]", 
-                    automaton.getInitialState(),
-                    "", //automaton.getInitialStackSymbol(),
-                    state));
+            rhs.add(String.format("[%s,%s,%s]", automaton.getInitialState(),
+                    automaton.getInitialStackSymbol(), state));
         }
 
         grammar.appendRule("s", rhs);

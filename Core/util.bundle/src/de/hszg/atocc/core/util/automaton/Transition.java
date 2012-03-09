@@ -39,10 +39,18 @@ public final class Transition {
     }
 
     public String getTopOfStack() {
+        if (topOfStack == null) {
+            throw new UnsupportedOperationException();
+        }
+
         return topOfStack;
     }
 
     public String getCharacterToWrite() {
+        if (characterToWrite == null) {
+            throw new UnsupportedOperationException();
+        }
+
         return characterToWrite;
     }
 
@@ -63,7 +71,7 @@ public final class Transition {
         result = prime * result + characterToRead.hashCode();
         result = prime * result + source.hashCode();
         result = prime * result + target.hashCode();
-        
+
         if (topOfStack != null) {
             result = prime * result + topOfStack.hashCode();
             result = prime * result + characterToWrite.hashCode();
