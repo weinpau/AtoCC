@@ -58,6 +58,9 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
 
         Assert.assertEquals(TestAutomatons.NUMBER_OF_STATES_IN_NEA3, automatons.getNea3()
                 .getStates().size());
+
+        Assert.assertEquals(TestAutomatons.NUMBER_OF_STATES_IN_PDA, automatons.getPda().getStates()
+                .size());
     }
 
     @Test
@@ -80,6 +83,13 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
 
         Assert.assertEquals(automatons.getStateNamesOfNea3(), actualNames);
     }
+    
+    @Test
+    public void testGetStateNamesFromPdaDocument() {
+        final Set<String> actualnames = automatons.getPda().getStates();
+        
+        Assert.assertEquals(automatons.getStateNamesOfPda(), actualnames);
+    }
 
     @Test
     public void testGetNamesOfFinalStatesFrom1() {
@@ -100,6 +110,13 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
         final Set<String> actualFinalStates = automatons.getNea3().getFinalStates();
 
         Assert.assertEquals(automatons.getFinalStatesOfNea3(), actualFinalStates);
+    }
+    
+    @Test
+    public void testGetNamesOfFinalStatesFromPda() {
+        final Set<String> actualFinalStates = automatons.getPda().getFinalStates();
+
+        Assert.assertEquals(automatons.getFinalStatesOfPda(), actualFinalStates);
     }
 
     @Test
@@ -122,6 +139,13 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
 
         Assert.assertEquals(automatons.getInitialStateOfNea3(), actualInitialState);
     }
+    
+    @Test
+    public void testGetNameOfInitialStateFromPda() {
+        final String actualInitialState = automatons.getPda().getInitialState();
+
+        Assert.assertEquals(automatons.getInitialStateOfPda(), actualInitialState);
+    }
 
     @Test
     public void testGetStatePowerSetFrom2() {
@@ -141,24 +165,45 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
 
     @Test
     public void testGetAlphabetFrom1() {
-        final Set<String> acutalAlphabet = automatons.getNea1().getAlphabet();
+        final Set<String> actualAlphabet = automatons.getNea1().getAlphabet();
 
-        Assert.assertEquals(automatons.getAlphabetOfNea1(), acutalAlphabet);
+        Assert.assertEquals(automatons.getAlphabetOfNea1(), actualAlphabet);
     }
 
     @Test
     public void testGetAlphabetFrom2() {
-        final Set<String> acutalAlphabet = automatons.getNea2().getAlphabet();
+        final Set<String> actualAlphabet = automatons.getNea2().getAlphabet();
 
-        Assert.assertEquals(automatons.getAlphabetOfNea2(), acutalAlphabet);
+        Assert.assertEquals(automatons.getAlphabetOfNea2(), actualAlphabet);
     }
 
     @Test
     public void testGetAlphabetFrom3() {
-        final Set<String> acutalAlphabet = automatons.getNea3().getAlphabet();
+        final Set<String> actualAlphabet = automatons.getNea3().getAlphabet();
 
-        Assert.assertEquals(automatons.getAlphabetOfNea3(), acutalAlphabet);
+        Assert.assertEquals(automatons.getAlphabetOfNea3(), actualAlphabet);
     }
+    
+    @Test
+    public void testGetAlphabetFromPda() {
+        final Set<String> actualAlphabet = automatons.getPda().getAlphabet();
+
+        Assert.assertEquals(automatons.getAlphabetOfPda(), actualAlphabet);
+    }
+    
+//    @Test
+//    public void testGetStackAlphabetFromPda() {
+//        final Set<String> actualAlphabet = automatons.getPda().getStackAlphabet();
+//
+//        Assert.assertEquals(automatons.getStackAlphabetOfPda(), actualAlphabet);
+//    }
+    
+//    @Test
+//    public void testGetInitialStackSymbolFromPda() {
+//        final String actualSymbol = automatons.getPda().getInitialStackSymbol();
+//        
+//        Assert.assertEquals(automatons.getInitialStackSymbolOfPda(), actualSymbol);
+//    }
 
     @Test
     public void testGetTargetsOfNea1ForZ1() {
@@ -206,7 +251,7 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
         Assert.assertEquals(emptySet, automatons.getNea1()
                 .getTargetsFor(TestAutomatons.Z6, EPSILON));
     }
-    
+
     @Test(expected = SerializationException.class)
     public void serializationShouldFailIfNoInitialStateIsSet() throws SerializationException {
         final Automaton sourceAutomaton = new Automaton(AutomatonType.NEA);

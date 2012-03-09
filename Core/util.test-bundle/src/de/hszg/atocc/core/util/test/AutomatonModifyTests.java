@@ -40,6 +40,18 @@ public final class AutomatonModifyTests extends AbstractAutomatonTest {
         Assert.assertEquals(getAlphabetAB(), automaton.getAlphabet());
     }
 
+    @Test
+    public void testAddStackAlphabetItem() throws InvalidAlphabetCharacterException {
+        final Automaton automaton = new Automaton(AutomatonType.NKA);
+
+        Assert.assertEquals(Collections.emptySet(), automaton.getStackAlphabet());
+
+        automaton.addStackAlphabetItem(A);
+        automaton.addStackAlphabetItem(B);
+
+        Assert.assertEquals(getAlphabetAB(), automaton.getStackAlphabet());
+    }
+
     @Test(expected = InvalidAlphabetCharacterException.class)
     public void addAlphabetItemShouldFailForNull() throws InvalidAlphabetCharacterException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
@@ -47,8 +59,21 @@ public final class AutomatonModifyTests extends AbstractAutomatonTest {
     }
 
     @Test(expected = InvalidAlphabetCharacterException.class)
+    public void addStackAlphabetItemShouldFailForNull() throws InvalidAlphabetCharacterException {
+        final Automaton automaton = new Automaton(AutomatonType.NKA);
+        automaton.addStackAlphabetItem(null);
+    }
+
+    @Test(expected = InvalidAlphabetCharacterException.class)
     public void addAlphabetItemShouldFailForEmptyString() throws InvalidAlphabetCharacterException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
+        automaton.addAlphabetItem("");
+    }
+
+    @Test(expected = InvalidAlphabetCharacterException.class)
+    public void addStackAlphabetItemShouldFailForEmptyString()
+            throws InvalidAlphabetCharacterException {
+        final Automaton automaton = new Automaton(AutomatonType.NKA);
         automaton.addAlphabetItem("");
     }
 
@@ -107,7 +132,7 @@ public final class AutomatonModifyTests extends AbstractAutomatonTest {
 
     @Test
     public void removeStateShouldRemoveStateFromStates() throws Exception {
-        final Automaton automaton = createTestAutomaton1();
+        final Automaton automaton = createTestAutomatonNfa();
 
         Assert.assertTrue(automaton.getStates().contains(Q0));
         automaton.removeState(Q0);
@@ -116,7 +141,7 @@ public final class AutomatonModifyTests extends AbstractAutomatonTest {
 
     @Test
     public void removeStateShouldDeleteTransitionsFromState() throws Exception {
-        final Automaton automaton = createTestAutomaton1();
+        final Automaton automaton = createTestAutomatonNfa();
 
         final Set<Transition> transitions1 = automaton.getTransitionsFrom(Q0);
         Assert.assertFalse(transitions1.isEmpty());
@@ -129,7 +154,7 @@ public final class AutomatonModifyTests extends AbstractAutomatonTest {
 
     @Test
     public void removeStateShouldDeleteTransitionsToState() throws Exception {
-        final Automaton automaton = createTestAutomaton1();
+        final Automaton automaton = createTestAutomatonNfa();
 
         final Set<Transition> transitions1 = automaton.getTransitionsTo(Q1);
         Assert.assertFalse(transitions1.isEmpty());
@@ -142,7 +167,7 @@ public final class AutomatonModifyTests extends AbstractAutomatonTest {
 
     @Test
     public void removeStateShouldRemoveStateFromFinalStates() throws Exception {
-        final Automaton automaton = createTestAutomaton1();
+        final Automaton automaton = createTestAutomatonNfa();
 
         Assert.assertTrue(automaton.getFinalStates().contains(Q1));
 
@@ -153,7 +178,7 @@ public final class AutomatonModifyTests extends AbstractAutomatonTest {
 
     @Test
     public void removeStateShouldUnsetInitialState() throws Exception {
-        final Automaton automaton = createTestAutomaton1();
+        final Automaton automaton = createTestAutomatonNfa();
 
         Assert.assertTrue(automaton.getInitialState().equals(Q0));
 

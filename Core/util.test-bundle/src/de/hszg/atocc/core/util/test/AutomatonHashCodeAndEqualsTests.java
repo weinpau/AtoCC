@@ -13,24 +13,24 @@ public final class AutomatonHashCodeAndEqualsTests extends AbstractAutomatonTest
 
     @Test
     public void equalsShouldReturnTrueForEqualAutomatons() throws Exception {
-        final Automaton a1 = createTestAutomaton1();
+        final Automaton a1 = createTestAutomatonPda();
 
-        final Automaton a2 = createTestAutomaton1();
+        final Automaton a2 = createTestAutomatonPda();
 
         Assert.assertTrue(a1.equals(a2));
     }
 
     @Test
     public void hashCodeShouldBeTheSameForEqualAutomatons() throws Exception {
-        final Automaton a1 = createTestAutomaton1();
-        final Automaton a2 = createTestAutomaton1();
+        final Automaton a1 = createTestAutomatonPda();
+        final Automaton a2 = createTestAutomatonPda();
 
         Assert.assertTrue(a1.hashCode() == a2.hashCode());
     }
 
     @Test
     public void hashCodeShouldDifferForDifferentAutomatons() throws Exception {
-        final Automaton a1 = createTestAutomaton1();
+        final Automaton a1 = createTestAutomatonNfa();
 
         final Automaton a2 = new Automaton(AutomatonType.NEA);
         a2.addState(Q0);

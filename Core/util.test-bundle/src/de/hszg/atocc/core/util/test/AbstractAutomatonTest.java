@@ -35,8 +35,8 @@ public abstract class AbstractAutomatonTest {
     protected final Set<String> getAlphabetAB() {
         return alphabetAB;
     }
-
-    protected final Automaton createTestAutomaton1() throws Exception {
+    
+    protected final Automaton createTestAutomatonNfa() throws Exception {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addState(Q0);
         automaton.addState(Q1);
@@ -44,6 +44,19 @@ public abstract class AbstractAutomatonTest {
         automaton.addAlphabetItem(A);
         automaton.setInitialState(Q0);
         automaton.addTransition(new Transition(Q0, Q1, A));
+        return automaton;
+    }
+
+    protected final Automaton createTestAutomatonPda() throws Exception {
+        final Automaton automaton = new Automaton(AutomatonType.NKA);
+        automaton.addState(Q0);
+        automaton.addState(Q1);
+        automaton.addFinalState(Q1);
+        automaton.addAlphabetItem(A);
+        automaton.addStackAlphabetItem(A);
+        automaton.setInitialState(Q0);
+        automaton.setInitialStackSymbol(A);
+        automaton.addTransition(new Transition(Q0, Q1, A, EPSILON, A));
         return automaton;
     }
 

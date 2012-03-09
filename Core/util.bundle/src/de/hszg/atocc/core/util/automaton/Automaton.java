@@ -12,14 +12,22 @@ import java.util.TreeSet;
 
 public final class Automaton {
 
+    // CHECKSTYLE:OFF
+    private static final String FA_STACK_SYMBOL = "Finite automatons do not have an initial stack symbol!";
+
+    private static final String FA_STACK_ALPHABET = "Finite automatons do not have a stack alphabet!";
+    // CHECKSTYLE:ON
+
     private static final String EPSILON = "EPSILON";
 
     private AutomatonType type = AutomatonType.DEA;
     private Set<String> alphabet = new HashSet<>();
+    private Set<String> stackAlphabet = new HashSet<>();
     private Set<String> states = new HashSet<>();
     private Map<String, Set<Transition>> transitions = new HashMap<>();
 
     private String initialState = "";
+    private String initialStackSymbol = "";
     private Set<String> finalStates = new HashSet<>();
 
     private boolean containsEpsilonRules;
@@ -72,6 +80,33 @@ public final class Automaton {
         alphabet.addAll(alphabetCharacters);
     }
 
+    public Set<String> getStackAlphabet() {
+        if (isFiniteAutomaton()) {
+            throw new UnsupportedOperationException(FA_STACK_ALPHABET);
+        }
+
+        return Collections.unmodifiableSet(stackAlphabet);
+    }
+
+    public void addStackAlphabetItem(String alphabetCharacter)
+            throws InvalidAlphabetCharacterException {
+        if (alphabetCharacter == null || "".equals(alphabetCharacter)) {
+            throw new InvalidAlphabetCharacterException(
+                    "null or empty string not allowed as stack alphabet item");
+        }
+
+        stackAlphabet.add(alphabetCharacter);
+    }
+
+    public void setStackAlphabet(Set<String> alphabetCharacters) {
+        if (isFiniteAutomaton()) {
+            throw new UnsupportedOperationException(FA_STACK_ALPHABET);
+        }
+
+        stackAlphabet.clear();
+        stackAlphabet.addAll(alphabetCharacters);
+    }
+
     public Set<String> getStates() {
         return Collections.unmodifiableSet(states);
     }
@@ -103,7 +138,7 @@ public final class Automaton {
     public void removeState(String state) {
         states.remove(state);
 
-        final Collection<Transition> transitionsFrom = new LinkedList<>(); 
+        final Collection<Transition> transitionsFrom = new LinkedList<>();
         transitionsFrom.addAll(getTransitionsFrom(state));
         for (Transition transition : transitionsFrom) {
             transitions.get(state).remove(transition);
@@ -183,6 +218,27 @@ public final class Automaton {
         addState(state);
     }
 
+    public String getInitialStackSymbol() {
+        if (isFiniteAutomaton()) {
+            throw new UnsupportedOperationException(FA_STACK_SYMBOL);
+        }
+
+        return initialStackSymbol;
+    }
+
+    public void setInitialStackSymbol(String symbol) throws InvalidAlphabetCharacterException {
+        if (isFiniteAutomaton()) {
+            throw new UnsupportedOperationException(FA_STACK_SYMBOL);
+        }
+
+        if (!stackAlphabet.contains(symbol)) {
+            throw new InvalidAlphabetCharacterException(
+                    "Stack alphabet does not contain this symbol: " + symbol);
+        }
+
+        initialStackSymbol = symbol;
+    }
+
     public Set<String> getFinalStates() {
         return finalStates;
     }
@@ -194,7 +250,7 @@ public final class Automaton {
 
         finalStates.add(state);
     }
-    
+
     public boolean isFinalState(String state) {
         return finalStates.contains(state);
     }
@@ -232,8 +288,23 @@ public final class Automaton {
 
     @Override
     public String toString() {
-        return String.format("%s = (%s, %s, %s, %s, %s)", type.name(), states, alphabet,
+        if (isFiniteAutomaton()) {
+            return finiteAutomatonToString();
+        } else {
+            return pushDownAutomatonToString();
+        }
+    }
+
+    private String finiteAutomatonToString() {
+        return String.format("%s = (%s, %s, %s, %s, %s)", type.name(), getSortedStates(), alphabet,
                 transitions, initialState, finalStates);
+    }
+
+    private String pushDownAutomatonToString() {
+        return String
+                .format("%s = (%s, %s, %s, %s, %s, %s, %s)", type.name(), getSortedStates(),
+                        alphabet, stackAlphabet, transitions, initialState, initialStackSymbol,
+                        finalStates);
     }
 
     private void verifyStateExists(String state) throws InvalidStateException {
@@ -244,12 +315,20 @@ public final class Automaton {
 
     private void verifyAlphabetCharacterExists(String character)
             throws InvalidAlphabetCharacterException {
-        if (EPSILON.equals(character) && type == AutomatonType.NEA) {
+        if (EPSILON.equals(character) && isNondeterministicAutomaton()) {
             return;
         }
 
         if (!alphabet.contains(character)) {
             throw new InvalidAlphabetCharacterException(character);
         }
+    }
+
+    private boolean isFiniteAutomaton() {
+        return type == AutomatonType.NEA || type == AutomatonType.DEA;
+    }
+
+    private boolean isNondeterministicAutomaton() {
+        return type == AutomatonType.NEA || type == AutomatonType.NKA;
     }
 }

@@ -5,12 +5,26 @@ public final class Transition {
     private String source;
     private String target;
     private String characterToRead;
+    private String topOfStack;
+    private String characterToWrite;
 
     public Transition(String sourceState, String targetState, String character) {
         source = sourceState;
         target = targetState;
         characterToRead = character;
     }
+
+    // CHECKSTYLE:OFF
+    public Transition(String sourceState, String targetState, String character, String top,
+            String write) {
+        source = sourceState;
+        target = targetState;
+        characterToRead = character;
+        topOfStack = top;
+        characterToWrite = write;
+    }
+
+    // CHECKSTYLE:ON
 
     public String getSource() {
         return source;
@@ -24,9 +38,22 @@ public final class Transition {
         return characterToRead;
     }
 
+    public String getTopOfStack() {
+        return topOfStack;
+    }
+
+    public String getCharacterToWrite() {
+        return characterToWrite;
+    }
+
     @Override
     public String toString() {
-        return String.format("(%s, %s) = %s", source, characterToRead, target);
+        if (topOfStack == null) {
+            return String.format("(%s, %s) = %s", source, characterToRead, target);
+        } else {
+            return String.format("(%s, %s, %s) = (%s, %s)", source, characterToRead, topOfStack,
+                    target, characterToWrite);
+        }
     }
 
     @Override
@@ -36,6 +63,11 @@ public final class Transition {
         result = prime * result + characterToRead.hashCode();
         result = prime * result + source.hashCode();
         result = prime * result + target.hashCode();
+        
+        if (topOfStack != null) {
+            result = prime * result + topOfStack.hashCode();
+            result = prime * result + characterToWrite.hashCode();
+        }
 
         return result;
     }

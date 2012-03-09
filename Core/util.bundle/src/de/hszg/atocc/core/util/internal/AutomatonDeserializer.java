@@ -37,6 +37,7 @@ public final class AutomatonDeserializer {
         try {
             setType();
             setAlphabet();
+            setStackAlphabet();
             setStates();
             setTransitions();
             setFinalStates();
@@ -69,6 +70,12 @@ public final class AutomatonDeserializer {
             final Element itemElement = (Element) itemElements.item(i);
             automaton.addAlphabetItem(itemElement.getAttribute("value"));
         }
+    }
+    
+    private void setStackAlphabet() {
+//        if (automaton.getType() == AutomatonType.NKA) {
+//            
+//        }
     }
 
     private void setStates() throws InvalidStateException {

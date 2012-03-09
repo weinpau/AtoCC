@@ -15,7 +15,8 @@ public final class TestAutomatons extends AbstractTestHelper {
     public static final int NUMBER_OF_STATES_IN_NEA1 = 6;
     public static final int NUMBER_OF_STATES_IN_NEA2 = 3;
     public static final int NUMBER_OF_STATES_IN_NEA3 = 2;
-
+    public static final int NUMBER_OF_STATES_IN_PDA = 3;
+    
     public static final String STATE = "STATE";
 
     public static final String Z1 = "Z1";
@@ -25,32 +26,39 @@ public final class TestAutomatons extends AbstractTestHelper {
     public static final String Z5 = "Z5";
     public static final String Z6 = "Z6";
 
-    private static final String B = "b";
     private static final String A = "a";
+    private static final String B = "b";
     private static final String C = "c";
-
+    private static final String K = "k";
+    private static final String S = "S";
+    
     private static final String Q0 = "q0";
     private static final String Q1 = "q1";
     private static final String Q2 = "q2";
 
     private static final String Q_0 = "q_0";
     private static final String Q_1 = "q_1";
+    private static final String Q_2 = "q_2";
 
     private Automaton nea1;
     private Automaton nea2;
     private Automaton nea3;
+    private Automaton pda;
 
     private Set<String> stateNamesOfNea1;
     private Set<String> stateNamesOfNea2;
     private Set<String> stateNamesOfNea3;
+    private Set<String> stateNamesOfPda;
 
     private Set<String> finalStatesOfNea1;
     private Set<String> finalStatesOfNea2;
     private Set<String> finalStatesOfNea3;
+    private Set<String> finalStatesOfPda;
 
     private String initialStateOfNea1;
     private String initialStateOfNea2;
     private String initialStateOfNea3;
+    private String initialStateOfPda;
 
     private Set<Set<String>> powerSetOfStatesFromNea2;
     private Set<Set<String>> powerSetOfStatesFromNea3;
@@ -58,11 +66,16 @@ public final class TestAutomatons extends AbstractTestHelper {
     private Set<String> alphabetOfNea1;
     private Set<String> alphabetOfNea2;
     private Set<String> alphabetOfNea3;
+    private Set<String> alphabetOfPda;
+    
+    private Set<String> stackAlphabetOfPda;
+    private String initialStackSymbolOfPda;
 
     public TestAutomatons() throws XmlUtilsException, SerializationException {
         initializeNea1();
         initializeNea2();
         initializeNea3();
+        initializePda();
     }
 
     public Automaton getNea1() {
@@ -75,6 +88,10 @@ public final class TestAutomatons extends AbstractTestHelper {
 
     public Automaton getNea3() {
         return nea3;
+    }
+    
+    public Automaton getPda() {
+        return pda;
     }
 
     public Set<Set<String>> getPowerSetOfStatesFromNea2() {
@@ -96,6 +113,10 @@ public final class TestAutomatons extends AbstractTestHelper {
     public Set<String> getStateNamesOfNea3() {
         return stateNamesOfNea3;
     }
+    
+    public Set<String> getStateNamesOfPda() {
+        return stateNamesOfPda;
+    }
 
     public Set<String> getFinalStatesOfNea1() {
         return finalStatesOfNea1;
@@ -107,6 +128,10 @@ public final class TestAutomatons extends AbstractTestHelper {
 
     public Set<String> getFinalStatesOfNea3() {
         return finalStatesOfNea3;
+    }
+    
+    public Set<String> getFinalStatesOfPda() {
+        return finalStatesOfPda;
     }
 
     public String getInitialStateOfNea1() {
@@ -120,7 +145,11 @@ public final class TestAutomatons extends AbstractTestHelper {
     public String getInitialStateOfNea3() {
         return initialStateOfNea3;
     }
-
+    
+    public String getInitialStateOfPda() {
+        return initialStateOfPda;
+    }
+    
     public Set<String> getAlphabetOfNea1() {
         return alphabetOfNea1;
     }
@@ -132,7 +161,19 @@ public final class TestAutomatons extends AbstractTestHelper {
     public Set<String> getAlphabetOfNea3() {
         return alphabetOfNea3;
     }
-
+    
+    public Set<String> getAlphabetOfPda() {
+        return alphabetOfPda;
+    }
+    
+    public Set<String> getStackAlphabetOfPda() {
+        return stackAlphabetOfPda;
+    }
+    
+    public String getInitialStackSymbolOfPda() {
+        return initialStackSymbolOfPda;
+    }
+    
     private void initializeNea1() throws XmlUtilsException, SerializationException {
         final Document doc = getXmlService().documentFromFile("nea1.xml");
         nea1 = getAutomatonService().automatonFrom(doc);
@@ -173,6 +214,18 @@ public final class TestAutomatons extends AbstractTestHelper {
         initializeStatePowerSetOfNea3();
 
         alphabetOfNea3 = getSetService().createSetWith(A, B, C);
+    }
+    
+    private void initializePda() throws XmlUtilsException, SerializationException {
+        final Document doc = getXmlService().documentFromFile("pda.xml");
+        pda = getAutomatonService().automatonFrom(doc);
+        
+        stateNamesOfPda = getSetService().createSetWith(Q_0, Q_1, Q_2);
+        finalStatesOfPda = getSetService().createSetWith(Q_2);
+        initialStateOfPda = Q_0;
+        alphabetOfPda = getSetService().createSetWith(A, B);
+        stackAlphabetOfPda = getSetService().createSetWith(A, B, K, S);
+        initialStackSymbolOfPda = K;
     }
 
     private void initializeStatePowerSetOfNea2() {

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AUTOMATON>
+    <TYPE value="NKA"/>
+    <ALPHABET>
+        <ITEM value="a"/>
+        <ITEM value="b"/>
+    </ALPHABET>
+    <STACKALPHABET>
+        <ITEM value="a"/>
+        <ITEM value="b"/>
+        <ITEM value="k"/>
+        <ITEM value="S"/>
+    </STACKALPHABET>
+    <STATE name="q_0" finalstate="false">
+        <TRANSITION target="q_1">
+            <LABEL read="EPSILON" topofstack="k" write="Sk"/>
+        </TRANSITION>
+    </STATE>
+    <STATE name="q_1" finalstate="false">
+        <TRANSITION target="q_2">
+            <LABEL read="EPSILON" topofstack="k" write="EPSILON"/>
+        </TRANSITION>
+        <TRANSITION target="q_1">
+            <LABEL read="EPSILON" topofstack="S" write="EPSILON"/>
+            <LABEL read="EPSILON" topofstack="S" write="aSa"/>
+            <LABEL read="EPSILON" topofstack="S" write="bSb"/>
+            <LABEL read="a" topofstack="a" write="EPSILON"/>
+            <LABEL read="b" topofstack="b" write="EPSILON"/>
+        </TRANSITION>
+    </STATE>
+    <STATE name="q_2" finalstate="true"/>
+    <INITIALSTATE value="q_0"/>
+    <STACKINITIALCHAR value="k"/>
+    <LAYOUT>
+        <STATELAYOUT name="q_0">
+            <LEFT value="100"/>
+            <TOP value="139"/>
+            <TRANSITIONLAYOUT target="q_1" drawvertical="true"/>
+        </STATELAYOUT>
+        <STATELAYOUT name="q_1">
+            <LEFT value="232"/>
+            <TOP value="139"/>
+            <TRANSITIONLAYOUT target="q_2" drawvertical="true"/>
+            <TRANSITIONLAYOUT target="q_1" drawvertical="true">
+                <TOP value="-191"/>
+            </TRANSITIONLAYOUT>
+        </STATELAYOUT>
+        <STATELAYOUT name="q_2">
+            <LEFT value="394"/>
+            <TOP value="139"/>
+        </STATELAYOUT>
+        <NOTEPAD>
+            {\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset0 Arial;}}
+\viewkind4\uc1\pard\lang1031\fs20 
+\par }
+
+        </NOTEPAD>
+    </LAYOUT>
+</AUTOMATON>

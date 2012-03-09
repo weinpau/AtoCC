@@ -22,6 +22,9 @@ public final class AutomatonTests extends AbstractAutomatonTest {
 
         final Automaton automaton2 = new Automaton(AutomatonType.NEA);
         Assert.assertEquals(AutomatonType.NEA, automaton2.getType());
+
+        final Automaton automaton3 = new Automaton(AutomatonType.NKA);
+        Assert.assertEquals(AutomatonType.NKA, automaton3.getType());
     }
 
     @Test
@@ -71,10 +74,21 @@ public final class AutomatonTests extends AbstractAutomatonTest {
 
     @Test
     public void testToString() throws Exception {
-        final Automaton automaton = createTestAutomaton1();
+        final Automaton automaton = createTestAutomatonNfa();
 
-        Assert.assertEquals("NEA = ([q1, q0], [a], {q1=[], q0=[(q0, a) = q1]}, q0, [q1])",
+        Assert.assertEquals("NEA = ([q0, q1], [a], {q1=[], q0=[(q0, a) = q1]}, q0, [q1])",
                 automaton.toString());
     }
+
+    // CHECKSTYLE:OFF
+    @Test
+    public void testToStringForPda() throws Exception {
+        final Automaton automaton = createTestAutomatonPda();
+
+        Assert.assertEquals(
+                "NKA = ([q0, q1], [a], [a], {q1=[], q0=[(q0, a, EPSILON) = (q1, a)]}, q0, a, [q1])",
+                automaton.toString());
+    }
+    // CHECKSTYLE:ON
 
 }
