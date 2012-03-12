@@ -3,6 +3,7 @@ package de.hszg.atocc.core.util.internal;
 import de.hszg.atocc.core.util.SerializationException;
 import de.hszg.atocc.core.util.XmlUtilService;
 import de.hszg.atocc.core.util.automaton.Automaton;
+import de.hszg.atocc.core.util.automaton.AutomatonType;
 import de.hszg.atocc.core.util.automaton.InvalidStateException;
 import de.hszg.atocc.core.util.automaton.Transition;
 
@@ -12,6 +13,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public final class AutomatonSerializer {
+
+    private static final String ITEM = "ITEM";
 
     private static final String FINALSTATE = "finalstate";
 
@@ -37,13 +40,16 @@ public final class AutomatonSerializer {
 
         createTypeElement();
         createAlphabetElement();
+        createStackAlphabetElement();
         createStateElements();
-        
+
         try {
             createInitialStateElement();
         } catch (InvalidStateException e) {
             throw new SerializationException(e);
         }
+        
+        createInitialStackSymbolElement();
 
         return document;
     }
@@ -59,9 +65,30 @@ public final class AutomatonSerializer {
         automatonElement.appendChild(alphabetElement);
 
         for (String alphabetCharacter : automaton.getAlphabet()) {
-            final Element itemElement = document.createElement("ITEM");
+            final Element itemElement = document.createElement(ITEM);
             itemElement.setAttribute(VALUE, alphabetCharacter);
             alphabetElement.appendChild(itemElement);
+        }
+    }
+
+    private void createStackAlphabetElement() {
+        if (automaton.getType() == AutomatonType.NKA) {
+            final Element stackAlphabetElement = document.createElement("STACKALPHABET");
+            automatonElement.appendChild(stackAlphabetElement);
+
+            for (String stackAlphabetCharacter : automaton.getStackAlphabet()) {
+                final Element itemElement = document.createElement(ITEM);
+                itemElement.setAttribute(VALUE, stackAlphabetCharacter);
+                stackAlphabetElement.appendChild(itemElement);
+            }
+        }
+    }
+    
+    private void createInitialStackSymbolElement() {
+        if (automaton.getType() == AutomatonType.NKA) {
+            final Element initialStackSymbolElement = document.createElement("STACKINITIALCHAR");
+            initialStackSymbolElement.setAttribute(VALUE, automaton.getInitialStackSymbol());
+            automatonElement.appendChild(initialStackSymbolElement);
         }
     }
 
@@ -95,6 +122,12 @@ public final class AutomatonSerializer {
 
             final Element labelElement = document.createElement("LABEL");
             labelElement.setAttribute("read", transition.getCharacterToRead());
+            
+            if (automaton.getType() == AutomatonType.NKA) {
+                labelElement.setAttribute("topofstack", transition.getTopOfStack());
+                labelElement.setAttribute("write", transition.getCharacterToWrite());
+            }
+            
             transitionElement.appendChild(labelElement);
 
             stateElement.appendChild(transitionElement);
@@ -103,11 +136,11 @@ public final class AutomatonSerializer {
 
     private void createInitialStateElement() throws InvalidStateException {
         final String initialState = automaton.getInitialState();
-        
+
         if (initialState == null || "".equals(initialState)) {
             throw new InvalidStateException("INITIAL_STATE_NOT_SET");
         }
-        
+
         final Element initialStateElement = document.createElement("INITIALSTATE");
         initialStateElement.setAttribute(VALUE, automaton.getInitialState());
         automatonElement.appendChild(initialStateElement);
