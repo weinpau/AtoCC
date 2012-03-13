@@ -13,9 +13,14 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
     private Grammar grammar = new Grammar();
     private Automaton automaton;
 
+    private Set<Transition> transitions;
+    private Set<String> states;
+
     @Override
     public Grammar export(Automaton anAutomaton) {
         automaton = anAutomaton;
+        transitions = automaton.getTransitions();
+        states = automaton.getStates();
 
         createStartingPointRules();
         purelyPopRules();
@@ -26,8 +31,6 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
     }
 
     private void createStartingPointRules() {
-        final Set<String> states = automaton.getStates();
-
         List<String> rhs = new ArrayList<>(states.size());
 
         for (String state : states) {
@@ -39,29 +42,40 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
     }
 
     private void purelyPopRules() {
-        for (String state : automaton.getStates()) {
-            final Set<Transition> transitions = automaton.getTransitionsFrom(state);
-
-            for (Transition transition : transitions) {
-                if ("EPSILON".equals(transition.getCharacterToWrite())) {
-                    grammar.appendRule(
-                            String.format("[%s,%s,%s]", transition.getSource(),
-                                    transition.getTopOfStack(), transition.getTarget()),
-                            transition.getCharacterToRead());
-                }
+        for (Transition transition : transitions) {
+            if ("EPSILON".equals(transition.getCharacterToWrite())) {
+                grammar.appendRule(
+                        String.format("[%s,%s,%s]", transition.getSource(),
+                                transition.getTopOfStack(), transition.getTarget()),
+                        transition.getCharacterToRead());
             }
         }
     }
 
     private void popOneElementRules() {
+        for (String qTick : states) {
+            for (Transition transition : transitions) {
+                final String write = transition.getCharacterToWrite();
+                final char[] charactersToWrite = write.toCharArray();
 
+                if (charactersToWrite.length == 1) {
+                    final String read = transition.getCharacterToRead();
+                    final String top = transition.getTopOfStack();
+                    final String source = transition.getSource();
+                    final String target = transition.getTarget();
+
+                    final String lhs = String.format("[%s,%s,%s]", source, top, qTick);
+                    final String rhs = String.format("%s[%s,%s,%s]", read, target, write, qTick);
+
+                    grammar.appendRule(lhs, rhs);
+                }
+            }
+        }
     }
 
     private void popTwoElementRules() {
-        final Set<Transition> transitions = automaton.getTransitions();
-
-        for (String qTick : automaton.getStates()) {
-            for (String q2 : automaton.getStates()) {
+        for (String qTick : states) {
+            for (String q2 : states) {
                 for (Transition transition : transitions) {
 
                     final String write = transition.getCharacterToWrite();
