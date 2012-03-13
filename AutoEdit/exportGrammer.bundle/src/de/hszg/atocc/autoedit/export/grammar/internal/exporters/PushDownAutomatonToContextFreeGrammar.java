@@ -54,45 +54,31 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
     }
 
     private void popOneElementRules() {
-        for (String state : automaton.getStates()) {
-            final Set<Transition> transitions = automaton.getTransitionsFrom(state);
 
-            for (Transition transition : transitions) {
-                final String target = transition.getTarget();
-                final String write = transition.getCharacterToWrite();
-
-                if ("q_1".equals(target) && !"EPSILON".equals(write)) {
-                    for (String qTick : automaton.getStates()) {
-                        grammar.appendRule(String.format("[%s,%s,%s]", state,
-                                transition.getTopOfStack(), qTick), String.format("%s[q_1,%s,%s]",
-                                transition.getCharacterToRead(), write, qTick));
-                    }
-
-                }
-            }
-        }
     }
 
     private void popTwoElementRules() {
-        for (String state : automaton.getStates()) {
-            final Set<Transition> transitions = automaton.getTransitionsFrom(state);
+        final Set<Transition> transitions = automaton.getTransitions();
 
-            for (Transition transition : transitions) {
-                final String target = transition.getTarget();
-                final String write = transition.getCharacterToWrite();
+        for (String qTick : automaton.getStates()) {
+            for (String q2 : automaton.getStates()) {
+                for (Transition transition : transitions) {
 
-                final char[] charactersToWrite = write.toCharArray();
+                    final String write = transition.getCharacterToWrite();
+                    final char[] charactersToWrite = write.toCharArray();
 
-                assert charactersToWrite.length == 2;
+                    if (charactersToWrite.length == 2) {
+                        final String read = transition.getCharacterToRead();
+                        final String top = transition.getTopOfStack();
+                        final String source = transition.getSource();
+                        final String target = transition.getTarget();
 
-                if ("q_1".equals(target) && !"EPSILON".equals(write)) {
-                    for (String qTick : automaton.getStates()) {
-                        grammar.appendRule(String.format("[%s,%s,%s]", state,
-                                transition.getTopOfStack(), qTick), String.format(
-                                "%s[q_1,%s,q_2][q_2,%s,%s]", transition.getCharacterToRead(),
-                                charactersToWrite[0], charactersToWrite[1], qTick));
+                        final String lhs = String.format("[%s,%s,%s]", source, top, qTick);
+                        final String rhs = String.format("%s[%s,%s,%s][%s,%s,%s]", read, target,
+                                charactersToWrite[0], q2, q2, charactersToWrite[1], qTick);
+
+                        grammar.appendRule(lhs, rhs);
                     }
-
                 }
             }
         }

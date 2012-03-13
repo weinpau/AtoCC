@@ -157,6 +157,16 @@ public final class Automaton {
         }
     }
 
+    public Set<Transition> getTransitions() {
+        final Set<Transition> allTransitions = new HashSet<>();
+
+        for (Set<Transition> transitionSet : transitions.values()) {
+            allTransitions.addAll(transitionSet);
+        }
+
+        return allTransitions;
+    }
+
     public Set<Transition> getTransitionsFrom(String state) {
         return transitions.get(state);
     }
