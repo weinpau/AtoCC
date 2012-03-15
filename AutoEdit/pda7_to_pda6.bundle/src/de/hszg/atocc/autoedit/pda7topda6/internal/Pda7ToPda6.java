@@ -4,6 +4,7 @@ import de.hszg.atocc.core.util.AbstractXmlTransformationService;
 import de.hszg.atocc.core.util.AutomatonService;
 import de.hszg.atocc.core.util.CharacterHelper;
 import de.hszg.atocc.core.util.SerializationException;
+import de.hszg.atocc.core.util.StateNameHelper;
 import de.hszg.atocc.core.util.XmlTransormationException;
 import de.hszg.atocc.core.util.XmlValidationException;
 import de.hszg.atocc.core.util.automaton.Automaton;
@@ -22,7 +23,12 @@ public class Pda7ToPda6 extends AbstractXmlTransformationService {
     private Automaton pda7;
     private Automaton pda6;
 
+    private boolean pda7StatesAreEnumerated;
+
     private Map<String, String> stateNameMappings = new HashMap<>();
+    
+    private String newInitialState;
+    private String newFinalState;
 
     @Override
     protected void transform() throws XmlTransormationException {
@@ -32,6 +38,7 @@ public class Pda7ToPda6 extends AbstractXmlTransformationService {
             validateInput("AUTOMATON");
 
             pda7 = automatonUtils.automatonFrom(getInput());
+            pda7StatesAreEnumerated = StateNameHelper.areStatesEnumerated(pda7.getStates());
             pda7ToPda6();
         } catch (final XmlValidationException | SerializationException e) {
             throw new XmlTransormationException("Pda7ToPda6|INVALID_INPUT", e);
@@ -67,27 +74,46 @@ public class Pda7ToPda6 extends AbstractXmlTransformationService {
     }
 
     private void generateStateNameMappings() {
+        if (pda7StatesAreEnumerated) {
+            for (String stateName : pda7.getSortedStates()) {
+                stateNameMappings.put(stateName, stateName);
+            }
+        } else {
+            int i = 0;
+            for (String stateName : pda7.getSortedStates()) {
+                String newName = String.format("%s_%d",
+                        CharacterHelper.firstCharacterDifferentTo(stateName.charAt(0)), i);
 
-        int i = 0;
-        for (String stateName : pda7.getSortedStates()) {
-            String newName = String.format("%s_%d",
-                    CharacterHelper.firstCharacterDifferentTo(stateName.charAt(0)), i);
-
-            stateNameMappings.put(stateName, newName);
-            ++i;
+                stateNameMappings.put(stateName, newName);
+                ++i;
+            }
         }
     }
 
     private void createNewStateSet() throws InvalidStateException {
-        pda6.addState("q_0");
-        pda6.setInitialState("q_0");
-
-        pda6.addState("q_e");
-        pda6.addFinalState("q_e");
-
         for (String stateName : pda7.getStates()) {
             pda6.addState(stateNameMappings.get(stateName));
         }
+        
+        if (pda7StatesAreEnumerated) {
+            newInitialState = StateNameHelper.generateNextState(pda6.getStates());
+            pda6.addState(newInitialState);
+            pda6.setInitialState(newInitialState);
+            
+            newFinalState = StateNameHelper.generateNextState(pda6.getStates());
+
+            pda6.addState(newFinalState);
+            pda6.addFinalState(newFinalState);
+        } else {
+            newInitialState = "q_0";
+            pda6.addState(newInitialState);
+            pda6.setInitialState(newInitialState);
+
+            newFinalState = "q_e";
+            pda6.addState(newFinalState);
+            pda6.addFinalState(newFinalState);
+        }
+        
     }
 
     private void createNewAlphabet() {
@@ -110,19 +136,19 @@ public class Pda7ToPda6 extends AbstractXmlTransformationService {
         for (String finalState : pda7.getFinalStates()) {
             for (String stackSymbol : pda6.getStackAlphabet()) {
                 final Transition transition = new Transition(stateNameMappings.get(finalState),
-                        "q_e", Automaton.EPSILON, stackSymbol, Automaton.EPSILON);
+                        newFinalState, Automaton.EPSILON, stackSymbol, Automaton.EPSILON);
 
                 pda6.addTransition(transition);
             }
         }
 
-        for (String stackSymbol : pda7.getStackAlphabet()) {
-            pda6.addTransition(new Transition("q_e", "q_e", Automaton.EPSILON, stackSymbol,
+        for (String stackSymbol : pda6.getStackAlphabet()) {
+            pda6.addTransition(new Transition(newFinalState, newFinalState, Automaton.EPSILON, stackSymbol,
                     Automaton.EPSILON));
         }
 
         final String oldInitialStateName = pda7.getInitialState();
-        pda6.addTransition(new Transition("q_0", stateNameMappings.get(oldInitialStateName),
+        pda6.addTransition(new Transition(newInitialState, stateNameMappings.get(oldInitialStateName),
                 Automaton.EPSILON, pda6.getInitialStackSymbol(), String.format("%s%s",
                         pda7.getInitialStackSymbol(), pda6.getInitialStackSymbol())));
 
