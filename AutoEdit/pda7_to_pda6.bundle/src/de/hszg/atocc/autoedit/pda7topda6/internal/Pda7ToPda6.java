@@ -2,6 +2,7 @@ package de.hszg.atocc.autoedit.pda7topda6.internal;
 
 import de.hszg.atocc.core.util.AbstractXmlTransformationService;
 import de.hszg.atocc.core.util.AutomatonService;
+import de.hszg.atocc.core.util.CharacterHelper;
 import de.hszg.atocc.core.util.SerializationException;
 import de.hszg.atocc.core.util.XmlTransormationException;
 import de.hszg.atocc.core.util.XmlValidationException;
@@ -14,7 +15,6 @@ import de.hszg.atocc.core.util.automaton.Transition;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class Pda7ToPda6 extends AbstractXmlTransformationService {
 
@@ -70,8 +70,8 @@ public class Pda7ToPda6 extends AbstractXmlTransformationService {
 
         int i = 0;
         for (String stateName : pda7.getSortedStates()) {
-            String newName = String.format("%s_%d", firstCharacterDifferentTo(stateName.charAt(0)),
-                    i);
+            String newName = String.format("%s_%d",
+                    CharacterHelper.firstCharacterDifferentTo(stateName.charAt(0)), i);
 
             stateNameMappings.put(stateName, newName);
             ++i;
@@ -97,7 +97,8 @@ public class Pda7ToPda6 extends AbstractXmlTransformationService {
     private void createNewStackAlphabet() throws InvalidAlphabetCharacterException {
         pda6.setStackAlphabet(pda7.getStackAlphabet());
 
-        final char newInitialStackSymbol = characterDifferentToAnyOf(pda7.getStackAlphabet());
+        final char newInitialStackSymbol = CharacterHelper.characterDifferentToAnyOf(pda7
+                .getStackAlphabet());
 
         final String symbolName = String.valueOf(newInitialStackSymbol);
         pda6.addStackAlphabetItem(symbolName);
@@ -105,7 +106,7 @@ public class Pda7ToPda6 extends AbstractXmlTransformationService {
     }
 
     private void createNewTransitions() throws InvalidTransitionException {
-        
+
         for (String finalState : pda7.getFinalStates()) {
             for (String stackSymbol : pda6.getStackAlphabet()) {
                 final Transition transition = new Transition(stateNameMappings.get(finalState),
@@ -116,7 +117,8 @@ public class Pda7ToPda6 extends AbstractXmlTransformationService {
         }
 
         for (String stackSymbol : pda7.getStackAlphabet()) {
-            pda6.addTransition(new Transition("q_e", "q_e", Automaton.EPSILON, stackSymbol, Automaton.EPSILON));
+            pda6.addTransition(new Transition("q_e", "q_e", Automaton.EPSILON, stackSymbol,
+                    Automaton.EPSILON));
         }
 
         final String oldInitialStateName = pda7.getInitialState();
@@ -132,31 +134,11 @@ public class Pda7ToPda6 extends AbstractXmlTransformationService {
                         stateNameMappings.get(oldStateName), stateNameMappings.get(target),
                         transition.getCharacterToRead(), transition.getTopOfStack(),
                         transition.getCharacterToWrite());
-                
+
                 pda6.addTransition(newTransition);
             }
         }
 
     }
 
-    private char firstCharacterDifferentTo(char c) {
-        for (int i = 'a'; i <= 'z'; ++i) {
-            if (c != (char) i) {
-                return (char) i;
-            }
-        }
-
-        throw new RuntimeException("Should not reach this point");
-    }
-
-    private char characterDifferentToAnyOf(Set<String> stackAlphabet) {
-
-        for (char c = '!'; c <= '~'; ++c) {
-            if (!stackAlphabet.contains(String.valueOf(c))) {
-                return c;
-            }
-        }
-
-        throw new RuntimeException("No character found which is not in set");
-    }
 }

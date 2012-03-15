@@ -1,7 +1,10 @@
 package de.hszg.atocc.autoedit.export.grammar.internal.exporters;
 
 import de.hszg.atocc.autoedit.export.grammar.internal.Grammar;
+import de.hszg.atocc.autoedit.export.grammar.internal.Normalizer;
 import de.hszg.atocc.core.util.automaton.Automaton;
+import de.hszg.atocc.core.util.automaton.InvalidStateException;
+import de.hszg.atocc.core.util.automaton.InvalidTransitionException;
 import de.hszg.atocc.core.util.automaton.Transition;
 
 import java.util.ArrayList;
@@ -11,6 +14,7 @@ import java.util.Set;
 public class PushDownAutomatonToContextFreeGrammar implements Exporter {
 
     private Grammar grammar = new Grammar();
+    private Normalizer normalizer;
     private Automaton automaton;
 
     private Set<Transition> transitions;
@@ -22,12 +26,30 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
         transitions = automaton.getTransitions();
         states = automaton.getStates();
 
+        try {
+            normalizeIfNeccessary();
+        } catch (final InvalidStateException | InvalidTransitionException e) {
+            throw new RuntimeException(e);
+        }
+
         createStartingPointRules();
         purelyPopRules();
         popOneElementRules();
         popTwoElementRules();
 
         return grammar;
+    }
+
+    private void normalizeIfNeccessary() throws InvalidStateException, InvalidTransitionException {
+        normalizer = new Normalizer(automaton);
+        
+        if (!normalizer.isNormalized()) {
+            normalizer.normalize();
+            transitions = automaton.getTransitions();
+            states = automaton.getStates();
+            
+            System.out.println("States: " + states);
+        }
     }
 
     private void createStartingPointRules() {
@@ -97,4 +119,5 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
             }
         }
     }
+    
 }

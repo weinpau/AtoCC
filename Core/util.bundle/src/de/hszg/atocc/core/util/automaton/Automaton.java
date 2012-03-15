@@ -219,6 +219,16 @@ public final class Automaton {
         }
     }
 
+    public void removeTransitions(Set<Transition> transitionsToRemove) {
+        for (Transition transition : transitionsToRemove) {
+            for (String state : states) {
+                if (transitions.get(state).remove(transition)) {
+                    continue;
+                }
+            }
+        }
+    }
+
     public String getInitialState() {
         return initialState;
     }

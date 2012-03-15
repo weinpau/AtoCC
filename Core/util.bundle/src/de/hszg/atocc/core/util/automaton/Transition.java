@@ -8,18 +8,18 @@ public final class Transition {
     private String topOfStack;
     private String characterToWrite;
 
-    public Transition(String sourceState, String targetState, String character) {
+    public Transition(String sourceState, String targetState, String read) {
         source = sourceState;
         target = targetState;
-        characterToRead = character;
+        characterToRead = read;
     }
 
     // CHECKSTYLE:OFF
-    public Transition(String sourceState, String targetState, String character, String top,
+    public Transition(String sourceState, String targetState, String read, String top,
             String write) {
         source = sourceState;
         target = targetState;
-        characterToRead = character;
+        characterToRead = read;
         topOfStack = top;
         characterToWrite = write;
     }
