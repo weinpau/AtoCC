@@ -35,7 +35,7 @@ public final class AutomatonTests extends AbstractAutomatonTest {
 
         Assert.assertFalse(automaton.containsEpsilonRules());
 
-        automaton.addTransition(new Transition(Q0, Q1, EPSILON));
+        automaton.addTransition(new Transition(Q0, Q1, Automaton.EPSILON));
         Assert.assertTrue(automaton.containsEpsilonRules());
     }
 

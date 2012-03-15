@@ -1,6 +1,7 @@
 package de.hszg.atocc.autoedit.export.grammar.internal;
 
 import de.hszg.atocc.core.util.CollectionHelper;
+import de.hszg.atocc.core.util.automaton.Automaton;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public final class Grammar {
     }
     
     public void appendEpsilonRule(String lhs) {
-        grammar.append(String.format("%s -> EPSILON", lhs));
+        grammar.append(String.format("%s -> %s", lhs, Automaton.EPSILON));
     }
     
     @Override

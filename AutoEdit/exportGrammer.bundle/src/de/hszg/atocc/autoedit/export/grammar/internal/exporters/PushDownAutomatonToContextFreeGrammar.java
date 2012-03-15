@@ -43,7 +43,7 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
 
     private void purelyPopRules() {
         for (Transition transition : transitions) {
-            if ("EPSILON".equals(transition.getCharacterToWrite())) {
+            if (Automaton.EPSILON.equals(transition.getCharacterToWrite())) {
                 grammar.appendRule(
                         String.format("[%s,%s,%s]", transition.getSource(),
                                 transition.getTopOfStack(), transition.getTarget()),
@@ -65,7 +65,7 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
                     final String target = transition.getTarget();
 
                     final String lhs = String.format("[%s,%s,%s]", source, top, qTick);
-                    final String rhs = String.format("%s[%s,%s,%s]", read, target, write, qTick);
+                    final String rhs = String.format("%s [%s,%s,%s]", read, target, write, qTick);
 
                     grammar.appendRule(lhs, rhs);
                 }
@@ -88,7 +88,7 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
                         final String target = transition.getTarget();
 
                         final String lhs = String.format("[%s,%s,%s]", source, top, qTick);
-                        final String rhs = String.format("%s[%s,%s,%s][%s,%s,%s]", read, target,
+                        final String rhs = String.format("%s [%s,%s,%s] [%s,%s,%s]", read, target,
                                 charactersToWrite[0], q2, q2, charactersToWrite[1], qTick);
 
                         grammar.appendRule(lhs, rhs);

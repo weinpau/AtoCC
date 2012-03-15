@@ -12,13 +12,13 @@ import java.util.TreeSet;
 
 public final class Automaton {
 
+    public static final String EPSILON = "EPSILON";
+
     // CHECKSTYLE:OFF
     private static final String FA_STACK_SYMBOL = "Finite automatons do not have an initial stack symbol!";
 
     private static final String FA_STACK_ALPHABET = "Finite automatons do not have a stack alphabet!";
     // CHECKSTYLE:ON
-
-    private static final String EPSILON = "EPSILON";
 
     private AutomatonType type = AutomatonType.DEA;
     private Set<String> alphabet = new HashSet<>();

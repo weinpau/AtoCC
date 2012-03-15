@@ -95,7 +95,7 @@ public final class AutomatonModifyTests extends AbstractAutomatonTest {
             throws InvalidTransitionException, InvalidStateException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addState(Q1);
-        automaton.addTransition(new Transition(Q0, Q1, EPSILON));
+        automaton.addTransition(new Transition(Q0, Q1, Automaton.EPSILON));
     }
 
     @Test(expected = InvalidTransitionException.class)
@@ -103,7 +103,7 @@ public final class AutomatonModifyTests extends AbstractAutomatonTest {
             throws InvalidTransitionException, InvalidStateException {
         final Automaton automaton = new Automaton(AutomatonType.NEA);
         automaton.addState(Q0);
-        automaton.addTransition(new Transition(Q0, Q1, EPSILON));
+        automaton.addTransition(new Transition(Q0, Q1, Automaton.EPSILON));
     }
 
     @Test(expected = InvalidTransitionException.class)
@@ -121,7 +121,7 @@ public final class AutomatonModifyTests extends AbstractAutomatonTest {
         final Automaton automaton = new Automaton(AutomatonType.DEA);
         automaton.addState(Q0);
         automaton.addState(Q1);
-        automaton.addTransition(new Transition(Q0, Q1, EPSILON));
+        automaton.addTransition(new Transition(Q0, Q1, Automaton.EPSILON));
     }
 
     @Test(expected = InvalidStateException.class)

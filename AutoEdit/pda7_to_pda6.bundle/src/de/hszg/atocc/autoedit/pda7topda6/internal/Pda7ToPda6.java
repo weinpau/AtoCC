@@ -109,19 +109,19 @@ public class Pda7ToPda6 extends AbstractXmlTransformationService {
         for (String finalState : pda7.getFinalStates()) {
             for (String stackSymbol : pda6.getStackAlphabet()) {
                 final Transition transition = new Transition(stateNameMappings.get(finalState),
-                        "q_e", "EPSILON", stackSymbol, "EPSILON");
+                        "q_e", Automaton.EPSILON, stackSymbol, Automaton.EPSILON);
 
                 pda6.addTransition(transition);
             }
         }
 
         for (String stackSymbol : pda7.getStackAlphabet()) {
-            pda6.addTransition(new Transition("q_e", "q_e", "EPSILON", stackSymbol, "EPSILON"));
+            pda6.addTransition(new Transition("q_e", "q_e", Automaton.EPSILON, stackSymbol, Automaton.EPSILON));
         }
 
         final String oldInitialStateName = pda7.getInitialState();
         pda6.addTransition(new Transition("q_0", stateNameMappings.get(oldInitialStateName),
-                "EPSILON", pda6.getInitialStackSymbol(), String.format("%s%s",
+                Automaton.EPSILON, pda6.getInitialStackSymbol(), String.format("%s%s",
                         pda7.getInitialStackSymbol(), pda6.getInitialStackSymbol())));
 
         for (String oldStateName : pda7.getStates()) {

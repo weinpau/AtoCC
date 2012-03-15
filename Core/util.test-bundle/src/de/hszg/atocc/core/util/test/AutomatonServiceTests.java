@@ -17,7 +17,6 @@ import org.w3c.dom.Document;
 
 public final class AutomatonServiceTests extends AbstractTestHelper {
 
-    private static final String EPSILON = "EPSILON";
     private static final String Q5 = "q5";
     private static final String Q4 = "q4";
     private static final String Q3 = "q3";
@@ -83,11 +82,11 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
 
         Assert.assertEquals(automatons.getStateNamesOfNea3(), actualNames);
     }
-    
+
     @Test
     public void testGetStateNamesFromPdaDocument() {
         final Set<String> actualnames = automatons.getPda().getStates();
-        
+
         Assert.assertEquals(automatons.getStateNamesOfPda(), actualnames);
     }
 
@@ -111,7 +110,7 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
 
         Assert.assertEquals(automatons.getFinalStatesOfNea3(), actualFinalStates);
     }
-    
+
     @Test
     public void testGetNamesOfFinalStatesFromPda() {
         final Set<String> actualFinalStates = automatons.getPda().getFinalStates();
@@ -139,7 +138,7 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
 
         Assert.assertEquals(automatons.getInitialStateOfNea3(), actualInitialState);
     }
-    
+
     @Test
     public void testGetNameOfInitialStateFromPda() {
         final String actualInitialState = automatons.getPda().getInitialState();
@@ -183,41 +182,44 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
 
         Assert.assertEquals(automatons.getAlphabetOfNea3(), actualAlphabet);
     }
-    
+
     @Test
     public void testGetAlphabetFromPda() {
         final Set<String> actualAlphabet = automatons.getPda().getAlphabet();
 
         Assert.assertEquals(automatons.getAlphabetOfPda(), actualAlphabet);
     }
-    
-//    @Test
-//    public void testGetStackAlphabetFromPda() {
-//        final Set<String> actualAlphabet = automatons.getPda().getStackAlphabet();
-//
-//        Assert.assertEquals(automatons.getStackAlphabetOfPda(), actualAlphabet);
-//    }
-    
-//    @Test
-//    public void testGetInitialStackSymbolFromPda() {
-//        final String actualSymbol = automatons.getPda().getInitialStackSymbol();
-//        
-//        Assert.assertEquals(automatons.getInitialStackSymbolOfPda(), actualSymbol);
-//    }
+
+    // @Test
+    // public void testGetStackAlphabetFromPda() {
+    // final Set<String> actualAlphabet =
+    // automatons.getPda().getStackAlphabet();
+    //
+    // Assert.assertEquals(automatons.getStackAlphabetOfPda(), actualAlphabet);
+    // }
+
+    // @Test
+    // public void testGetInitialStackSymbolFromPda() {
+    // final String actualSymbol = automatons.getPda().getInitialStackSymbol();
+    //
+    // Assert.assertEquals(automatons.getInitialStackSymbolOfPda(),
+    // actualSymbol);
+    // }
 
     @Test
     public void testGetTargetsOfNea1ForZ1() {
         Assert.assertEquals(z4, automatons.getNea1().getTargetsFor(TestAutomatons.Z1, A));
         Assert.assertEquals(emptySet, automatons.getNea1().getTargetsFor(TestAutomatons.Z1, B));
-        Assert.assertEquals(z2, automatons.getNea1().getTargetsFor(TestAutomatons.Z1, EPSILON));
+        Assert.assertEquals(z2,
+                automatons.getNea1().getTargetsFor(TestAutomatons.Z1, Automaton.EPSILON));
     }
 
     @Test
     public void testGetTargetsOfNea1ForZ2() {
         Assert.assertEquals(z5, automatons.getNea1().getTargetsFor(TestAutomatons.Z2, A));
         Assert.assertEquals(z3, automatons.getNea1().getTargetsFor(TestAutomatons.Z2, B));
-        Assert.assertEquals(emptySet, automatons.getNea1()
-                .getTargetsFor(TestAutomatons.Z2, EPSILON));
+        Assert.assertEquals(emptySet,
+                automatons.getNea1().getTargetsFor(TestAutomatons.Z2, Automaton.EPSILON));
     }
 
     @Test
@@ -227,29 +229,31 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
         Assert.assertEquals(new HashSet<String>(),
                 automatons.getNea1().getTargetsFor(TestAutomatons.Z3, B));
         Assert.assertEquals(new HashSet<String>(),
-                automatons.getNea1().getTargetsFor(TestAutomatons.Z3, EPSILON));
+                automatons.getNea1().getTargetsFor(TestAutomatons.Z3, Automaton.EPSILON));
     }
 
     @Test
     public void testGetTargetsOfNea1ForZ4() {
         Assert.assertEquals(emptySet, automatons.getNea1().getTargetsFor(TestAutomatons.Z4, A));
         Assert.assertEquals(z5, automatons.getNea1().getTargetsFor(TestAutomatons.Z4, B));
-        Assert.assertEquals(z2, automatons.getNea1().getTargetsFor(TestAutomatons.Z4, EPSILON));
+        Assert.assertEquals(z2,
+                automatons.getNea1().getTargetsFor(TestAutomatons.Z4, Automaton.EPSILON));
     }
 
     @Test
     public void testGetTargetsOfNea1ForZ5() {
         Assert.assertEquals(emptySet, automatons.getNea1().getTargetsFor(TestAutomatons.Z5, A));
         Assert.assertEquals(emptySet, automatons.getNea1().getTargetsFor(TestAutomatons.Z5, B));
-        Assert.assertEquals(z6, automatons.getNea1().getTargetsFor(TestAutomatons.Z5, EPSILON));
+        Assert.assertEquals(z6,
+                automatons.getNea1().getTargetsFor(TestAutomatons.Z5, Automaton.EPSILON));
     }
 
     @Test
     public void testGetTargetsOfNea1ForZ6() {
         Assert.assertEquals(emptySet, automatons.getNea1().getTargetsFor(TestAutomatons.Z6, A));
         Assert.assertEquals(emptySet, automatons.getNea1().getTargetsFor(TestAutomatons.Z6, B));
-        Assert.assertEquals(emptySet, automatons.getNea1()
-                .getTargetsFor(TestAutomatons.Z6, EPSILON));
+        Assert.assertEquals(emptySet,
+                automatons.getNea1().getTargetsFor(TestAutomatons.Z6, Automaton.EPSILON));
     }
 
     @Test(expected = SerializationException.class)
@@ -336,13 +340,13 @@ public final class AutomatonServiceTests extends AbstractTestHelper {
         automaton.setStates(getSetService().createSetWith(Q0, Q1, Q2, Q3, Q4, Q5));
         automaton.addAlphabetItem(A);
         automaton.addAlphabetItem(B);
-        automaton.addTransition(new Transition(Q0, Q1, EPSILON));
+        automaton.addTransition(new Transition(Q0, Q1, Automaton.EPSILON));
         automaton.addTransition(new Transition(Q0, Q3, A));
         automaton.addTransition(new Transition(Q1, Q2, B));
         automaton.addTransition(new Transition(Q1, Q4, A));
-        automaton.addTransition(new Transition(Q3, Q1, EPSILON));
+        automaton.addTransition(new Transition(Q3, Q1, Automaton.EPSILON));
         automaton.addTransition(new Transition(Q3, Q4, B));
-        automaton.addTransition(new Transition(Q4, Q5, EPSILON));
+        automaton.addTransition(new Transition(Q4, Q5, Automaton.EPSILON));
 
         final Set<String> expected1 = getSetService().createSetWith(Q0, Q1);
         Assert.assertEquals(expected1, getAutomatonService().getEpsilonHull(automaton, Q0));

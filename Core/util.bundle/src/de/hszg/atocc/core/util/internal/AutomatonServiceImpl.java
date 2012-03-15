@@ -52,7 +52,7 @@ public final class AutomatonServiceImpl implements AutomatonService {
 
         epsilonHull.add(stateName);
 
-        for (String target : automaton.getTargetsFor(stateName, "EPSILON")) {
+        for (String target : automaton.getTargetsFor(stateName, Automaton.EPSILON)) {
             epsilonHull.add(target);
         }
 

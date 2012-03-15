@@ -12,8 +12,6 @@ import org.junit.BeforeClass;
 public abstract class AbstractAutomatonTest {
 
     protected static final String NOT_YET_IMPLEMENTED = "Not yet implemented";
-    
-    protected static final String EPSILON = "EPSILON";
 
     protected static final String A = "a";
     protected static final String B = "b";
@@ -56,7 +54,7 @@ public abstract class AbstractAutomatonTest {
         automaton.addStackAlphabetItem(A);
         automaton.setInitialState(Q0);
         automaton.setInitialStackSymbol(A);
-        automaton.addTransition(new Transition(Q0, Q1, A, EPSILON, A));
+        automaton.addTransition(new Transition(Q0, Q1, A, Automaton.EPSILON, A));
         return automaton;
     }
 

@@ -26,8 +26,6 @@ public final class AutomatonDeserializer {
 
     private static final String ITEM = "ITEM";
 
-//    private static final String EPSILON = "EPSILON";
-
     private static final String NAME = "name";
 
     private Document document;
