@@ -1,6 +1,7 @@
 package de.hszg.atocc.autoedit.export.grammar.internal.exporters;
 
 import de.hszg.atocc.autoedit.export.grammar.internal.Grammar;
+import de.hszg.atocc.autoedit.export.grammar.internal.GrammarOptimizer;
 import de.hszg.atocc.autoedit.export.grammar.internal.Normalizer;
 import de.hszg.atocc.core.util.automaton.Automaton;
 import de.hszg.atocc.core.util.automaton.InvalidStateException;
@@ -36,6 +37,9 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
         purelyPopRules();
         popOneElementRules();
         popTwoElementRules();
+        
+        final GrammarOptimizer optimizer = new GrammarOptimizer(grammar);
+        optimizer.optimize();
 
         return grammar;
     }
@@ -47,8 +51,6 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
             normalizer.normalize();
             transitions = automaton.getTransitions();
             states = automaton.getStates();
-            
-            System.out.println("States: " + states);
         }
     }
 
