@@ -39,7 +39,11 @@ public final class Grammar {
 
         for (String lhs : rules.keySet()) {
             final List<String> rhs = rules.get(lhs);
-            grammar.append(String.format("%s -> %s\n", lhs, CollectionHelper.makeString(rhs, " | ")));
+
+            if (!rhs.isEmpty()) {
+                grammar.append(String.format("%s -> %s\n", lhs,
+                        CollectionHelper.makeString(rhs, " | ")));
+            }
         }
 
         return grammar.toString();
@@ -54,11 +58,11 @@ public final class Grammar {
 
         return allRhs;
     }
-    
+
     public Collection<String> getRightHandSidesFor(String lhs) {
         return rules.get(lhs);
     }
-    
+
     public Set<String> getLeftHandSides() {
         return rules.keySet();
     }
@@ -72,7 +76,7 @@ public final class Grammar {
             rules.get(lhs).remove(rhs);
         }
     }
-    
+
     public void remove(String lhs) {
         rules.remove(lhs);
     }
