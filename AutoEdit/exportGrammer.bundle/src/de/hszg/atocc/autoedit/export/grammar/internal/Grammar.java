@@ -4,9 +4,12 @@ import de.hszg.atocc.core.util.CollectionHelper;
 import de.hszg.atocc.core.util.automaton.Automaton;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public final class Grammar {
 
@@ -19,10 +22,10 @@ public final class Grammar {
     }
 
     public void appendRule(String lhs, String rhs) {
-        if(!rules.containsKey(lhs)) {
+        if (!rules.containsKey(lhs)) {
             rules.put(lhs, new ArrayList<String>());
         }
-        
+
         rules.get(lhs).add(rhs);
     }
 
@@ -40,5 +43,37 @@ public final class Grammar {
         }
 
         return grammar.toString();
+    }
+
+    public Set<String> getAllRightHandSides() {
+        final Set<String> allRhs = new HashSet<>();
+
+        for (List<String> rhs : rules.values()) {
+            allRhs.addAll(rhs);
+        }
+
+        return allRhs;
+    }
+    
+    public Collection<String> getRightHandSidesFor(String lhs) {
+        return rules.get(lhs);
+    }
+    
+    public Set<String> getLeftHandSides() {
+        return rules.keySet();
+    }
+
+    public boolean containsLeftHandSide(String lhs) {
+        return rules.containsKey(lhs);
+    }
+
+    public void removeRightHandSide(String rhs) {
+        for (String lhs : rules.keySet()) {
+            rules.get(lhs).remove(rhs);
+        }
+    }
+    
+    public void remove(String lhs) {
+        rules.remove(lhs);
     }
 }

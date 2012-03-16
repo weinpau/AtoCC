@@ -37,7 +37,7 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
         purelyPopRules();
         popOneElementRules();
         popTwoElementRules();
-        
+
         final GrammarOptimizer optimizer = new GrammarOptimizer(grammar);
         optimizer.optimize();
 
@@ -46,7 +46,7 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
 
     private void normalizeIfNeccessary() throws InvalidStateException, InvalidTransitionException {
         normalizer = new Normalizer(automaton);
-        
+
         if (!normalizer.isNormalized()) {
             normalizer.normalize();
             transitions = automaton.getTransitions();
@@ -106,14 +106,21 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
                     final char[] charactersToWrite = write.toCharArray();
 
                     if (charactersToWrite.length == 2) {
-                        final String read = transition.getCharacterToRead();
-                        final String top = transition.getTopOfStack();
-                        final String source = transition.getSource();
-                        final String target = transition.getTarget();
+                        final String a = transition.getCharacterToRead();
+                        final String A = transition.getTopOfStack();
+                        final String q = transition.getSource();
+                        final String q1 = transition.getTarget();
 
-                        final String lhs = String.format("[%s,%s,%s]", source, top, qTick);
-                        final String rhs = String.format("%s [%s,%s,%s] [%s,%s,%s]", read, target,
-                                charactersToWrite[0], q2, q2, charactersToWrite[1], qTick);
+                        final String lhs = String.format("[%s,%s,%s]", q, A, qTick);
+                        String rhs = "";
+
+                        if (Automaton.EPSILON.equals(a)) {
+                            rhs = String.format("[%s,%s,%s] [%s,%s,%s]", q1, charactersToWrite[0],
+                                    q2, q2, charactersToWrite[1], qTick);
+                        } else {
+                            rhs = String.format("%s [%s,%s,%s] [%s,%s,%s]", a, q1,
+                                    charactersToWrite[0], q2, q2, charactersToWrite[1], qTick);
+                        }
 
                         grammar.appendRule(lhs, rhs);
                     }
@@ -121,5 +128,5 @@ public class PushDownAutomatonToContextFreeGrammar implements Exporter {
             }
         }
     }
-    
+
 }

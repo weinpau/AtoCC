@@ -7,6 +7,10 @@ import de.hszg.atocc.core.util.automaton.AutomatonType;
 import de.hszg.atocc.core.util.automaton.InvalidStateException;
 import de.hszg.atocc.core.util.automaton.Transition;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.w3c.dom.Document;
@@ -48,7 +52,7 @@ public final class AutomatonSerializer {
         } catch (InvalidStateException e) {
             throw new SerializationException(e);
         }
-        
+
         createInitialStackSymbolElement();
 
         return document;
@@ -83,7 +87,7 @@ public final class AutomatonSerializer {
             }
         }
     }
-    
+
     private void createInitialStackSymbolElement() {
         if (automaton.getType() == AutomatonType.NKA) {
             final Element initialStackSymbolElement = document.createElement("STACKINITIALCHAR");
@@ -116,21 +120,40 @@ public final class AutomatonSerializer {
     private void createTransitionElements(String state, final Element stateElement) {
         final Set<Transition> transitions = automaton.getTransitionsFrom(state);
 
-        for (Transition transition : transitions) {
-            final Element transitionElement = document.createElement("TRANSITION");
-            transitionElement.setAttribute("target", transition.getTarget());
+        final Map<String, Collection<Transition>> transitionsTo = new HashMap<>();
 
+        for (Transition transition : transitions) {
+            final String to = transition.getTarget();
+
+            if (!transitionsTo.containsKey(to)) {
+                transitionsTo.put(to, new ArrayList<Transition>());
+            }
+
+            transitionsTo.get(to).add(transition);
+        }
+
+        for (String target : transitionsTo.keySet()) {
+            final Element transitionElement = document.createElement("TRANSITION");
+            transitionElement.setAttribute("target", target);
+
+            createLabelElements(transitionsTo, target, transitionElement);
+
+            stateElement.appendChild(transitionElement);
+        }
+    }
+
+    private void createLabelElements(final Map<String, Collection<Transition>> transitionsTo,
+            String target, final Element transitionElement) {
+        for (Transition transition : transitionsTo.get(target)) {
             final Element labelElement = document.createElement("LABEL");
             labelElement.setAttribute("read", transition.getCharacterToRead());
-            
+
             if (automaton.getType() == AutomatonType.NKA) {
                 labelElement.setAttribute("topofstack", transition.getTopOfStack());
                 labelElement.setAttribute("write", transition.getCharacterToWrite());
             }
-            
-            transitionElement.appendChild(labelElement);
 
-            stateElement.appendChild(transitionElement);
+            transitionElement.appendChild(labelElement);
         }
     }
 
