@@ -1,0 +1,2 @@
+Core|FA_STACK_SYMBOL=Finite automatons do not have an initial stack symbol!
+Core|FA_STACK_ALPHABET=Finite automatons do not have a stack alphabet!
