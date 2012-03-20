@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.pde.ui.EquinoxLauncher">
+<booleanAttribute key="append.args" value="true"/>
+<booleanAttribute key="automaticAdd" value="true"/>
+<booleanAttribute key="automaticValidate" value="false"/>
+<stringAttribute key="bootstrap" value=""/>
+<stringAttribute key="checked" value="[NONE]"/>
+<booleanAttribute key="clearConfig" value="false"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/AtoCC"/>
+<booleanAttribute key="default" value="true"/>
+<booleanAttribute key="default_auto_start" value="true"/>
+<intAttribute key="default_start_level" value="4"/>
+<stringAttribute key="deselected_workspace_plugins" value="atocc.autoedit.nea2dea.test,atocc.autoedit.neaepsilon2nea.test,atocc.util.test"/>
+<booleanAttribute key="includeOptional" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -console"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.ignoreApp=true -Dosgi.noShutdown=true"/>
+<stringAttribute key="pde.version" value="3.3"/>
+<booleanAttribute key="show_selected_only" value="false"/>
+<stringAttribute key="target_bundles" value="javax.servlet@default:default,org.eclipse.core.contenttype@default:default,org.eclipse.core.jobs@default:default,org.eclipse.core.runtime.compatibility.auth@default:default,org.eclipse.core.runtime.compatibility.registry@default:false,org.eclipse.core.runtime@default:true,org.eclipse.equinox.app@default:default,org.eclipse.equinox.common@2:true,org.eclipse.equinox.ds@1:true,org.eclipse.equinox.log@default:default,org.eclipse.equinox.preferences@default:default,org.eclipse.equinox.registry@default:default,org.eclipse.equinox.util@default:default,org.eclipse.jdt.junit.runtime@default:default,org.eclipse.jdt.junit4.runtime@default:default,org.eclipse.osgi.services@default:default,org.eclipse.osgi@-1:true,org.hamcrest.core@default:default,org.junit@default:default,org.restlet.ext.xml@default:default,org.restlet@default:default"/>
+<booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useCustomFeatures" value="false"/>
+<booleanAttribute key="useDefaultConfigArea" value="true"/>
+<stringAttribute key="workspace_bundles" value="atocc.autoedit.exportGrammar@default:default,atocc.autoedit.minimize.test@default:default,atocc.autoedit.minimize.translations@default:false,atocc.autoedit.minimize@5:default,atocc.autoedit.nea2dea.translations@default:false,atocc.autoedit.nea2dea@5:default,atocc.autoedit.neaepsilon2nea.translations@default:false,atocc.autoedit.neaepsilon2nea@5:default,atocc.compile.java@default:false,atocc.compile@5:default,atocc.core.logging@3:default,atocc.core.pluginregistry@default:default,atocc.core.starter@default:default,atocc.core.translation@default:default,atocc.core.util@default:default"/>
+</launchConfiguration>
