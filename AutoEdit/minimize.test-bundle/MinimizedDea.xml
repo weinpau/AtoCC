@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AUTOMATON>
+    <TYPE value="DEA"></TYPE>
+    <ALPHABET>
+	<ITEM value="b"></ITEM>
+	<ITEM value="a"></ITEM>
+    </ALPHABET>
+    <STATE name="q_1" finalstate="false">
+	<TRANSITION target="q_2q_5">
+	    <LABEL read="a"></LABEL>
+	</TRANSITION>
+	<TRANSITION target="q_3">
+	    <LABEL read="b"></LABEL>
+	</TRANSITION>
+    </STATE>
+    <STATE name="q_2q_5" finalstate="true">
+	<TRANSITION target="q_2q_5">
+	    <LABEL read="a"></LABEL>
+	</TRANSITION>
+	<TRANSITION target="q_4">
+	    <LABEL read="b"></LABEL>
+	</TRANSITION>
+    </STATE>
+    <STATE name="q_4" finalstate="false">
+	<TRANSITION target="q_2q_5">
+	    <LABEL read="a"></LABEL>
+	</TRANSITION>
+	<TRANSITION target="q_6">
+	    <LABEL read="b"></LABEL>
+	</TRANSITION>
+    </STATE>
+    <STATE name="q_3" finalstate="false">
+	<TRANSITION target="q_2q_5">
+	    <LABEL read="b"></LABEL>
+	</TRANSITION>
+	<TRANSITION target="q_4">
+	    <LABEL read="a"></LABEL>
+	</TRANSITION>
+    </STATE>
+    <STATE name="q_6" finalstate="true">
+	<TRANSITION target="q_6">
+	    <LABEL read="a"></LABEL>
+	    <LABEL read="b"></LABEL>
+	</TRANSITION>
+    </STATE>
+    <INITIALSTATE value="q_1"></INITIALSTATE>
+</AUTOMATON>
